@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Persona", schema = "grupo25", catalog = "")
+@Table(name = "PERSONA", schema = "grupo25", catalog = "")
 public class PersonaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -16,21 +16,21 @@ public class PersonaEntity {
     @Column(name = "DNI", nullable = false, length = 45)
     private String dni;
     @Basic
-    @Column(name = "nombre", nullable = false, length = 45)
+    @Column(name = "NOMBRE", nullable = false, length = 45)
     private String nombre;
     @Basic
-    @Column(name = "primerApellido", nullable = false, length = 45)
+    @Column(name = "PRIMER_APELLIDO", nullable = false, length = 45)
     private String primerApellido;
     @Basic
-    @Column(name = "segundoApellido", nullable = true, length = 45)
+    @Column(name = "SEGUNDO_APELLIDO", nullable = true, length = 45)
     private String segundoApellido;
     @Basic
-    @Column(name = "fechaNacimiento", nullable = false, length = 45)
+    @Column(name = "FECHA_NACIMIENTO", nullable = false, length = 45)
     private String fechaNacimiento;
     @OneToMany(mappedBy = "personaByEmisor")
     private List<MensajeEntity> mensajesById;
     @OneToOne(mappedBy = "personaByPersona")
-    private RolPersonaEntity rolPersonasById;
+    private RolPersonaEntity rolPersonaById;
 
     public Integer getId() {
         return id;
@@ -101,11 +101,11 @@ public class PersonaEntity {
         this.mensajesById = mensajesById;
     }
 
-    public RolPersonaEntity getRolPersonasById() {
-        return rolPersonasById;
+    public RolPersonaEntity getRolPersonaById() {
+        return rolPersonaById;
     }
 
-    public void setRolPersonasById(RolPersonaEntity rolPersonasById) {
-        this.rolPersonasById = rolPersonasById;
+    public void setRolPersonaById(RolPersonaEntity rolPersonaById) {
+        this.rolPersonaById = rolPersonaById;
     }
 }

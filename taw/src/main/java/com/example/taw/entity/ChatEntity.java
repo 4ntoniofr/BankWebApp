@@ -2,23 +2,24 @@ package com.example.taw.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Chat", schema = "grupo25", catalog = "")
+@Table(name = "CHAT", schema = "grupo25", catalog = "")
 public class ChatEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @ManyToOne
-    @JoinColumn(name = "cliente", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "CLIENTE", referencedColumnName = "ID", nullable = false)
     private ClienteEntity clienteByCliente;
     @ManyToOne
-    @JoinColumn(name = "asistente", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "ASISTENTE", referencedColumnName = "ID", nullable = false)
     private AsistenteEntity asistenteByAsistente;
-    @OneToOne(mappedBy = "chatByChatId")
-    private MensajeEntity mensajesById;
+    @OneToMany(mappedBy = "chatByChat")
+    private List<MensajeEntity> mensajesById;
 
     public Integer getId() {
         return id;
@@ -57,11 +58,11 @@ public class ChatEntity {
         this.asistenteByAsistente = asistenteByAsistente;
     }
 
-    public MensajeEntity getMensajesById() {
+    public List<MensajeEntity> getMensajesById() {
         return mensajesById;
     }
 
-    public void setMensajesById(MensajeEntity mensajesById) {
+    public void setMensajesById(List<MensajeEntity> mensajesById) {
         this.mensajesById = mensajesById;
     }
 }

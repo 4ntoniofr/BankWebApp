@@ -5,24 +5,24 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Pago", schema = "grupo25", catalog = "")
+@Table(name = "PAGO", schema = "grupo25", catalog = "")
 public class PagoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "moneda", nullable = false, length = 45)
+    @Column(name = "MONEDA", nullable = false, length = 45)
     private String moneda;
     @Basic
-    @Column(name = "cantidad", nullable = false, length = 45)
+    @Column(name = "CANTIDAD", nullable = false, length = 45)
     private String cantidad;
     @OneToOne
-    @JoinColumn(name = "Transaccion_id", referencedColumnName = "id", nullable = false)
-    private TransaccionEntity transaccionByTransaccionId;
+    @JoinColumn(name = "TRANSACCION", referencedColumnName = "ID", nullable = false)
+    private TransaccionEntity transaccionByTransaccion;
     @OneToOne
-    @JoinColumn(name = "CambioDivisa_id", referencedColumnName = "id")
-    private CambioDivisaEntity cambioDivisaByCambioDivisaId;
+    @JoinColumn(name = "CAMBIO_DIVISA", referencedColumnName = "ID")
+    private CambioDivisaEntity cambioDivisaByCambioDivisa;
 
     public Integer getId() {
         return id;
@@ -61,19 +61,19 @@ public class PagoEntity {
         return Objects.hash(id, moneda, cantidad);
     }
 
-    public TransaccionEntity getTransaccionByTransaccionId() {
-        return transaccionByTransaccionId;
+    public TransaccionEntity getTransaccionByTransaccion() {
+        return transaccionByTransaccion;
     }
 
-    public void setTransaccionByTransaccionId(TransaccionEntity transaccionByTransaccionId) {
-        this.transaccionByTransaccionId = transaccionByTransaccionId;
+    public void setTransaccionByTransaccion(TransaccionEntity transaccionByTransaccion) {
+        this.transaccionByTransaccion = transaccionByTransaccion;
     }
 
-    public CambioDivisaEntity getCambioDivisaByCambioDivisaId() {
-        return cambioDivisaByCambioDivisaId;
+    public CambioDivisaEntity getCambioDivisaByCambioDivisa() {
+        return cambioDivisaByCambioDivisa;
     }
 
-    public void setCambioDivisaByCambioDivisaId(CambioDivisaEntity cambioDivisaByCambioDivisaId) {
-        this.cambioDivisaByCambioDivisaId = cambioDivisaByCambioDivisaId;
+    public void setCambioDivisaByCambioDivisa(CambioDivisaEntity cambioDivisaByCambioDivisa) {
+        this.cambioDivisaByCambioDivisa = cambioDivisaByCambioDivisa;
     }
 }

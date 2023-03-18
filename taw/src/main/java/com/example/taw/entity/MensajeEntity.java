@@ -6,24 +6,24 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Mensaje", schema = "grupo25", catalog = "")
+@Table(name = "MENSAJE", schema = "grupo25", catalog = "")
 public class MensajeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "texto", nullable = false, length = -1)
+    @Column(name = "TEXTO", nullable = false, length = -1)
     private String texto;
     @Basic
-    @Column(name = "fecha", nullable = false)
+    @Column(name = "FECHA", nullable = false)
     private Timestamp fecha;
     @ManyToOne
-    @JoinColumn(name = "emisor", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "EMISOR", referencedColumnName = "id", nullable = false)
     private PersonaEntity personaByEmisor;
-    @OneToOne
-    @JoinColumn(name = "Chat_id", referencedColumnName = "id", nullable = false)
-    private ChatEntity chatByChatId;
+    @ManyToOne
+    @JoinColumn(name = "CHAT", referencedColumnName = "ID", nullable = false)
+    private ChatEntity chatByChat;
 
     public Integer getId() {
         return id;
@@ -70,11 +70,11 @@ public class MensajeEntity {
         this.personaByEmisor = personaByEmisor;
     }
 
-    public ChatEntity getChatByChatId() {
-        return chatByChatId;
+    public ChatEntity getChatByChat() {
+        return chatByChat;
     }
 
-    public void setChatByChatId(ChatEntity chatByChatId) {
-        this.chatByChatId = chatByChatId;
+    public void setChatByChat(ChatEntity chatByChat) {
+        this.chatByChat = chatByChat;
     }
 }

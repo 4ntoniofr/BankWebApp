@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Asistente", schema = "grupo25", catalog = "")
+@Table(name = "ASISTENTE", schema = "grupo25", catalog = "")
 public class AsistenteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @OneToOne
-    @JoinColumn(name = "RolPersona_id", referencedColumnName = "id", nullable = false)
-    private RolPersonaEntity rolPersonaByRolPersonaId;
+    @JoinColumn(name = "ROL_PERSONA", referencedColumnName = "ID", nullable = false)
+    private RolPersonaEntity rolPersonaByRolPersona;
     @OneToMany(mappedBy = "asistenteByAsistente")
     private List<ChatEntity> chatsById;
 
@@ -39,12 +39,12 @@ public class AsistenteEntity {
         return Objects.hash(id);
     }
 
-    public RolPersonaEntity getRolPersonaByRolPersonaId() {
-        return rolPersonaByRolPersonaId;
+    public RolPersonaEntity getRolPersonaByRolPersona() {
+        return rolPersonaByRolPersona;
     }
 
-    public void setRolPersonaByRolPersonaId(RolPersonaEntity rolPersonaByRolPersonaId) {
-        this.rolPersonaByRolPersonaId = rolPersonaByRolPersonaId;
+    public void setRolPersonaByRolPersona(RolPersonaEntity rolPersonaByRolPersona) {
+        this.rolPersonaByRolPersona = rolPersonaByRolPersona;
     }
 
     public List<ChatEntity> getChatsById() {

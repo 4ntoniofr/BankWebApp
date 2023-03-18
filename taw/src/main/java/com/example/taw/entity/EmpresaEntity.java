@@ -7,24 +7,24 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Empresa", schema = "grupo25", catalog = "")
+@Table(name = "EMPRESA", schema = "grupo25", catalog = "")
 public class EmpresaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "cliente", nullable = false)
+    @Column(name = "CLIENTE", nullable = false)
     private Integer cliente;
     @Basic
-    @Column(name = "nombre", nullable = false, length = 45)
+    @Column(name = "NOMBRE", nullable = false, length = 45)
     private String nombre;
     @Basic
-    @Column(name = "fechaCierre", nullable = true)
+    @Column(name = "FECHA_CIERRE", nullable = true)
     private Date fechaCierre;
-    @OneToOne(mappedBy = "empresaByEmpresaId")
+    @OneToOne(mappedBy = "empresaByEmpresa")
     private ClienteEntity clientesById;
-    @OneToMany(mappedBy = "empresaByEmpresaId")
+    @OneToMany(mappedBy = "empresaByEmpresa")
     private List<SocioEntity> sociosById;
 
     public Integer getId() {

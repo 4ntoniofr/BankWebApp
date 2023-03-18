@@ -5,18 +5,18 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Socio", schema = "grupo25", catalog = "")
+@Table(name = "SOCIO", schema = "grupo25", catalog = "")
 public class SocioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @OneToOne
-    @JoinColumn(name = "RolPersona_id", referencedColumnName = "id", nullable = false)
-    private RolPersonaEntity rolPersonaByRolPersonaId;
+    @JoinColumn(name = "ROL_PERSONA", referencedColumnName = "ID", nullable = false)
+    private RolPersonaEntity rolPersonaByRolPersona;
     @ManyToOne
-    @JoinColumn(name = "Empresa_id", referencedColumnName = "id", nullable = false)
-    private EmpresaEntity empresaByEmpresaId;
+    @JoinColumn(name = "EMPRESA", referencedColumnName = "ID", nullable = false)
+    private EmpresaEntity empresaByEmpresa;
 
     public Integer getId() {
         return id;
@@ -39,19 +39,19 @@ public class SocioEntity {
         return Objects.hash(id);
     }
 
-    public RolPersonaEntity getRolPersonaByRolPersonaId() {
-        return rolPersonaByRolPersonaId;
+    public RolPersonaEntity getRolPersonaByRolPersona() {
+        return rolPersonaByRolPersona;
     }
 
-    public void setRolPersonaByRolPersonaId(RolPersonaEntity rolPersonaByRolPersonaId) {
-        this.rolPersonaByRolPersonaId = rolPersonaByRolPersonaId;
+    public void setRolPersonaByRolPersona(RolPersonaEntity rolPersonaByRolPersona) {
+        this.rolPersonaByRolPersona = rolPersonaByRolPersona;
     }
 
-    public EmpresaEntity getEmpresaByEmpresaId() {
-        return empresaByEmpresaId;
+    public EmpresaEntity getEmpresaByEmpresa() {
+        return empresaByEmpresa;
     }
 
-    public void setEmpresaByEmpresaId(EmpresaEntity empresaByEmpresaId) {
-        this.empresaByEmpresaId = empresaByEmpresaId;
+    public void setEmpresaByEmpresa(EmpresaEntity empresaByEmpresa) {
+        this.empresaByEmpresa = empresaByEmpresa;
     }
 }

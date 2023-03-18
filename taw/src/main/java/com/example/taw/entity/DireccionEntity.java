@@ -6,28 +6,28 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Direccion", schema = "grupo25", catalog = "")
+@Table(name = "DIRECCION", schema = "grupo25", catalog = "")
 public class DireccionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "calle", nullable = false, length = 45)
+    @Column(name = "CALLE", nullable = false, length = 45)
     private String calle;
     @Basic
-    @Column(name = "numero", nullable = false)
+    @Column(name = "NUMERO", nullable = false)
     private Integer numero;
     @Basic
-    @Column(name = "ciudad", nullable = false, length = 45)
+    @Column(name = "CIUDAD", nullable = false, length = 45)
     private String ciudad;
     @Basic
-    @Column(name = "codigoPostal", nullable = false, length = 45)
+    @Column(name = "CODIGO_POSTAL", nullable = false, length = 45)
     private String codigoPostal;
     @Basic
-    @Column(name = "pais", nullable = false, length = 45)
+    @Column(name = "PAIS", nullable = false, length = 45)
     private String pais;
-    @OneToMany(mappedBy = "direccionByDireccionId")
+    @OneToMany(mappedBy = "direccionByDireccion")
     private List<ClienteEntity> clientesById;
 
     public Integer getId() {

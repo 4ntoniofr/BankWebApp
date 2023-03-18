@@ -5,14 +5,15 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Gestor", schema = "grupo25", catalog = "")
+@Table(name = "GESTOR", schema = "grupo25", catalog = "")
 public class GestorEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
-    @OneToOne(mappedBy = "gestorById")
-    private RolPersonaEntity rolPersonaByRolPersonaId;
+    @OneToOne
+    @JoinColumn(name = "ROL_PERSONA", referencedColumnName = "ID", nullable = false)
+    private RolPersonaEntity rolPersonaByRolPersona;
 
     public Integer getId() {
         return id;
@@ -35,11 +36,11 @@ public class GestorEntity {
         return Objects.hash(id);
     }
 
-    public RolPersonaEntity getRolPersonaByRolPersonaId() {
-        return rolPersonaByRolPersonaId;
+    public RolPersonaEntity getRolPersonaByRolPersona() {
+        return rolPersonaByRolPersona;
     }
 
-    public void setRolPersonaByRolPersonaId(RolPersonaEntity rolPersonaByRolPersonaId) {
-        this.rolPersonaByRolPersonaId = rolPersonaByRolPersonaId;
+    public void setRolPersonaByRolPersona(RolPersonaEntity rolPersonaByRolPersona) {
+        this.rolPersonaByRolPersona = rolPersonaByRolPersona;
     }
 }

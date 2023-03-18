@@ -6,23 +6,23 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "CuentaBancaria", schema = "grupo25", catalog = "")
+@Table(name = "CUENTA_BANCARIA", schema = "grupo25", catalog = "")
 public class CuentaBancariaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "iban", nullable = false, length = 45)
+    @Column(name = "IBAN", nullable = false, length = 45)
     private String iban;
-    @OneToOne(mappedBy = "cuentaBancariaByCuentaBancariaId")
+    @OneToOne(mappedBy = "cuentaBancariaByCuentaBancaria")
     private CuentaExternaEntity cuentaExternasById;
-    @OneToOne(mappedBy = "cuentaBancariaByCuentaBancariaId")
+    @OneToOne(mappedBy = "cuentaBancariaByCuentaBancaria")
     private CuentaInternaEntity cuentaInternasById;
     @OneToMany(mappedBy = "cuentaBancariaByCuentaOrigen")
-    private List<TransaccionEntity> transaccionsById_Saliente;
+    private List<TransaccionEntity> transaccionsById_Salientes;
     @OneToMany(mappedBy = "cuentaBancariaByCuentaDestino")
-    private List<TransaccionEntity> transaccionsById_Entrante;
+    private List<TransaccionEntity> transaccionsById_Entrantes;
 
     public Integer getId() {
         return id;
@@ -69,19 +69,19 @@ public class CuentaBancariaEntity {
         this.cuentaInternasById = cuentaInternasById;
     }
 
-    public List<TransaccionEntity> getTransaccionsById_Saliente() {
-        return transaccionsById_Saliente;
+    public List<TransaccionEntity> getTransaccionsById_Salientes() {
+        return transaccionsById_Salientes;
     }
 
-    public void setTransaccionsById_Saliente(List<TransaccionEntity> transaccionsById_Saliente) {
-        this.transaccionsById_Saliente = transaccionsById_Saliente;
+    public void setTransaccionsById_Salientes(List<TransaccionEntity> transaccionsById_Salientes) {
+        this.transaccionsById_Salientes = transaccionsById_Salientes;
     }
 
-    public List<TransaccionEntity> getTransaccionsById_Entrante() {
-        return transaccionsById_Entrante;
+    public List<TransaccionEntity> getTransaccionsById_Entrantes() {
+        return transaccionsById_Entrantes;
     }
 
-    public void setTransaccionsById_Entrante(List<TransaccionEntity> transaccionsById_Entrante) {
-        this.transaccionsById_Entrante = transaccionsById_Entrante;
+    public void setTransaccionsById_Entrantes(List<TransaccionEntity> transaccionsById_Entrantes) {
+        this.transaccionsById_Entrantes = transaccionsById_Entrantes;
     }
 }

@@ -6,27 +6,27 @@ import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Transaccion", schema = "grupo25", catalog = "")
+@Table(name = "TRANSACCION", schema = "grupo25", catalog = "")
 public class TransaccionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "fechaInstruccion", nullable = true)
+    @Column(name = "FECHA_INSTRUCCION", nullable = true)
     private Date fechaInstruccion;
     @Basic
-    @Column(name = "fechaEjecucion", nullable = true)
+    @Column(name = "FECHA_EJECUCION", nullable = true)
     private Date fechaEjecucion;
-    @OneToOne(mappedBy = "transaccionByTransaccionId")
-    private CambioDivisaEntity cambioDivisasById;
-    @OneToOne(mappedBy = "transaccionByTransaccionId")
-    private PagoEntity pagosById;
+    @OneToOne(mappedBy = "transaccionByTransaccion")
+    private CambioDivisaEntity cambioDivisaById;
+    @OneToOne(mappedBy = "transaccionByTransaccion")
+    private PagoEntity pagoById;
     @ManyToOne
-    @JoinColumn(name = "cuentaOrigen", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "CUENTA_ORIGEN", referencedColumnName = "ID", nullable = false)
     private CuentaBancariaEntity cuentaBancariaByCuentaOrigen;
     @ManyToOne
-    @JoinColumn(name = "cuentaDestino", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "CUENTA_DESTINO", referencedColumnName = "ID", nullable = false)
     private CuentaBancariaEntity cuentaBancariaByCuentaDestino;
 
     public Integer getId() {
@@ -66,20 +66,20 @@ public class TransaccionEntity {
         return Objects.hash(id, fechaInstruccion, fechaEjecucion);
     }
 
-    public CambioDivisaEntity getCambioDivisasById() {
-        return cambioDivisasById;
+    public CambioDivisaEntity getCambioDivisaById() {
+        return cambioDivisaById;
     }
 
-    public void setCambioDivisasById(CambioDivisaEntity cambioDivisasById) {
-        this.cambioDivisasById = cambioDivisasById;
+    public void setCambioDivisaById(CambioDivisaEntity cambioDivisaById) {
+        this.cambioDivisaById = cambioDivisaById;
     }
 
-    public PagoEntity getPagosById() {
-        return pagosById;
+    public PagoEntity getPagoById() {
+        return pagoById;
     }
 
-    public void setPagosById(PagoEntity pagosById) {
-        this.pagosById = pagosById;
+    public void setPagoById(PagoEntity pagoById) {
+        this.pagoById = pagoById;
     }
 
     public CuentaBancariaEntity getCuentaBancariaByCuentaOrigen() {

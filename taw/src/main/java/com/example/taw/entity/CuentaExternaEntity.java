@@ -5,21 +5,21 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "CuentaExterna", schema = "grupo25", catalog = "")
+@Table(name = "CUENTA_EXTERNA", schema = "grupo25", catalog = "")
 public class CuentaExternaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "sospechosa", nullable = false)
+    @Column(name = "SOSPECHOSA", nullable = false)
     private Byte sospechosa;
     @OneToOne
-    @JoinColumn(name = "CuentaBancaria_id", referencedColumnName = "id", nullable = false)
-    private CuentaBancariaEntity cuentaBancariaByCuentaBancariaId;
+    @JoinColumn(name = "CUENTA_BANCARIA", referencedColumnName = "ID", nullable = false)
+    private CuentaBancariaEntity cuentaBancariaByCuentaBancaria;
     @ManyToOne
-    @JoinColumn(name = "EntidadBancaria_id", referencedColumnName = "id", nullable = false)
-    private EntidadBancariaEntity entidadBancariaByEntidadBancariaId;
+    @JoinColumn(name = "ENTIDAD_BANCARIA", referencedColumnName = "ID", nullable = false)
+    private EntidadBancariaEntity entidadBancariaByEntidadBancaria;
 
     public Integer getId() {
         return id;
@@ -50,19 +50,19 @@ public class CuentaExternaEntity {
         return Objects.hash(id, sospechosa);
     }
 
-    public CuentaBancariaEntity getCuentaBancariaByCuentaBancariaId() {
-        return cuentaBancariaByCuentaBancariaId;
+    public CuentaBancariaEntity getCuentaBancariaByCuentaBancaria() {
+        return cuentaBancariaByCuentaBancaria;
     }
 
-    public void setCuentaBancariaByCuentaBancariaId(CuentaBancariaEntity cuentaBancariaByCuentaBancariaId) {
-        this.cuentaBancariaByCuentaBancariaId = cuentaBancariaByCuentaBancariaId;
+    public void setCuentaBancariaByCuentaBancaria(CuentaBancariaEntity cuentaBancariaByCuentaBancaria) {
+        this.cuentaBancariaByCuentaBancaria = cuentaBancariaByCuentaBancaria;
     }
 
-    public EntidadBancariaEntity getEntidadBancariaByEntidadBancariaId() {
-        return entidadBancariaByEntidadBancariaId;
+    public EntidadBancariaEntity getEntidadBancariaByEntidadBancaria() {
+        return entidadBancariaByEntidadBancaria;
     }
 
-    public void setEntidadBancariaByEntidadBancariaId(EntidadBancariaEntity entidadBancariaByEntidadBancariaId) {
-        this.entidadBancariaByEntidadBancariaId = entidadBancariaByEntidadBancariaId;
+    public void setEntidadBancariaByEntidadBancaria(EntidadBancariaEntity entidadBancariaByEntidadBancaria) {
+        this.entidadBancariaByEntidadBancaria = entidadBancariaByEntidadBancaria;
     }
 }

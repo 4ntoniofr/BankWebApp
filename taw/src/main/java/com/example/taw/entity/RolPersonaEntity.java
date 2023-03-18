@@ -5,23 +5,23 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "RolPersona", schema = "grupo25", catalog = "")
+@Table(name = "ROL_PERSONA", schema = "grupo25", catalog = "")
 public class RolPersonaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
-    @OneToOne(mappedBy = "rolPersonaByRolPersonaId")
+    @OneToOne(mappedBy = "rolPersonaByRolPersona")
     private AsistenteEntity asistenteById;
-    @OneToOne(mappedBy = "rolPersonaByRolPersonaId")
+    @OneToOne(mappedBy = "rolPersonaByRolPersona")
     private ClienteEntity clienteById;
-    @OneToOne
-    @JoinColumn(name = "persona", referencedColumnName = "id", nullable = false)
-    private PersonaEntity personaByPersona;
-    @OneToOne(mappedBy = "rolPersonaByRolPersonaId")
-    private SocioEntity socioById;
-    @OneToOne
+    @OneToOne(mappedBy = "rolPersonaByRolPersona")
     private GestorEntity gestorById;
+    @OneToOne
+    @JoinColumn(name = "PERSONA", referencedColumnName = "id", nullable = false)
+    private PersonaEntity personaByPersona;
+    @OneToOne(mappedBy = "rolPersonaByRolPersona")
+    private SocioEntity socioById;
 
     public Integer getId() {
         return id;
@@ -60,6 +60,14 @@ public class RolPersonaEntity {
         this.clienteById = clienteById;
     }
 
+    public GestorEntity getGestorById() {
+        return gestorById;
+    }
+
+    public void setGestorById(GestorEntity gestorById) {
+        this.gestorById = gestorById;
+    }
+
     public PersonaEntity getPersonaByPersona() {
         return personaByPersona;
     }
@@ -74,13 +82,5 @@ public class RolPersonaEntity {
 
     public void setSocioById(SocioEntity socioById) {
         this.socioById = socioById;
-    }
-
-    public GestorEntity getGestorById() {
-        return gestorById;
-    }
-
-    public void setGestorById(GestorEntity gestorById) {
-        this.gestorById = gestorById;
     }
 }

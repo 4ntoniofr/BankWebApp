@@ -7,35 +7,35 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Cliente", schema = "grupo25", catalog = "")
+@Table(name = "CLIENTE", schema = "grupo25", catalog = "")
 public class ClienteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "usuario", nullable = false, length = 45)
+    @Column(name = "USUARIO", nullable = false, length = 45)
     private String usuario;
     @Basic
-    @Column(name = "password", nullable = false, length = 45)
+    @Column(name = "PASSWORD", nullable = false, length = 45)
     private String password;
     @Basic
-    @Column(name = "fechaInicio", nullable = false)
+    @Column(name = "FECHA_INICIO", nullable = false)
     private Date fechaInicio;
     @OneToMany(mappedBy = "clienteByCliente")
     private List<ChatEntity> chatsById;
     @ManyToOne
-    @JoinColumn(name = "EstadoCliente_idEstadoCliente", referencedColumnName = "idEstadoCliente", nullable = false)
-    private EstadoClienteEntity estadoClienteByEstadoClienteIdEstadoCliente;
+    @JoinColumn(name = "ESTADO_CLIENTE", referencedColumnName = "ID", nullable = false)
+    private EstadoClienteEntity estadoClienteByEstadoCliente;
     @ManyToOne
-    @JoinColumn(name = "Direccion_id", referencedColumnName = "id", nullable = false)
-    private DireccionEntity direccionByDireccionId;
+    @JoinColumn(name = "DIRECCION", referencedColumnName = "ID", nullable = false)
+    private DireccionEntity direccionByDireccion;
     @OneToOne
-    @JoinColumn(name = "Empresa_id", referencedColumnName = "id")
-    private EmpresaEntity empresaByEmpresaId;
+    @JoinColumn(name = "EMPRESA", referencedColumnName = "ID")
+    private EmpresaEntity empresaByEmpresa;
     @OneToOne
-    @JoinColumn(name = "RolPersona_id", referencedColumnName = "id")
-    private RolPersonaEntity rolPersonaByRolPersonaId;
+    @JoinColumn(name = "ROL_PERSONA", referencedColumnName = "ID")
+    private RolPersonaEntity rolPersonaByRolPersona;
     @OneToMany(mappedBy = "clienteByPropietario")
     private List<CuentaInternaEntity> cuentaInternasById;
 
@@ -92,36 +92,36 @@ public class ClienteEntity {
         this.chatsById = chatsById;
     }
 
-    public EstadoClienteEntity getEstadoClienteByEstadoClienteIdEstadoCliente() {
-        return estadoClienteByEstadoClienteIdEstadoCliente;
+    public EstadoClienteEntity getEstadoClienteByEstadoCliente() {
+        return estadoClienteByEstadoCliente;
     }
 
-    public void setEstadoClienteByEstadoClienteIdEstadoCliente(EstadoClienteEntity estadoClienteByEstadoClienteIdEstadoCliente) {
-        this.estadoClienteByEstadoClienteIdEstadoCliente = estadoClienteByEstadoClienteIdEstadoCliente;
+    public void setEstadoClienteByEstadoCliente(EstadoClienteEntity estadoClienteByEstadoCliente) {
+        this.estadoClienteByEstadoCliente = estadoClienteByEstadoCliente;
     }
 
-    public DireccionEntity getDireccionByDireccionId() {
-        return direccionByDireccionId;
+    public DireccionEntity getDireccionByDireccion() {
+        return direccionByDireccion;
     }
 
-    public void setDireccionByDireccionId(DireccionEntity direccionByDireccionId) {
-        this.direccionByDireccionId = direccionByDireccionId;
+    public void setDireccionByDireccion(DireccionEntity direccionByDireccion) {
+        this.direccionByDireccion = direccionByDireccion;
     }
 
-    public EmpresaEntity getEmpresaByEmpresaId() {
-        return empresaByEmpresaId;
+    public EmpresaEntity getEmpresaByEmpresa() {
+        return empresaByEmpresa;
     }
 
-    public void setEmpresaByEmpresaId(EmpresaEntity empresaByEmpresaId) {
-        this.empresaByEmpresaId = empresaByEmpresaId;
+    public void setEmpresaByEmpresa(EmpresaEntity empresaByEmpresa) {
+        this.empresaByEmpresa = empresaByEmpresa;
     }
 
-    public RolPersonaEntity getRolPersonaByRolPersonaId() {
-        return rolPersonaByRolPersonaId;
+    public RolPersonaEntity getRolPersonaByRolPersona() {
+        return rolPersonaByRolPersona;
     }
 
-    public void setRolPersonaByRolPersonaId(RolPersonaEntity rolPersonaByRolPersonaId) {
-        this.rolPersonaByRolPersonaId = rolPersonaByRolPersonaId;
+    public void setRolPersonaByRolPersona(RolPersonaEntity rolPersonaByRolPersona) {
+        this.rolPersonaByRolPersona = rolPersonaByRolPersona;
     }
 
     public List<CuentaInternaEntity> getCuentaInternasById() {

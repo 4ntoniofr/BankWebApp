@@ -5,31 +5,31 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "CambioDivisa", schema = "grupo25", catalog = "")
+@Table(name = "CAMBIO_DIVISA", schema = "grupo25", catalog = "")
 public class CambioDivisaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "monedaVenta", nullable = false, length = 45)
+    @Column(name = "MONEDA_VENTA", nullable = false, length = 45)
     private String monedaVenta;
     @Basic
-    @Column(name = "monedaCompra", nullable = false, length = 45)
+    @Column(name = "MONEDA_COMPRA", nullable = false, length = 45)
     private String monedaCompra;
     @Basic
-    @Column(name = "tipoDeCambio", nullable = false, length = 45)
-    private String tipoDeCambio;
+    @Column(name = "TIPO_CAMBIO", nullable = false, length = 45)
+    private String tipoCambio;
     @Basic
-    @Column(name = "cantidadCompra", nullable = false, length = 45)
+    @Column(name = "CANTIDAD_COMPRA", nullable = false, length = 45)
     private String cantidadCompra;
     @Basic
-    @Column(name = "cantidadVenta", nullable = false, length = 45)
+    @Column(name = "CANTIDAD_VENTA", nullable = false, length = 45)
     private String cantidadVenta;
     @OneToOne
-    @JoinColumn(name = "Transaccion_id", referencedColumnName = "id", nullable = false)
-    private TransaccionEntity transaccionByTransaccionId;
-    @OneToOne(mappedBy = "cambioDivisaByCambioDivisaId")
+    @JoinColumn(name = "TRANSACCION", referencedColumnName = "ID", nullable = false)
+    private TransaccionEntity transaccionByTransaccion;
+    @OneToOne(mappedBy = "cambioDivisaByCambioDivisa")
     private PagoEntity pagosById;
 
     public Integer getId() {
@@ -56,12 +56,12 @@ public class CambioDivisaEntity {
         this.monedaCompra = monedaCompra;
     }
 
-    public String getTipoDeCambio() {
-        return tipoDeCambio;
+    public String getTipoCambio() {
+        return tipoCambio;
     }
 
-    public void setTipoDeCambio(String tipoDeCambio) {
-        this.tipoDeCambio = tipoDeCambio;
+    public void setTipoCambio(String tipoCambio) {
+        this.tipoCambio = tipoCambio;
     }
 
     public String getCantidadCompra() {
@@ -85,20 +85,20 @@ public class CambioDivisaEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CambioDivisaEntity that = (CambioDivisaEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(monedaVenta, that.monedaVenta) && Objects.equals(monedaCompra, that.monedaCompra) && Objects.equals(tipoDeCambio, that.tipoDeCambio) && Objects.equals(cantidadCompra, that.cantidadCompra) && Objects.equals(cantidadVenta, that.cantidadVenta);
+        return Objects.equals(id, that.id) && Objects.equals(monedaVenta, that.monedaVenta) && Objects.equals(monedaCompra, that.monedaCompra) && Objects.equals(tipoCambio, that.tipoCambio) && Objects.equals(cantidadCompra, that.cantidadCompra) && Objects.equals(cantidadVenta, that.cantidadVenta);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, monedaVenta, monedaCompra, tipoDeCambio, cantidadCompra, cantidadVenta);
+        return Objects.hash(id, monedaVenta, monedaCompra, tipoCambio, cantidadCompra, cantidadVenta);
     }
 
-    public TransaccionEntity getTransaccionByTransaccionId() {
-        return transaccionByTransaccionId;
+    public TransaccionEntity getTransaccionByTransaccion() {
+        return transaccionByTransaccion;
     }
 
-    public void setTransaccionByTransaccionId(TransaccionEntity transaccionByTransaccionId) {
-        this.transaccionByTransaccionId = transaccionByTransaccionId;
+    public void setTransaccionByTransaccion(TransaccionEntity transaccionByTransaccion) {
+        this.transaccionByTransaccion = transaccionByTransaccion;
     }
 
     public PagoEntity getPagosById() {

@@ -6,17 +6,17 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "EstadoCuenta", schema = "grupo25", catalog = "")
+@Table(name = "ESTADO_CUENTA", schema = "grupo25", catalog = "")
 public class EstadoCuentaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "estado", nullable = false, length = 45)
+    @Column(name = "ESTADO", nullable = false, length = 45)
     private String estado;
     @OneToMany(mappedBy = "estadoCuentaByEstadoCuenta")
-    private List<CuentaInternaEntity> cuentaInternasById;
+    private List<CuentaInternaEntity> cuentaInternaById;
 
     public Integer getId() {
         return id;
@@ -47,11 +47,11 @@ public class EstadoCuentaEntity {
         return Objects.hash(id, estado);
     }
 
-    public List<CuentaInternaEntity> getCuentaInternasById() {
-        return cuentaInternasById;
+    public List<CuentaInternaEntity> getCuentaInternaById() {
+        return cuentaInternaById;
     }
 
-    public void setCuentaInternasById(List<CuentaInternaEntity> cuentaInternasById) {
-        this.cuentaInternasById = cuentaInternasById;
+    public void setCuentaInternaById(List<CuentaInternaEntity> cuentaInternaById) {
+        this.cuentaInternaById = cuentaInternaById;
     }
 }

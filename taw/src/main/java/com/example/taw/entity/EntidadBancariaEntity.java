@@ -6,16 +6,16 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "EntidadBancaria", schema = "grupo25", catalog = "")
+@Table(name = "ENTIDAD_BANCARIA", schema = "grupo25", catalog = "")
 public class EntidadBancariaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "nombre", nullable = false, length = 45)
+    @Column(name = "NOMBRE", nullable = false, length = 45)
     private String nombre;
-    @OneToMany(mappedBy = "entidadBancariaByEntidadBancariaId")
+    @OneToMany(mappedBy = "entidadBancariaByEntidadBancaria")
     private List<CuentaExternaEntity> cuentaExternasById;
 
     public Integer getId() {
