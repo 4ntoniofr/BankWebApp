@@ -1,12 +1,13 @@
-package com.example.taw.entity;
+package es.taw.grupo25.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "SOCIO", schema = "grupo25", catalog = "")
-public class SocioEntity {
+@Table(name = "ASISTENTE", schema = "grupo25", catalog = "")
+public class AsistenteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
@@ -14,9 +15,8 @@ public class SocioEntity {
     @OneToOne
     @JoinColumn(name = "ROL_PERSONA", referencedColumnName = "ID", nullable = false)
     private RolPersonaEntity rolPersonaByRolPersona;
-    @ManyToOne
-    @JoinColumn(name = "EMPRESA", referencedColumnName = "ID", nullable = false)
-    private EmpresaEntity empresaByEmpresa;
+    @OneToMany(mappedBy = "asistenteByAsistente")
+    private List<ChatEntity> chatsById;
 
     public Integer getId() {
         return id;
@@ -30,7 +30,7 @@ public class SocioEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SocioEntity that = (SocioEntity) o;
+        AsistenteEntity that = (AsistenteEntity) o;
         return Objects.equals(id, that.id);
     }
 
@@ -47,11 +47,11 @@ public class SocioEntity {
         this.rolPersonaByRolPersona = rolPersonaByRolPersona;
     }
 
-    public EmpresaEntity getEmpresaByEmpresa() {
-        return empresaByEmpresa;
+    public List<ChatEntity> getChatsById() {
+        return chatsById;
     }
 
-    public void setEmpresaByEmpresa(EmpresaEntity empresaByEmpresa) {
-        this.empresaByEmpresa = empresaByEmpresa;
+    public void setChatsById(List<ChatEntity> chatsById) {
+        this.chatsById = chatsById;
     }
 }
