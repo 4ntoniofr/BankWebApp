@@ -19,7 +19,7 @@ public class MensajeEntity {
     @Column(name = "FECHA", nullable = false)
     private Timestamp fecha;
     @ManyToOne
-    @JoinColumn(name = "EMISOR", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "EMISOR", referencedColumnName = "ID", nullable = false)
     private PersonaEntity personaByEmisor;
     @ManyToOne
     @JoinColumn(name = "CHAT", referencedColumnName = "ID", nullable = false)

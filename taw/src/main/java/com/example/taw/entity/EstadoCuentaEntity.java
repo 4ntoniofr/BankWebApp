@@ -2,7 +2,7 @@ package com.example.taw.entity;
 
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -16,7 +16,7 @@ public class EstadoCuentaEntity {
     @Column(name = "ESTADO", nullable = false, length = 45)
     private String estado;
     @OneToMany(mappedBy = "estadoCuentaByEstadoCuenta")
-    private List<CuentaInternaEntity> cuentaInternaById;
+    private Collection<CuentaInternaEntity> cuentaInternasById;
 
     public Integer getId() {
         return id;
@@ -47,11 +47,11 @@ public class EstadoCuentaEntity {
         return Objects.hash(id, estado);
     }
 
-    public List<CuentaInternaEntity> getCuentaInternaById() {
-        return cuentaInternaById;
+    public Collection<CuentaInternaEntity> getCuentaInternasById() {
+        return cuentaInternasById;
     }
 
-    public void setCuentaInternaById(List<CuentaInternaEntity> cuentaInternaById) {
-        this.cuentaInternaById = cuentaInternaById;
+    public void setCuentaInternasById(Collection<CuentaInternaEntity> cuentaInternasById) {
+        this.cuentaInternasById = cuentaInternasById;
     }
 }

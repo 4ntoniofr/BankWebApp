@@ -2,6 +2,7 @@ package com.example.taw.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -21,16 +22,16 @@ public class CambioDivisaEntity {
     @Column(name = "TIPO_CAMBIO", nullable = false, length = 45)
     private String tipoCambio;
     @Basic
-    @Column(name = "CANTIDAD_COMPRA", nullable = false, length = 45)
-    private String cantidadCompra;
+    @Column(name = "CANTIDAD_COMPRA", nullable = false, precision = 0)
+    private Double cantidadCompra;
     @Basic
-    @Column(name = "CANTIDAD_VENTA", nullable = false, length = 45)
-    private String cantidadVenta;
+    @Column(name = "CANTIDAD_VENTA", nullable = false, precision = 0)
+    private Double cantidadVenta;
     @OneToOne
     @JoinColumn(name = "TRANSACCION", referencedColumnName = "ID", nullable = false)
     private TransaccionEntity transaccionByTransaccion;
-    @OneToOne(mappedBy = "cambioDivisaByCambioDivisa")
-    private PagoEntity pagosById;
+    @OneToMany(mappedBy = "cambioDivisaByCambioDivisa")
+    private Collection<PagoEntity> pagosById;
 
     public Integer getId() {
         return id;
@@ -64,19 +65,19 @@ public class CambioDivisaEntity {
         this.tipoCambio = tipoCambio;
     }
 
-    public String getCantidadCompra() {
+    public Double getCantidadCompra() {
         return cantidadCompra;
     }
 
-    public void setCantidadCompra(String cantidadCompra) {
+    public void setCantidadCompra(Double cantidadCompra) {
         this.cantidadCompra = cantidadCompra;
     }
 
-    public String getCantidadVenta() {
+    public Double getCantidadVenta() {
         return cantidadVenta;
     }
 
-    public void setCantidadVenta(String cantidadVenta) {
+    public void setCantidadVenta(Double cantidadVenta) {
         this.cantidadVenta = cantidadVenta;
     }
 
@@ -101,11 +102,11 @@ public class CambioDivisaEntity {
         this.transaccionByTransaccion = transaccionByTransaccion;
     }
 
-    public PagoEntity getPagosById() {
+    public Collection<PagoEntity> getPagosById() {
         return pagosById;
     }
 
-    public void setPagosById(PagoEntity pagosById) {
+    public void setPagosById(Collection<PagoEntity> pagosById) {
         this.pagosById = pagosById;
     }
 }

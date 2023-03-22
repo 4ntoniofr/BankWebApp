@@ -3,7 +3,6 @@ package com.example.taw.entity;
 import jakarta.persistence.*;
 
 import java.sql.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -14,18 +13,14 @@ public class EmpresaEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "CLIENTE", nullable = false)
-    private Integer cliente;
-    @Basic
-    @Column(name = "NOMBRE", nullable = false, length = 45)
+    @Column(name = "NOMBRE", nullable = false, length = 100)
     private String nombre;
     @Basic
     @Column(name = "FECHA_CIERRE", nullable = true)
     private Date fechaCierre;
-    @OneToOne(mappedBy = "empresaByEmpresa")
-    private ClienteEntity clientesById;
-    @OneToMany(mappedBy = "empresaByEmpresa")
-    private List<SocioEntity> sociosById;
+    @ManyToOne
+    @JoinColumn(name = "CLIENTE_ID", referencedColumnName = "ID", nullable = false)
+    private ClienteEntity clienteByClienteId;
 
     public Integer getId() {
         return id;
@@ -33,14 +28,6 @@ public class EmpresaEntity {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Integer cliente) {
-        this.cliente = cliente;
     }
 
     public String getNombre() {
@@ -64,27 +51,19 @@ public class EmpresaEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EmpresaEntity that = (EmpresaEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(cliente, that.cliente) && Objects.equals(nombre, that.nombre) && Objects.equals(fechaCierre, that.fechaCierre);
+        return Objects.equals(id, that.id) && Objects.equals(nombre, that.nombre) && Objects.equals(fechaCierre, that.fechaCierre);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, cliente, nombre, fechaCierre);
+        return Objects.hash(id, nombre, fechaCierre);
     }
 
-    public ClienteEntity getClientesById() {
-        return clientesById;
+    public ClienteEntity getClienteByClienteId() {
+        return clienteByClienteId;
     }
 
-    public void setClientesById(ClienteEntity clientesById) {
-        this.clientesById = clientesById;
-    }
-
-    public List<SocioEntity> getSociosById() {
-        return sociosById;
-    }
-
-    public void setSociosById(List<SocioEntity> sociosById) {
-        this.sociosById = sociosById;
+    public void setClienteByClienteId(ClienteEntity clienteByClienteId) {
+        this.clienteByClienteId = clienteByClienteId;
     }
 }

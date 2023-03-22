@@ -2,6 +2,7 @@ package com.example.taw.entity;
 
 import jakarta.persistence.*;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,10 +11,10 @@ import java.util.Objects;
 public class PersonaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "DNI", nullable = false, length = 45)
+    @Column(name = "DNI", nullable = false, length = 9)
     private String dni;
     @Basic
     @Column(name = "NOMBRE", nullable = false, length = 45)
@@ -25,12 +26,14 @@ public class PersonaEntity {
     @Column(name = "SEGUNDO_APELLIDO", nullable = true, length = 45)
     private String segundoApellido;
     @Basic
-    @Column(name = "FECHA_NACIMIENTO", nullable = false, length = 45)
-    private String fechaNacimiento;
+    @Column(name = "FECHA_NACIMIENTO", nullable = false)
+    private Date fechaNacimiento;
+    @OneToMany(mappedBy = "personaByPersonaId")
+    private List<ClienteEntity> clientesById;
+    @OneToOne(mappedBy = "personaByPersonaId")
+    private EmpleadoEntity empleadosById;
     @OneToMany(mappedBy = "personaByEmisor")
     private List<MensajeEntity> mensajesById;
-    @OneToOne(mappedBy = "personaByPersona")
-    private RolPersonaEntity rolPersonaById;
 
     public Integer getId() {
         return id;
@@ -72,11 +75,11 @@ public class PersonaEntity {
         this.segundoApellido = segundoApellido;
     }
 
-    public String getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
@@ -93,19 +96,27 @@ public class PersonaEntity {
         return Objects.hash(id, dni, nombre, primerApellido, segundoApellido, fechaNacimiento);
     }
 
+    public List<ClienteEntity> getClientesById() {
+        return clientesById;
+    }
+
+    public void setClientesById(List<ClienteEntity> clientesById) {
+        this.clientesById = clientesById;
+    }
+
+    public EmpleadoEntity getEmpleadosById() {
+        return empleadosById;
+    }
+
+    public void setEmpleadosById(EmpleadoEntity empleadosById) {
+        this.empleadosById = empleadosById;
+    }
+
     public List<MensajeEntity> getMensajesById() {
         return mensajesById;
     }
 
     public void setMensajesById(List<MensajeEntity> mensajesById) {
         this.mensajesById = mensajesById;
-    }
-
-    public RolPersonaEntity getRolPersonaById() {
-        return rolPersonaById;
-    }
-
-    public void setRolPersonaById(RolPersonaEntity rolPersonaById) {
-        this.rolPersonaById = rolPersonaById;
     }
 }

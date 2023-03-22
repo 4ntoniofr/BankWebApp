@@ -13,7 +13,7 @@ public class DireccionEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "CALLE", nullable = false, length = 45)
+    @Column(name = "CALLE", nullable = false, length = 100)
     private String calle;
     @Basic
     @Column(name = "NUMERO", nullable = false)
@@ -22,7 +22,7 @@ public class DireccionEntity {
     @Column(name = "CIUDAD", nullable = false, length = 45)
     private String ciudad;
     @Basic
-    @Column(name = "CODIGO_POSTAL", nullable = false, length = 45)
+    @Column(name = "CODIGO_POSTAL", nullable = false, length = 5)
     private String codigoPostal;
     @Basic
     @Column(name = "PAIS", nullable = false, length = 45)

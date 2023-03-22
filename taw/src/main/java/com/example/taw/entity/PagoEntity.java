@@ -15,12 +15,12 @@ public class PagoEntity {
     @Column(name = "MONEDA", nullable = false, length = 45)
     private String moneda;
     @Basic
-    @Column(name = "CANTIDAD", nullable = false, length = 45)
-    private String cantidad;
+    @Column(name = "CANTIDAD", nullable = false, precision = 0)
+    private Double cantidad;
     @OneToOne
     @JoinColumn(name = "TRANSACCION", referencedColumnName = "ID", nullable = false)
     private TransaccionEntity transaccionByTransaccion;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "CAMBIO_DIVISA", referencedColumnName = "ID")
     private CambioDivisaEntity cambioDivisaByCambioDivisa;
 
@@ -40,11 +40,11 @@ public class PagoEntity {
         this.moneda = moneda;
     }
 
-    public String getCantidad() {
+    public Double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(String cantidad) {
+    public void setCantidad(Double cantidad) {
         this.cantidad = cantidad;
     }
 

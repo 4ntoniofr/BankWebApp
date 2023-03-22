@@ -19,9 +19,9 @@ public class TransaccionEntity {
     @Column(name = "FECHA_EJECUCION", nullable = true)
     private Date fechaEjecucion;
     @OneToOne(mappedBy = "transaccionByTransaccion")
-    private CambioDivisaEntity cambioDivisaById;
+    private CambioDivisaEntity cambioDivisasById;
     @OneToOne(mappedBy = "transaccionByTransaccion")
-    private PagoEntity pagoById;
+    private PagoEntity pagosById;
     @ManyToOne
     @JoinColumn(name = "CUENTA_ORIGEN", referencedColumnName = "ID", nullable = false)
     private CuentaBancariaEntity cuentaBancariaByCuentaOrigen;
@@ -66,20 +66,20 @@ public class TransaccionEntity {
         return Objects.hash(id, fechaInstruccion, fechaEjecucion);
     }
 
-    public CambioDivisaEntity getCambioDivisaById() {
-        return cambioDivisaById;
+    public CambioDivisaEntity getCambioDivisasById() {
+        return cambioDivisasById;
     }
 
-    public void setCambioDivisaById(CambioDivisaEntity cambioDivisaById) {
-        this.cambioDivisaById = cambioDivisaById;
+    public void setCambioDivisasById(CambioDivisaEntity cambioDivisasById) {
+        this.cambioDivisasById = cambioDivisasById;
     }
 
-    public PagoEntity getPagoById() {
-        return pagoById;
+    public PagoEntity getPagosById() {
+        return pagosById;
     }
 
-    public void setPagoById(PagoEntity pagoById) {
-        this.pagoById = pagoById;
+    public void setPagosById(PagoEntity pagosById) {
+        this.pagosById = pagosById;
     }
 
     public CuentaBancariaEntity getCuentaBancariaByCuentaOrigen() {

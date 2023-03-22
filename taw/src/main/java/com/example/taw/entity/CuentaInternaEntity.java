@@ -2,6 +2,7 @@ package com.example.taw.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -20,6 +21,11 @@ public class CuentaInternaEntity {
     @Basic
     @Column(name = "CANTIDAD", nullable = false, precision = 0)
     private Double cantidad;
+    @Basic
+    @Column(name = "BLOQUEADA", nullable = false)
+    private Byte bloqueada;
+    @OneToMany(mappedBy = "cuentaInternaByCuentaInternaId")
+    private List<AutorizacionEntity> autorizacionsById;
     @OneToOne
     @JoinColumn(name = "CUENTA_BANCARIA", referencedColumnName = "ID", nullable = false)
     private CuentaBancariaEntity cuentaBancariaByCuentaBancaria;
@@ -62,17 +68,33 @@ public class CuentaInternaEntity {
         this.cantidad = cantidad;
     }
 
+    public Byte getBloqueada() {
+        return bloqueada;
+    }
+
+    public void setBloqueada(Byte bloqueada) {
+        this.bloqueada = bloqueada;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CuentaInternaEntity that = (CuentaInternaEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(moneda, that.moneda) && Objects.equals(pais, that.pais) && Objects.equals(cantidad, that.cantidad);
+        return Objects.equals(id, that.id) && Objects.equals(moneda, that.moneda) && Objects.equals(pais, that.pais) && Objects.equals(cantidad, that.cantidad) && Objects.equals(bloqueada, that.bloqueada);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, moneda, pais, cantidad);
+        return Objects.hash(id, moneda, pais, cantidad, bloqueada);
+    }
+
+    public List<AutorizacionEntity> getAutorizacionsById() {
+        return autorizacionsById;
+    }
+
+    public void setAutorizacionsById(List<AutorizacionEntity> autorizacionsById) {
+        this.autorizacionsById = autorizacionsById;
     }
 
     public CuentaBancariaEntity getCuentaBancariaByCuentaBancaria() {

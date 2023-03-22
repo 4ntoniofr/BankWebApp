@@ -14,15 +14,9 @@ public class ClienteEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "USUARIO", nullable = false, length = 45)
-    private String usuario;
-    @Basic
-    @Column(name = "PASSWORD", nullable = false, length = 45)
-    private String password;
-    @Basic
     @Column(name = "FECHA_INICIO", nullable = false)
     private Date fechaInicio;
-    @OneToMany(mappedBy = "clienteByCliente")
+    @OneToMany(mappedBy = "clienteByClienteId")
     private List<ChatEntity> chatsById;
     @ManyToOne
     @JoinColumn(name = "ESTADO_CLIENTE", referencedColumnName = "ID", nullable = false)
@@ -31,13 +25,20 @@ public class ClienteEntity {
     @JoinColumn(name = "DIRECCION", referencedColumnName = "ID", nullable = false)
     private DireccionEntity direccionByDireccion;
     @OneToOne
-    @JoinColumn(name = "EMPRESA", referencedColumnName = "ID")
-    private EmpresaEntity empresaByEmpresa;
-    @OneToOne
-    @JoinColumn(name = "ROL_PERSONA", referencedColumnName = "ID")
-    private RolPersonaEntity rolPersonaByRolPersona;
+    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID", nullable = false)
+    private UsuarioEntity usuarioByUsuarioId;
+    @ManyToOne
+    @JoinColumn(name = "PERSONA_ID", referencedColumnName = "ID")
+    private PersonaEntity personaByPersonaId;
+    @ManyToOne
+    @JoinColumn(name = "ROL_CLIENTE_ID", referencedColumnName = "ID", nullable = false)
+    private RolClienteEntity rolClienteByRolClienteId;
     @OneToMany(mappedBy = "clienteByPropietario")
     private List<CuentaInternaEntity> cuentaInternasById;
+    @OneToMany(mappedBy = "clienteByClienteId")
+    private List<EmpleadoEntity> empleadosById;
+    @OneToMany(mappedBy = "clienteByClienteId")
+    private List<EmpresaEntity> empresasById;
 
     public Integer getId() {
         return id;
@@ -45,22 +46,6 @@ public class ClienteEntity {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Date getFechaInicio() {
@@ -76,12 +61,12 @@ public class ClienteEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClienteEntity that = (ClienteEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(usuario, that.usuario) && Objects.equals(password, that.password) && Objects.equals(fechaInicio, that.fechaInicio);
+        return Objects.equals(id, that.id) && Objects.equals(fechaInicio, that.fechaInicio);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, usuario, password, fechaInicio);
+        return Objects.hash(id, fechaInicio);
     }
 
     public List<ChatEntity> getChatsById() {
@@ -108,20 +93,28 @@ public class ClienteEntity {
         this.direccionByDireccion = direccionByDireccion;
     }
 
-    public EmpresaEntity getEmpresaByEmpresa() {
-        return empresaByEmpresa;
+    public UsuarioEntity getUsuarioByUsuarioId() {
+        return usuarioByUsuarioId;
     }
 
-    public void setEmpresaByEmpresa(EmpresaEntity empresaByEmpresa) {
-        this.empresaByEmpresa = empresaByEmpresa;
+    public void setUsuarioByUsuarioId(UsuarioEntity usuarioByUsuarioId) {
+        this.usuarioByUsuarioId = usuarioByUsuarioId;
     }
 
-    public RolPersonaEntity getRolPersonaByRolPersona() {
-        return rolPersonaByRolPersona;
+    public PersonaEntity getPersonaByPersonaId() {
+        return personaByPersonaId;
     }
 
-    public void setRolPersonaByRolPersona(RolPersonaEntity rolPersonaByRolPersona) {
-        this.rolPersonaByRolPersona = rolPersonaByRolPersona;
+    public void setPersonaByPersonaId(PersonaEntity personaByPersonaId) {
+        this.personaByPersonaId = personaByPersonaId;
+    }
+
+    public RolClienteEntity getRolClienteByRolClienteId() {
+        return rolClienteByRolClienteId;
+    }
+
+    public void setRolClienteByRolClienteId(RolClienteEntity rolClienteByRolClienteId) {
+        this.rolClienteByRolClienteId = rolClienteByRolClienteId;
     }
 
     public List<CuentaInternaEntity> getCuentaInternasById() {
@@ -130,5 +123,21 @@ public class ClienteEntity {
 
     public void setCuentaInternasById(List<CuentaInternaEntity> cuentaInternasById) {
         this.cuentaInternasById = cuentaInternasById;
+    }
+
+    public List<EmpleadoEntity> getEmpleadosById() {
+        return empleadosById;
+    }
+
+    public void setEmpleadosById(List<EmpleadoEntity> empleadosById) {
+        this.empleadosById = empleadosById;
+    }
+
+    public List<EmpresaEntity> getEmpresasById() {
+        return empresasById;
+    }
+
+    public void setEmpresasById(List<EmpresaEntity> empresasById) {
+        this.empresasById = empresasById;
     }
 }

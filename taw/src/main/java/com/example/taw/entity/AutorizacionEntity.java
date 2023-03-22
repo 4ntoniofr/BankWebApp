@@ -2,24 +2,25 @@ package com.example.taw.entity;
 
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "CHAT", schema = "grupo25", catalog = "")
-public class ChatEntity {
+@Table(name = "AUTORIZACION", schema = "grupo25", catalog = "")
+public class AutorizacionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
     private Integer id;
+    @Basic
+    @Column(name = "FECHA", nullable = false)
+    private Date fecha;
     @ManyToOne
     @JoinColumn(name = "EMPLEADO_ID", referencedColumnName = "ID", nullable = false)
     private EmpleadoEntity empleadoByEmpleadoId;
     @ManyToOne
-    @JoinColumn(name = "CLIENTE_ID", referencedColumnName = "ID", nullable = false)
-    private ClienteEntity clienteByClienteId;
-    @OneToMany(mappedBy = "chatByChat")
-    private List<MensajeEntity> mensajesById;
+    @JoinColumn(name = "CUENTA_INTERNA_ID", referencedColumnName = "ID", nullable = false)
+    private CuentaInternaEntity cuentaInternaByCuentaInternaId;
 
     public Integer getId() {
         return id;
@@ -29,17 +30,25 @@ public class ChatEntity {
         this.id = id;
     }
 
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ChatEntity that = (ChatEntity) o;
-        return Objects.equals(id, that.id);
+        AutorizacionEntity that = (AutorizacionEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(fecha, that.fecha);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, fecha);
     }
 
     public EmpleadoEntity getEmpleadoByEmpleadoId() {
@@ -50,19 +59,11 @@ public class ChatEntity {
         this.empleadoByEmpleadoId = empleadoByEmpleadoId;
     }
 
-    public ClienteEntity getClienteByClienteId() {
-        return clienteByClienteId;
+    public CuentaInternaEntity getCuentaInternaByCuentaInternaId() {
+        return cuentaInternaByCuentaInternaId;
     }
 
-    public void setClienteByClienteId(ClienteEntity clienteByClienteId) {
-        this.clienteByClienteId = clienteByClienteId;
-    }
-
-    public List<MensajeEntity> getMensajesById() {
-        return mensajesById;
-    }
-
-    public void setMensajesById(List<MensajeEntity> mensajesById) {
-        this.mensajesById = mensajesById;
+    public void setCuentaInternaByCuentaInternaId(CuentaInternaEntity cuentaInternaByCuentaInternaId) {
+        this.cuentaInternaByCuentaInternaId = cuentaInternaByCuentaInternaId;
     }
 }
