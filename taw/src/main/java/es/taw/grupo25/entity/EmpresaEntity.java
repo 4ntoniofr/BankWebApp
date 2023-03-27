@@ -3,6 +3,7 @@ package es.taw.grupo25.entity;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +22,8 @@ public class EmpresaEntity {
     @ManyToOne
     @JoinColumn(name = "CLIENTE_ID", referencedColumnName = "ID", nullable = false)
     private ClienteEntity clienteByClienteId;
+    @OneToMany(mappedBy = "empresaByEmpresaSocio")
+    private List<ClienteEntity> clientesById_Socios;
 
     public Integer getId() {
         return id;
@@ -65,5 +68,13 @@ public class EmpresaEntity {
 
     public void setClienteByClienteId(ClienteEntity clienteByClienteId) {
         this.clienteByClienteId = clienteByClienteId;
+    }
+
+    public List<ClienteEntity> getClientesById_Socios() {
+        return clientesById_Socios;
+    }
+
+    public void setClientesById_Socios(List<ClienteEntity> clientesById_Socios) {
+        this.clientesById_Socios = clientesById_Socios;
     }
 }

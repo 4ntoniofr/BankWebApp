@@ -39,6 +39,12 @@ public class ClienteEntity {
     private List<EmpleadoEntity> empleadosById;
     @OneToMany(mappedBy = "clienteByClienteId")
     private List<EmpresaEntity> empresasById;
+    @ManyToOne
+    @JoinColumn(name = "AUTORIZADOR", referencedColumnName = "ID")
+    private EmpleadoEntity empleadoByAutorizador;
+    @ManyToOne
+    @JoinColumn(name = "EMPRESA_SOCIO", referencedColumnName = "ID")
+    private EmpresaEntity empresaByEmpresaSocio;
 
     public Integer getId() {
         return id;
@@ -139,5 +145,21 @@ public class ClienteEntity {
 
     public void setEmpresasById(List<EmpresaEntity> empresasById) {
         this.empresasById = empresasById;
+    }
+
+    public EmpleadoEntity getEmpleadoByAutorizador() {
+        return empleadoByAutorizador;
+    }
+
+    public void setEmpleadoByAutorizador(EmpleadoEntity empleadoByAutorizador) {
+        this.empleadoByAutorizador = empleadoByAutorizador;
+    }
+
+    public EmpresaEntity getEmpresaByEmpresaSocio() {
+        return empresaByEmpresaSocio;
+    }
+
+    public void setEmpresaByEmpresaSocio(EmpresaEntity empresaByEmpresaSocio) {
+        this.empresaByEmpresaSocio = empresaByEmpresaSocio;
     }
 }
