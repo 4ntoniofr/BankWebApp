@@ -2,7 +2,7 @@ package es.taw.grupo25.entity;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,7 +31,7 @@ public class ClienteEntity {
     @JoinColumn(name = "PERSONA_ID", referencedColumnName = "ID")
     private PersonaEntity personaByPersonaId;
     @ManyToOne
-    @JoinColumn(name = "ROL_CLIENTE_ID", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "ROL_CLIENTE_ID", referencedColumnName = "ID")
     private RolClienteEntity rolClienteByRolClienteId;
     @OneToMany(mappedBy = "clienteByPropietario")
     private List<CuentaInternaEntity> cuentaInternasById;
