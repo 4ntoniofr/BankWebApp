@@ -4,9 +4,7 @@ import es.taw.grupo25.entity.ClienteEntity;
 import es.taw.grupo25.entity.EmpresaEntity;
 import es.taw.grupo25.entity.UsuarioEntity;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class FormularioRegistroEmpresa {
     public FormularioRegistroEmpresa(){

@@ -33,18 +33,16 @@ public class ClienteEntity {
     @ManyToOne
     @JoinColumn(name = "ROL_CLIENTE_ID", referencedColumnName = "ID")
     private RolClienteEntity rolClienteByRolClienteId;
-    @OneToMany(mappedBy = "clienteByPropietario")
-    private List<CuentaInternaEntity> cuentaInternasById;
-    @OneToMany(mappedBy = "clienteByClienteId")
-    private List<EmpleadoEntity> empleadosById;
-    @OneToMany(mappedBy = "clienteByClienteId")
-    private List<EmpresaEntity> empresasById;
     @ManyToOne
     @JoinColumn(name = "AUTORIZADOR", referencedColumnName = "ID")
     private EmpleadoEntity empleadoByAutorizador;
     @ManyToOne
     @JoinColumn(name = "EMPRESA_SOCIO", referencedColumnName = "ID")
     private EmpresaEntity empresaByEmpresaSocio;
+    @OneToMany(mappedBy = "clienteByPropietario")
+    private List<CuentaInternaEntity> cuentaInternasById;
+    @OneToOne(mappedBy = "clienteByClienteId")
+    private EmpresaEntity empresasById;
 
     public Integer getId() {
         return id;
@@ -123,30 +121,6 @@ public class ClienteEntity {
         this.rolClienteByRolClienteId = rolClienteByRolClienteId;
     }
 
-    public List<CuentaInternaEntity> getCuentaInternasById() {
-        return cuentaInternasById;
-    }
-
-    public void setCuentaInternasById(List<CuentaInternaEntity> cuentaInternasById) {
-        this.cuentaInternasById = cuentaInternasById;
-    }
-
-    public List<EmpleadoEntity> getEmpleadosById() {
-        return empleadosById;
-    }
-
-    public void setEmpleadosById(List<EmpleadoEntity> empleadosById) {
-        this.empleadosById = empleadosById;
-    }
-
-    public List<EmpresaEntity> getEmpresasById() {
-        return empresasById;
-    }
-
-    public void setEmpresasById(List<EmpresaEntity> empresasById) {
-        this.empresasById = empresasById;
-    }
-
     public EmpleadoEntity getEmpleadoByAutorizador() {
         return empleadoByAutorizador;
     }
@@ -161,5 +135,21 @@ public class ClienteEntity {
 
     public void setEmpresaByEmpresaSocio(EmpresaEntity empresaByEmpresaSocio) {
         this.empresaByEmpresaSocio = empresaByEmpresaSocio;
+    }
+
+    public List<CuentaInternaEntity> getCuentaInternasById() {
+        return cuentaInternasById;
+    }
+
+    public void setCuentaInternasById(List<CuentaInternaEntity> cuentaInternasById) {
+        this.cuentaInternasById = cuentaInternasById;
+    }
+
+    public EmpresaEntity getEmpresasById() {
+        return empresasById;
+    }
+
+    public void setEmpresasById(EmpresaEntity empresasById) {
+        this.empresasById = empresasById;
     }
 }

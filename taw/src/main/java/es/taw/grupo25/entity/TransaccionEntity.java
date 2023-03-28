@@ -2,7 +2,7 @@ package es.taw.grupo25.entity;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -14,10 +14,10 @@ public class TransaccionEntity {
     private Integer id;
     @Basic
     @Column(name = "FECHA_INSTRUCCION", nullable = true)
-    private Date fechaInstruccion;
+    private Timestamp fechaInstruccion;
     @Basic
     @Column(name = "FECHA_EJECUCION", nullable = true)
-    private Date fechaEjecucion;
+    private Timestamp fechaEjecucion;
     @OneToOne(mappedBy = "transaccionByTransaccion")
     private CambioDivisaEntity cambioDivisasById;
     @OneToOne(mappedBy = "transaccionByTransaccion")
@@ -37,19 +37,19 @@ public class TransaccionEntity {
         this.id = id;
     }
 
-    public Date getFechaInstruccion() {
+    public Timestamp getFechaInstruccion() {
         return fechaInstruccion;
     }
 
-    public void setFechaInstruccion(Date fechaInstruccion) {
+    public void setFechaInstruccion(Timestamp fechaInstruccion) {
         this.fechaInstruccion = fechaInstruccion;
     }
 
-    public Date getFechaEjecucion() {
+    public Timestamp getFechaEjecucion() {
         return fechaEjecucion;
     }
 
-    public void setFechaEjecucion(Date fechaEjecucion) {
+    public void setFechaEjecucion(Timestamp fechaEjecucion) {
         this.fechaEjecucion = fechaEjecucion;
     }
 

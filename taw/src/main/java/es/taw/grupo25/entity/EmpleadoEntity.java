@@ -16,6 +16,8 @@ public class EmpleadoEntity {
     private List<AutorizacionEntity> autorizacionsById;
     @OneToMany(mappedBy = "empleadoByEmpleadoId")
     private List<ChatEntity> chatsById;
+    @OneToMany(mappedBy = "empleadoByAutorizador")
+    private List<ClienteEntity> clientesById_Autorizados;
     @OneToOne
     @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID", nullable = false)
     private UsuarioEntity usuarioByUsuarioId;
@@ -25,9 +27,6 @@ public class EmpleadoEntity {
     @ManyToOne
     @JoinColumn(name = "ROL_EMPLEADO_ID", referencedColumnName = "ID", nullable = false)
     private RolEmpleadoEntity rolEmpleadoByRolEmpleadoId;
-    @ManyToOne
-    @JoinColumn(name = "CLIENTE_ID", referencedColumnName = "ID", nullable = false)
-    private ClienteEntity clienteByClienteId;
 
     public Integer getId() {
         return id;
@@ -66,6 +65,14 @@ public class EmpleadoEntity {
         this.chatsById = chatsById;
     }
 
+    public List<ClienteEntity> getClientesById_Autorizados() {
+        return clientesById_Autorizados;
+    }
+
+    public void setClientesById_Autorizados(List<ClienteEntity> clientesById_Autorizados) {
+        this.clientesById_Autorizados = clientesById_Autorizados;
+    }
+
     public UsuarioEntity getUsuarioByUsuarioId() {
         return usuarioByUsuarioId;
     }
@@ -88,13 +95,5 @@ public class EmpleadoEntity {
 
     public void setRolEmpleadoByRolEmpleadoId(RolEmpleadoEntity rolEmpleadoByRolEmpleadoId) {
         this.rolEmpleadoByRolEmpleadoId = rolEmpleadoByRolEmpleadoId;
-    }
-
-    public ClienteEntity getClienteByClienteId() {
-        return clienteByClienteId;
-    }
-
-    public void setClienteByClienteId(ClienteEntity clienteByClienteId) {
-        this.clienteByClienteId = clienteByClienteId;
     }
 }

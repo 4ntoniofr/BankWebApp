@@ -2,7 +2,7 @@ package es.taw.grupo25.entity;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,11 +19,11 @@ public class EmpresaEntity {
     @Basic
     @Column(name = "FECHA_CIERRE", nullable = true)
     private Date fechaCierre;
-    @ManyToOne
-    @JoinColumn(name = "CLIENTE_ID", referencedColumnName = "ID", nullable = false)
-    private ClienteEntity clienteByClienteId;
     @OneToMany(mappedBy = "empresaByEmpresaSocio")
     private List<ClienteEntity> clientesById_Socios;
+    @OneToOne
+    @JoinColumn(name = "CLIENTE_ID", referencedColumnName = "ID", nullable = false)
+    private ClienteEntity clienteByClienteId;
 
     public Integer getId() {
         return id;
@@ -62,19 +62,19 @@ public class EmpresaEntity {
         return Objects.hash(id, nombre, fechaCierre);
     }
 
-    public ClienteEntity getClienteByClienteId() {
-        return clienteByClienteId;
-    }
-
-    public void setClienteByClienteId(ClienteEntity clienteByClienteId) {
-        this.clienteByClienteId = clienteByClienteId;
-    }
-
     public List<ClienteEntity> getClientesById_Socios() {
         return clientesById_Socios;
     }
 
     public void setClientesById_Socios(List<ClienteEntity> clientesById_Socios) {
         this.clientesById_Socios = clientesById_Socios;
+    }
+
+    public ClienteEntity getClienteByClienteId() {
+        return clienteByClienteId;
+    }
+
+    public void setClienteByClienteId(ClienteEntity clienteByClienteId) {
+        this.clienteByClienteId = clienteByClienteId;
     }
 }

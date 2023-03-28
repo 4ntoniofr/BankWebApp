@@ -1,6 +1,5 @@
 package es.taw.grupo25.controller;
 
-import es.taw.grupo25.entity.PersonaEntity;
 import es.taw.grupo25.repository.PersonaRepository;
 import es.taw.grupo25.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
