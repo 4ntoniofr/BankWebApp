@@ -2,19 +2,32 @@
 <%@ page import="java.util.List" %>
 <%@ page import="es.taw.grupo25.entity.ChatEntity" %>
 <%@ page import="es.taw.grupo25.entity.MensajeEntity" %>
+<%@ page import="es.taw.grupo25.entity.EmpleadoEntity" %>
 <html>
 <head>
     <title>Chats</title>
 </head>
 <body>
 
-<h1>Bienvenido a tus chats</h1>
-
 <%
+    // Obtenemos las variables que necesitamos
     List<ChatEntity> chats = (List<ChatEntity>) request.getAttribute("chats");
     List<MensajeEntity> mensajes = (List<MensajeEntity>) request.getAttribute("mensajes");
-    String empleadoAsistenteId = (String) request.getAttribute("empleadoAsistenteId");
 
+    // TODO: desde el controlador deberá controlarse que la persona que está accediendo esta registrada
+    EmpleadoEntity empleadoAsistente = (EmpleadoEntity)  request.getAttribute("empleado");
+
+    // TODO: cuando sea seguro que empleadoAsistente no es nulo podremos obtener el nombre
+    String nombreDelEmpleado = empleadoAsistente.getPersonaByPersonaId().getNombre();
+
+
+
+%>
+
+<h1>Bienvenido <%=nombreDelEmpleado%></h1>
+<h2>Estos son los chats disponibles con los clientes</h2>
+
+<%
     for (int i = 0; i <= 1; i++) {
         // for(chatDisponible : chats) {
 

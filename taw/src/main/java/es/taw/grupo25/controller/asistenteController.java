@@ -1,6 +1,7 @@
 package es.taw.grupo25.controller;
 
 import es.taw.grupo25.entity.ChatEntity;
+import es.taw.grupo25.entity.EmpleadoEntity;
 import es.taw.grupo25.entity.MensajeEntity;
 import es.taw.grupo25.repository.ChatRepository;
 import es.taw.grupo25.repository.ClienteRepository;
@@ -13,7 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller()
 @RequestMapping("/asistente")
@@ -34,18 +37,26 @@ public class asistenteController {
     @GetMapping("/chats-empleado")
     public String getChats(Model model, HttpSession session){
 
-        // TODO: hay que cambiar que el repository busque por el ID del empleado que este en la sesión
-        List<ChatEntity> chats = chatRepository.findAll();
-        model.addAttribute("chats", chats);
+        // TODO: conseguir de verdad el id que tengo como empleado
+        String idQueTengoComoEmpleado = "1";
 
-        // TODO: hay que cambiar que en vez de finAll sea por el id de los chats
-        List<MensajeEntity> mensajes = mensajeRepository.findAll();
-        model.addAttribute("mensajes", mensajes);
+        Map<ChatEntity, List<MensajeEntity>> chatsConMensajes = new HashMap<>();
 
-        // TODO: de alguna manera tengo que pasarle mi entidad como empleado para solo conseguir mis chats
-        String empleadoAsistenteId = "1";
-        model.addAttribute("empleadoAsistenteId", empleadoAsistenteId);
+        List<ChatEntity> chats = chatRepository.findChatsByEmpleadoId(idQueTengoComoEmpleado);
+        for(ChatEntity chat : chats){
+            // TODO: hay que cambiar que en vez de finAll sea por el id de los chats
+            List<MensajeEntity> mensajesDelChat = mensajeRepository.findAll();
 
+            chatsConMensajes.put(chat, mensajesDelChat);
+        }
+
+        model.addAttribute("chatsConMensajes", chatsConMensajes);
+
+        EmpleadoEntity empleadoQueSoy = empleadoRepository.findById(idQueTengoComoEmpleado);
+        List<EmpleadoEntity> todosEmpleados = empleadoRepository.findAll();
+        model.addAttribute("empleado", empleadoQueSoy);
+
+        // TODO: mediante método POST gestionar la creación de un mensaje
         MensajeEntity siguienteMensaje = new MensajeEntity();
         model.addAttribute("siguienteMensaje", siguienteMensaje);
 
