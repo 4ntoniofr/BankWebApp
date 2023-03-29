@@ -13,11 +13,13 @@
 
         <h2>Página principal de clientes</h2>
 
-        <a href="login">Login</a></br>
-        <a href="perfil">Modificar Perfil</a></br>
-        <a href="operaciones">Mis Operaciones</a></br>
-        <a href="divisas">Cambiar Divisas</a></br>
-        <a href="transferencia">Realizar Transferencia</a></br>
-        <a href="desbloqueo">Intentar Desbloqueo de Cuenta</a>
+
+        <a href="/cliente/perfil">Modificar Perfil</a></br>
+        <a href="/cliente/operaciones">Mis Operaciones</a></br>
+        <a href="/cliente/divisas">Cambiar Divisas</a></br>
+        <a href="/cliente/transferencia">Realizar Transferencia</a></br>
+        <a href="/cliente/desbloqueo">Intentar Desbloqueo de Cuenta</a></br>
+        <a href="/cliente/register">Register Cliente</a></br>
+        <a href="/cliente/logout">LogOut</a>
     </body>
 </html>

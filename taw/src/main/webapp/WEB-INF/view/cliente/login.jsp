@@ -2,6 +2,12 @@
 <%@ page import="es.taw.grupo25.entity.RolClienteEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<c:if test="${error != null}" >
+    <p style="color:red;">
+            ${error}
+    </p>
+</c:if>
+
 <html>
     <head>
         <title>Autenticación</title>
@@ -9,7 +15,7 @@
     <body>
     <h1>Autenticación de cliente:</h1>
 
-        <form action="/" method="post">
+        <form action="" method="post">
             <table>
                 <tr>
                     <td>Usuario:</td> <td><input type="text" name="usuario"></td>
@@ -22,5 +28,7 @@
                 </tr>
             </table>
         </form>
+
+    <a href="cliente/register">Registrarse</a>
     </body>
 </html>
