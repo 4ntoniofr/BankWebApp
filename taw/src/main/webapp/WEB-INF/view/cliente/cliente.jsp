@@ -15,11 +15,7 @@
 
 
         <a href="/cliente/perfil">Modificar Perfil</a></br>
-        <a href="/cliente/operaciones">Mis Operaciones</a></br>
-        <a href="/cliente/divisas">Cambiar Divisas</a></br>
-        <a href="/cliente/transferencia">Realizar Transferencia</a></br>
-        <a href="/cliente/desbloqueo">Intentar Desbloqueo de Cuenta</a></br>
-        <a href="/cliente/register">Register Cliente</a></br>
+        <a href="/cliente/cuentas">Mis Cuentas</a></br>
         <a href="/cliente/logout">LogOut</a>
     </body>
 </html>

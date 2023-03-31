@@ -13,20 +13,17 @@
 <h1>Cambio de Divisas</h1>
 
 <%
-    CuentaInternaEntity cuenta = (CuentaInternaEntity) request.getAttribute("clientes");
+    CuentaInternaEntity cuenta = (CuentaInternaEntity) request.getAttribute("cuenta");
     if(cuenta!=null){
 %>
 
     <h2>Saldo actual: <%=cuenta.getCantidad()%></h2>
     <h2>Moneda actual: <%=cuenta.getMoneda()%></h2>
 
-    <form:form method="POST" action="cliente/guardarDivisas">
-        <form:select path="currency">
-            <form:option value="euro">Euro</form:option>
-            <form:option value="dollar">Dollar</form:option>
-            <form:option value="peso">Peso</form:option>
-        </form:select>
-        <input type="submit" value="Submit">
+    <form:form method="POST" action="divisas" modelAttribute="cuenta">
+        <form:hidden path="id"></form:hidden>
+        <form:select path="moneda" items="${divisas}"/><br />
+        <form:button>Realizar Cambio</form:button>
     </form:form>
 
 <%

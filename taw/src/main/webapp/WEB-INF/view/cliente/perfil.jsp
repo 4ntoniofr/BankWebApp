@@ -11,11 +11,12 @@
     <body>
         <h1>Formulario modificar perfil</h1>
         <form:form action="/cliente/guardar" method="post" modelAttribute="persona">
-            NIF: <form:input path="dni" size="20" maxlength="9" /></br>
-            Nombre <form:input path="nombre" size="30" maxlength="45"/></br>
-            Primer Apellido: <form:input path="primerApellido" size="30" maxlength="45"/></br>
-            Segundo Apellido <form:input path="segundoApellido" size="30" maxlength="45"/></br>
-            Fecha de Nacimiento: <form:input path="fechaNacimiento" size="30" maxlength="45"/></br>
+            <form:hidden path="id"/>
+            <form:hidden path="dni"/>
+            Nombre <form:input path="nombre" size="15" maxlength="45"/></br>
+            Primer Apellido: <form:input path="primerApellido" size="15" maxlength="45"/></br>
+            Segundo Apellido <form:input path="segundoApellido" size="15" maxlength="45"/></br>
+            Fecha de Nacimiento: <form:input type="date" path="fechaNacimiento"/></br>
             <form:button>Guardar</form:button>
         </form:form>
     </body>

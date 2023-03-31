@@ -38,7 +38,7 @@ public class loginController {
         UsuarioEntity usuario = rep.autenticar(user, contrasena);
         if(usuario==null){
             model.addAttribute("error", "Credenciales Incorrectas");
-            urlTo="redirect:/";
+            urlTo="/cliente/login";
         }else{
             session.setAttribute("usuario", usuario);
         }
