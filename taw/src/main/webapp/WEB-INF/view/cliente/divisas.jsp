@@ -22,6 +22,12 @@
 
     <form:form method="POST" action="divisas" modelAttribute="cuenta">
         <form:hidden path="id"></form:hidden>
+        <form:hidden path="pais"></form:hidden>
+        <form:hidden path="cantidad"></form:hidden>
+        <form:hidden path="bloqueada"></form:hidden>
+        <form:hidden path="cuentaBancariaByCuentaBancaria"></form:hidden>
+        <form:hidden path="clienteByPropietario"></form:hidden>
+        <form:hidden path="estadoCuentaByEstadoCuenta"></form:hidden>
         <form:select path="moneda" items="${divisas}"/><br />
         <form:button>Realizar Cambio</form:button>
     </form:form>

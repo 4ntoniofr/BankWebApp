@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.taw.grupo25.entity.CuentaInternaEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -18,9 +19,13 @@
         <h3>Estado de la cuenta: <%=cuenta.getEstadoCuentaByEstadoCuenta().getEstado()%></h3>
 
         <%
-            if(cuenta.getEstadoCuentaByEstadoCuenta().getEstado()=="BLOQUEADA"){
+            if(cuenta.getEstadoCuentaByEstadoCuenta().getEstado().equals("BLOQUEADA")){
         %>
-        <h4><a href="#">Solicitar Desbloqueo de la cuenta</a></h4>
+        <form:form method="post" action="desbloqueo" modelAttribute="cuenta">
+            <form:hidden path="id"></form:hidden>
+            <form:button>Solicitar Desbloqueo de la Cuenta</form:button>
+        </form:form>
+
 
         <%
             }

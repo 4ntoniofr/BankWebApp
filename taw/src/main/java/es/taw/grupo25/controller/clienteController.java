@@ -2,6 +2,7 @@ package es.taw.grupo25.controller;
 
 import es.taw.grupo25.entity.*;
 import es.taw.grupo25.repository.*;
+import es.taw.grupo25.ui.FiltroOperaciones;
 import es.taw.grupo25.ui.FormularioRegistroCuenta;
 import es.taw.grupo25.ui.FormularioTransferenciaPago;
 import jakarta.servlet.http.HttpSession;
@@ -11,11 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -74,7 +77,6 @@ public class clienteController {
         if(usuario == null){
             urlto = "redirect:/login";
         }else{
-            System.out.println("persona id: " + usuario.getClientesById().getPersonaByPersonaId().getId());
             PersonaEntity persona = rep_persona.findById(usuario.getClientesById().getPersonaByPersonaId().getId()).orElse(null);
             model.addAttribute("persona", persona);
         }
@@ -112,12 +114,42 @@ public class clienteController {
             urlto = "redirect:/login";
         }else{
             CuentaInternaEntity cuenta = rep_cuenta_interna.findById(idCuenta).orElse(null);
-            List<TransaccionEntity> transacciones =(rep_transaccion.findTransaccionsForOrigin(cuenta.getCuentaBancariaByCuentaBancaria().getId()));
-            List<TransaccionEntity> transacciones_destino = (rep_transaccion.findTransaccionsForDestination(cuenta.getCuentaBancariaByCuentaBancaria().getId()));
+            FiltroOperaciones filtro = new FiltroOperaciones(cuenta.getCuentaBancariaByCuentaBancaria().getId());
+            List<TransaccionEntity> transacciones =(rep_transaccion.findAllTransactionsById(cuenta.getCuentaBancariaByCuentaBancaria().getId()));model.addAttribute("filtro", filtro);
             model.addAttribute("transacciones", transacciones);
-            model.addAttribute("transacciones_destino", transacciones_destino);
+            model.addAttribute("filtro", filtro);
         }
         return urlto;
+    }
+
+    @PostMapping("/operaciones")
+    public String aplicarFiltroOperaciones(@ModelAttribute("filtro") FiltroOperaciones filtro ,Model model,HttpSession session){
+        String urlTo="/login";
+        List<TransaccionEntity> transacciones = rep_transaccion.findAllTransactionsById(filtro.getIdCuenta());
+
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if(usuario==null){
+            urlTo="redirect:/login";
+        }else{
+            urlTo="cliente/operaciones";
+            if(filtro==null || filtro.getFechaEjecucion().isEmpty() &&filtro.getFechaInstruccion().isEmpty() && filtro.getIban().isEmpty()){
+
+            }else{
+                if(!filtro.getIban().isEmpty()){
+                    transacciones = transacciones.stream().filter(obj -> obj.getCuentaBancariaByCuentaDestino().getIban().contains(filtro.getIban())).collect(Collectors.toList());
+                }
+                if(!filtro.getFechaInstruccion().isEmpty()){
+                    LocalDate fecha = LocalDate.parse(filtro.getFechaInstruccion());
+                    transacciones = transacciones.stream().filter(obj -> obj.getFechaInstruccion().toLocalDateTime().toLocalDate().equals(fecha)).collect(Collectors.toList());
+                }
+                if(!filtro.getFechaEjecucion().isEmpty()){
+                    LocalDate fecha = LocalDate.parse(filtro.getFechaEjecucion());
+                    transacciones = transacciones.stream().filter(obj -> obj.getFechaEjecucion().toLocalDateTime().toLocalDate().equals(fecha)).collect(Collectors.toList());
+                }
+            }
+            model.addAttribute("transacciones", transacciones);
+        }
+        return urlTo;
     }
 
     @GetMapping("/divisas")
@@ -129,9 +161,10 @@ public class clienteController {
     }
 
     @PostMapping("/divisas")
-    public String guardarCambioDivisas(Model model, HttpSession session){
-        CuentaInternaEntity cuenta = (CuentaInternaEntity) model.getAttribute("cuenta");
-        System.out.println("cuenta moneda: " + cuenta.getMoneda());
+    public String guardarCambioDivisas(@ModelAttribute("cuenta") CuentaInternaEntity cuenta ,Model model, HttpSession session){
+        CuentaInternaEntity cuenta_cambio = rep_cuenta_interna.findById(cuenta.getId()).orElse(null);
+        cuenta_cambio.setMoneda(cuenta.getMoneda());
+        rep_cuenta_interna.save(cuenta_cambio);
         return "redirect:/cliente/cuentas";
     }
 
@@ -162,6 +195,15 @@ public class clienteController {
         CuentaInternaEntity cuenta = rep_cuenta_interna.findById(idCuenta).orElse(null);
         model.addAttribute("cuenta", cuenta);
         return "cliente/desbloqueo";
+    }
+
+    @PostMapping("/desbloqueo")
+    public String solicitarDesbloqueo(@ModelAttribute("cuenta") CuentaInternaEntity cuenta, HttpSession session){
+        EstadoCuentaEntity estado = rep_estado_cuenta.findByEstado("SOLICITADO");
+        CuentaInternaEntity cuenta_cambio = rep_cuenta_interna.findById(cuenta.getId()).orElse(null);
+        cuenta_cambio.setEstadoCuentaByEstadoCuenta(estado);
+        rep_cuenta_interna.save(cuenta_cambio);
+        return "redirect:/cliente/cuentas";
     }
 
     @GetMapping("/register")

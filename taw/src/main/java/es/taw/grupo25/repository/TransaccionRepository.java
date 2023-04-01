@@ -10,9 +10,12 @@ import java.util.List;
 public interface TransaccionRepository extends JpaRepository<TransaccionEntity, Integer> {
 
     @Query("select t from TransaccionEntity t where t.cuentaBancariaByCuentaOrigen.id = :id")
-    public List<TransaccionEntity> findTransaccionsForOrigin(@Param("id") Integer id);
+    public List<TransaccionEntity> findTransactionsForOrigin(@Param("id") Integer id);
 
     @Query("select t from TransaccionEntity t where t.cuentaBancariaByCuentaDestino.id = :id")
-    public List<TransaccionEntity> findTransaccionsForDestination(@Param("id") Integer id);
+    public List<TransaccionEntity> findTransactionsForDestination(@Param("id") Integer id);
+
+    @Query("select t from TransaccionEntity  t where t.cuentaBancariaByCuentaDestino.id = :id or t.cuentaBancariaByCuentaOrigen.id = :id")
+    public List<TransaccionEntity> findAllTransactionsById(@Param("id") Integer id);
 
 }
