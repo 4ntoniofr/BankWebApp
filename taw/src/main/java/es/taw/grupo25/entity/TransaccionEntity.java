@@ -20,7 +20,7 @@ public class TransaccionEntity {
     private Timestamp fechaEjecucion;
     @OneToOne(mappedBy = "transaccionByTransaccion")
     private CambioDivisaEntity cambioDivisasById;
-    @OneToOne(mappedBy = "transaccionByTransaccion")
+    @OneToOne(mappedBy = "transaccionByTransaccion", cascade=CascadeType.ALL)
     private PagoEntity pagosById;
     @ManyToOne
     @JoinColumn(name = "CUENTA_ORIGEN", referencedColumnName = "ID", nullable = false)
@@ -33,7 +33,7 @@ public class TransaccionEntity {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId() {
         this.id = id;
     }
 

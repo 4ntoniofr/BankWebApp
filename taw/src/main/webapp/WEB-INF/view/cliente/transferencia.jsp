@@ -9,21 +9,16 @@
 
 <body>
     <h1>Transferencias bancarias</h1>
-    <%
-        CuentaBancariaEntity cuenta_destino = (CuentaBancariaEntity) request.getAttribute("cuenta_destino");
-        if(cuenta_destino==null){
-    %>
+    <h2>Realizar transferencia desde Cuenta id: ${param.idCuenta}</h2>
 
-        <form method="post" action="/transaccionCuenta">
-            Cantidad:<input type="number" id="cantidad"></br>
-            Iban cuenta destino: <input type="text" id="iban_destino"></br>
-            <input type="Submit" value="Submit">
-        </form>
-
-    <%
-        }
-    %>
-
+    <form:form method="post" action="transferencia?idCuenta=${param.idCuenta}" modelAttribute="transferenciapago">
+        <form:hidden path="transaccion.id"></form:hidden>
+        <form:hidden path="pago.id"></form:hidden>
+        Iban Destino: <form:input path="cuentaDestino" size="50" maxlength="45"></form:input></br>
+        Moneda Transferencia: Moneda: <form:select path="pago.moneda" items="${divisas}"/><br />
+        Cantidad A Enviar: <form:input path="pago.cantidad" type="number" min="0" max="999999999999"></form:input></br>
+        <form:button>Realizar Transferencia</form:button>
+    </form:form>
 
 </body>
 

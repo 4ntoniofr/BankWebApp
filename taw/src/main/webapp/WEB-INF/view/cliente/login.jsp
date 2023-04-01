@@ -2,18 +2,21 @@
 <%@ page import="es.taw.grupo25.entity.RolClienteEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<c:if test="${error != null}" >
-    <p style="color:red;">
-            ${error}
-    </p>
-</c:if>
-
 <html>
     <head>
         <title>Autenticación</title>
     </head>
     <body>
     <h1>Autenticación de cliente:</h1>
+
+    <%
+        String error = (String) request.getAttribute("error");
+        if(error!=null){
+    %>
+        <p style="color:red;"><%=error%></p>
+    <%
+        }
+    %>
 
         <form action="" method="post">
             <table>

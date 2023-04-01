@@ -279,7 +279,7 @@ CREATE INDEX `fk_CuentaInterna_CuentaBancaria1_idx` ON `grupo25`.`CUENTA_INTERNA
 -- Table `grupo25`.`TRANSACCION`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `grupo25`.`TRANSACCION` (
-  `ID` INT NOT NULL,
+  `ID` INT NOT NULL AUTO_INCREMENT,
   `FECHA_INSTRUCCION` DATETIME NULL,
   `FECHA_EJECUCION` DATETIME NULL,
   `CUENTA_ORIGEN` INT NOT NULL,
