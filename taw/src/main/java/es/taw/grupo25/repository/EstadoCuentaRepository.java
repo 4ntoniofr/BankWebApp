@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import org.springframework.data.jpa.repository.Query;
+
 public interface EstadoCuentaRepository extends JpaRepository<EstadoCuentaEntity, Integer> {
 
     @Query("select e from EstadoCuentaEntity e where e.estado=:estado")

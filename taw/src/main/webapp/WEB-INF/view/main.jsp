@@ -8,5 +8,6 @@
     <body>
         <a href="cliente"><h2>Ir a clientes</h2></a>
         <a href="empresa/"><h2>Ir a empresas</h2></a>
+        <a href="gestor/"><h2>Ir a gestor</h2></a>
     </body>
 </html>
