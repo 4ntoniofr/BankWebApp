@@ -7,6 +7,9 @@
 <body>
 <h1>Pagina principal de gestor</h1>
 
-<a href="/gestor/pendientes">Ver clientes/empresas pendientes de autorizar</a>
+<ul>
+    <li><a href="/gestor/pendientes">Ver clientes/empresas pendientes de autorizar</a></li>
+    <li><a href="/gestor/clientes">Ver clientes/empresas del sistema</a></li>
+</ul>
 </body>
 </html>
