@@ -1,5 +1,5 @@
 package es.taw.grupo25.ui;
-import java.util.Date;
+
 
 public class FiltroOperaciones {
 
@@ -7,9 +7,11 @@ public class FiltroOperaciones {
     private String fechaInstruccion;
     private String fechaEjecucion;
     private String iban;
+    private String orden;
 
-    public FiltroOperaciones(int idCuenta){
+    public FiltroOperaciones(int idCuenta) {
         this.idCuenta = idCuenta;
+        this.orden = "";
     }
 
     public String getFechaInstruccion() {
@@ -42,5 +44,13 @@ public class FiltroOperaciones {
 
     public void setIdCuenta(int idCuenta) {
         this.idCuenta = idCuenta;
+    }
+
+    public String getOrden() {
+        return orden;
+    }
+
+    public void setOrden(String orden) {
+        this.orden = orden;
     }
 }

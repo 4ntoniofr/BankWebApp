@@ -40,6 +40,7 @@
         <th>Rol</th>
         <th>Estado</th>
         <th>Direccion</th>
+        <th></th>
     </tr>
 
     <%
@@ -63,6 +64,7 @@
         <td><%= persona.getDireccionByDireccion().getCalle() + " " + persona.getDireccionByDireccion().getNumero() + ", " +
                 persona.getDireccionByDireccion().getCiudad() + " (" + persona.getDireccionByDireccion().getPais() + ")" %>
         </td>
+        <td><a href="/gestor/individual?id=<%= persona.getId() %>">Detalles</a></td>
     </tr>
 
 
@@ -77,6 +79,7 @@
         <th>Nombre</th>
         <th>Estado</th>
         <th>Direccion</th>
+        <th></th>
     </tr>
 
     <%
@@ -91,6 +94,7 @@
         <td><%= empresa.getDireccionByDireccion().getCalle() + " " + empresa.getDireccionByDireccion().getNumero() + ", " +
                 empresa.getDireccionByDireccion().getCiudad() + " (" + empresa.getDireccionByDireccion().getPais() + ")" %>
         </td>
+        <td><a href="/gestor/empresa?id=<%= empresa.getId() %>">Detalles</a></td>
     </tr>
 
 

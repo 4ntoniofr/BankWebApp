@@ -3,13 +3,17 @@ package es.taw.grupo25.controller;
 import es.taw.grupo25.entity.*;
 import es.taw.grupo25.repository.*;
 import es.taw.grupo25.ui.FiltroClientes;
+import es.taw.grupo25.ui.FiltroOperaciones;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/gestor")
@@ -134,5 +138,102 @@ public class GestorController {
         model.addAttribute("filtro", filtro);
         model.addAttribute("estados", this.estadoClienteRepository.findAll());
         return "gestor/clientes";
+    }
+
+    @GetMapping("/individual")
+    public String doMostrarDetallesIndividual(@RequestParam("id") Integer idCliente, Model model) {
+        ClienteEntity cliente = this.clienteRepository.findById(idCliente).orElse(null);
+        if (cliente == null) {
+            return "gestor/index";
+        }
+        model.addAttribute("cliente", cliente);
+        return "gestor/individual";
+    }
+
+    @GetMapping("/empresa")
+    public String doMostrarDetallesEmpresa(@RequestParam("id") Integer idCliente, Model model) {
+        ClienteEntity cliente = this.clienteRepository.findById(idCliente).orElse(null);
+        if (cliente == null) {
+            return "gestor/index";
+        }
+        model.addAttribute("cliente", cliente);
+        return "gestor/empresa";
+    }
+
+    @GetMapping("/operaciones")
+    public String doMostrarOperacionesCuenta(@RequestParam("id") Integer idCuenta, Model model) {
+        return getTransaccionesYOrdenar(model, idCuenta, "instruccion");
+    }
+
+    @PostMapping("/operaciones")
+    public String doFiltraroperaciones(@ModelAttribute("filtro") FiltroOperaciones filtro, Model model) {
+        if (filtro.getIban().isEmpty() && filtro.getFechaInstruccion().isEmpty() && filtro.getFechaEjecucion().isEmpty()) {
+            return getTransaccionesYOrdenar(model, filtro.getIdCuenta(), filtro.getOrden());
+        } else {
+            CuentaInternaEntity cuenta = this.cuentaInternaRepository.findById(filtro.getIdCuenta()).orElse(null);
+            if (cuenta == null) {
+                return "gestor/index";
+            }
+            CuentaBancariaEntity cuentaBancaria = cuenta.getCuentaBancariaByCuentaBancaria();
+            List<TransaccionEntity> transacciones = new ArrayList<>();
+            transacciones.addAll(cuentaBancaria.getTransaccionsById_Entrantes());
+            transacciones.addAll(cuentaBancaria.getTransaccionsById_Salientes());
+
+            if(!filtro.getIban().isEmpty()){
+                transacciones = transacciones.stream().filter(obj -> obj.getCuentaBancariaByCuentaDestino().getIban().contains(filtro.getIban()) || obj.getCuentaBancariaByCuentaOrigen().getIban().contains(filtro.getIban())).collect(Collectors.toList());
+            }
+            if(!filtro.getFechaInstruccion().isEmpty()){
+                LocalDate fecha = LocalDate.parse(filtro.getFechaInstruccion());
+                transacciones = transacciones.stream().filter(obj -> obj.getFechaInstruccion().toLocalDateTime().toLocalDate().equals(fecha)).collect(Collectors.toList());
+            }
+            if(!filtro.getFechaEjecucion().isEmpty()){
+                LocalDate fecha = LocalDate.parse(filtro.getFechaEjecucion());
+                transacciones = transacciones.stream().filter(obj -> obj.getFechaEjecucion().toLocalDateTime().toLocalDate().equals(fecha)).collect(Collectors.toList());
+            }
+
+            ordenarTransacciones(transacciones, filtro.getOrden());
+
+            model.addAttribute("cuenta", cuentaBancaria);
+            model.addAttribute("lista", transacciones);
+            model.addAttribute("filtro", filtro);
+
+        }
+        model.addAttribute("filtro", filtro);
+        model.addAttribute("estados", this.estadoClienteRepository.findAll());
+        return "gestor/operaciones";
+    }
+
+    private String getTransaccionesYOrdenar(Model model, int idCuenta, String orden) {
+        CuentaInternaEntity cuenta = this.cuentaInternaRepository.findById(idCuenta).orElse(null);
+        if (cuenta == null) {
+            return "gestor/index";
+        }
+        CuentaBancariaEntity cuentaBancaria = cuenta.getCuentaBancariaByCuentaBancaria();
+        List<TransaccionEntity> transaccionEntityList = new ArrayList<>();
+        transaccionEntityList.addAll(cuentaBancaria.getTransaccionsById_Entrantes());
+        transaccionEntityList.addAll(cuentaBancaria.getTransaccionsById_Salientes());
+        ordenarTransacciones(transaccionEntityList, orden);
+        model.addAttribute("cuenta", cuentaBancaria);
+        model.addAttribute("lista", transaccionEntityList);
+        model.addAttribute("filtro", new FiltroOperaciones(cuenta.getId()));
+        return "gestor/operaciones";
+    }
+
+    private void ordenarTransacciones(List<TransaccionEntity> transacciones, String orden) {
+        if (orden.equals("instruccion")) {
+            transacciones.sort(new Comparator<TransaccionEntity>() {
+                @Override
+                public int compare(TransaccionEntity o1, TransaccionEntity o2) {
+                    return o1.getFechaInstruccion().compareTo(o2.getFechaInstruccion());
+                }
+            });
+        } else {
+            transacciones.sort(new Comparator<TransaccionEntity>() {
+                @Override
+                public int compare(TransaccionEntity o1, TransaccionEntity o2) {
+                    return o1.getFechaEjecucion().compareTo(o2.getFechaEjecucion());
+                }
+            });
+        }
     }
 }
