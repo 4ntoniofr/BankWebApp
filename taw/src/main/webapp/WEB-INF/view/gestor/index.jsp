@@ -10,6 +10,7 @@
 <ul>
     <li><a href="/gestor/pendientes">Ver clientes/empresas pendientes de autorizar</a></li>
     <li><a href="/gestor/clientes">Ver clientes/empresas del sistema</a></li>
+    <li><a href="/gestor/inactivos">Ver clientes/empresas inactivos del sistema</a></li>
 </ul>
 </body>
 </html>

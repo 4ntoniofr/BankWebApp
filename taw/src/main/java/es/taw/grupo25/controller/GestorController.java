@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -235,5 +236,27 @@ public class GestorController {
                 }
             });
         }
+    }
+
+    @GetMapping("/inactivos")
+    public String doMostrarInactivos(Model model){
+        List<ClienteEntity> inactivos = this.clienteRepository.buscarInactivos(new Date(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000));
+        separarIndividualesEmpresas(model, inactivos);
+        return "gestor/inactivos";
+    }
+
+    @GetMapping("/desactivar")
+    public String doDesactivarCuentas(@RequestParam("id") Integer idCliente) {
+        ClienteEntity cliente = this.clienteRepository.findById(idCliente).orElse(null);
+        EstadoCuentaEntity estadoBloqueado = this.estadoCuentaRepository.findByEstado("BLOQUEADA");
+        if(cliente == null){
+            return "gestor/index";
+        }
+        List<CuentaInternaEntity> cuentas = cliente.getCuentaInternasById();
+        for (CuentaInternaEntity cuenta: cuentas) {
+            cuenta.setEstadoCuentaByEstadoCuenta(estadoBloqueado);
+            this.cuentaInternaRepository.save(cuenta);
+        }
+        return "redirect:/gestor/inactivos";
     }
 }

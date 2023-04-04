@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ClienteRepository extends JpaRepository<ClienteEntity,Integer> {
@@ -29,4 +30,7 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity,Integer> 
 
     @Query("select c from ClienteEntity c where c.empleadoByAutorizador != null and c.empresasById != null and c.empresasById.nombre like CONCAT('%', :filtro, '%') and c.estadoClienteByEstadoCliente.estado = :estado")
     public List<ClienteEntity> buscarEmpresaPorNombreYEstado(@Param("filtro") String filtro, @Param("estado") String estado);
+
+    @Query("select c from ClienteEntity c where exists(select ci from CuentaInternaEntity ci where ci.clienteByPropietario = c and ci.estadoCuentaByEstadoCuenta.estado like 'ACTIVA') and not exists (select ci from CuentaInternaEntity ci join ci.cuentaBancariaByCuentaBancaria cb left join cb.transaccionsById_Entrantes t where ci.estadoCuentaByEstadoCuenta.estado LIKE 'ACTIVA' and ci.clienteByPropietario = c and t.fechaEjecucion >= :fechaLimite) and not exists (select ci from CuentaInternaEntity ci join ci.cuentaBancariaByCuentaBancaria cb left join cb.transaccionsById_Salientes t where ci.estadoCuentaByEstadoCuenta.estado LIKE 'ACTIVA' and ci.clienteByPropietario = c and t.fechaEjecucion >= :fechaLimite)")
+    public List<ClienteEntity> buscarInactivos(@Param("fechaLimite") Date fecha);
 }
