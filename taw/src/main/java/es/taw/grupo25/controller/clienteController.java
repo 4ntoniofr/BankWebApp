@@ -3,8 +3,6 @@ package es.taw.grupo25.controller;
 import es.taw.grupo25.entity.*;
 import es.taw.grupo25.repository.*;
 import es.taw.grupo25.ui.FiltroOperaciones;
-import es.taw.grupo25.ui.FormularioRegistroCuenta;
-import es.taw.grupo25.ui.FormularioTransferenciaPago;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -170,22 +168,28 @@ public class clienteController {
 
     @GetMapping("/transferencia")
     public String hacerTransferencia(Model model, HttpSession session, @RequestParam("idCuenta") int idCuenta){
-        model.addAttribute("transferenciapago", new FormularioTransferenciaPago());
+        model.addAttribute("pago", new PagoEntity());
         model.addAttribute("divisas", divisas);
         return "cliente/transferencia";
     }
 
     @PostMapping("/transferencia")
-    public String guardarTransferencia(@ModelAttribute("transferenciapago") FormularioTransferenciaPago transferenciaPago,@RequestParam("idCuenta") int idCuenta ,HttpSession session){
+    public String guardarTransferencia(@ModelAttribute("pago") PagoEntity pago,@RequestParam("idCuenta") int idCuenta ,HttpSession session){
         CuentaBancariaEntity cuenta = rep_cuenta_bancaria.findById(idCuenta).orElse(null);
-        transferenciaPago.getTransaccion().setCuentaBancariaByCuentaOrigen(cuenta);
-        transferenciaPago.getTransaccion().setFechaInstruccion(Timestamp.valueOf(LocalDateTime.now()));
-        transferenciaPago.getTransaccion().setFechaEjecucion(Timestamp.valueOf(LocalDateTime.now()));
+        CuentaBancariaEntity cuenta_destino = rep_cuenta_bancaria.findByIban(pago.getTransaccionByTransaccion().getCuentaBancariaByCuentaDestino().getIban());
+        if(cuenta.getCuentaInternasById().getCantidad() > pago.getCantidad() && cuenta.getCuentaInternasById().getMoneda().equals(cuenta_destino.getCuentaInternasById().getMoneda())){
+            cuenta.getCuentaInternasById().setCantidad(cuenta.getCuentaInternasById().getCantidad()-pago.getCantidad());
+            pago.getTransaccionByTransaccion().setCuentaBancariaByCuentaOrigen(cuenta);
+            pago.getTransaccionByTransaccion().setFechaInstruccion(Timestamp.valueOf(LocalDateTime.now()));
+            pago.getTransaccionByTransaccion().setFechaEjecucion(Timestamp.valueOf(LocalDateTime.now()));
+            cuenta_destino.getCuentaInternasById().setCantidad(cuenta_destino.getCuentaInternasById().getCantidad()+pago.getCantidad());
 
-        CuentaBancariaEntity cuenta_destino = rep_cuenta_bancaria.findByIban(transferenciaPago.getCuentaDestino());
-        transferenciaPago.getTransaccion().setCuentaBancariaByCuentaDestino(cuenta_destino);
+            pago.getTransaccionByTransaccion().setCuentaBancariaByCuentaDestino(cuenta_destino);
 
-        rep_transaccion.save(transferenciaPago.getTransaccion());
+            rep_cuenta_bancaria.save(cuenta_destino);
+            rep_cuenta_bancaria.save(cuenta);
+            rep_transaccion.save(pago.getTransaccionByTransaccion());
+        }
 
         return "redirect:/cliente/cuentas";
     }
@@ -244,22 +248,24 @@ public class clienteController {
 
     @GetMapping("/nuevaCuenta")
     public String nuevaCuenta(Model model){
-        model.addAttribute("formulario", new FormularioRegistroCuenta());
+        model.addAttribute("cuenta", new CuentaInternaEntity());
         model.addAttribute("divisas", divisas);
         model.addAttribute("paises", paises);
         return "cliente/nuevaCuenta";
     }
 
     @PostMapping("/nuevaCuenta")
-    public String aniadirCuenta(@ModelAttribute("formulario") FormularioRegistroCuenta formulario, HttpSession session){
+    public String aniadirCuenta(@ModelAttribute("cuenta") CuentaInternaEntity cuenta, HttpSession session){
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-        EstadoCuentaEntity estado = (EstadoCuentaEntity) rep_estado_cuenta.findById(1).orElse(null);
-        formulario.getCuentaInterna().setEstadoCuentaByEstadoCuenta(estado);
-        formulario.getCuentaInterna().setClienteByPropietario(usuario.getClientesById());
-        formulario.getCuentaBancaria().setIban(getRandomIban(formulario.getCuentaInterna().getPais()));
+        EstadoCuentaEntity estado = rep_estado_cuenta.findById(1).orElse(null);
+        cuenta.setEstadoCuentaByEstadoCuenta(estado);
+        cuenta.setClienteByPropietario(usuario.getClientesById());
+        cuenta.getCuentaBancariaByCuentaBancaria().setIban(getRandomIban(cuenta.getPais()));
+        Byte b = 0;
+        cuenta.setBloqueada(b);
 
-        rep_cuenta_bancaria.save(formulario.getCuentaBancaria());
-        rep_cuenta_interna.save(formulario.getCuentaInterna());
+        rep_cuenta_bancaria.save(cuenta.getCuentaBancariaByCuentaBancaria());
+        rep_cuenta_interna.save(cuenta);
 
         return "redirect:/cliente/cuentas";
     }
