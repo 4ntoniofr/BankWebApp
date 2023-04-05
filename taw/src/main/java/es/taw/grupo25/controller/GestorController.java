@@ -246,7 +246,7 @@ public class GestorController {
     }
 
     @GetMapping("/desactivar")
-    public String doDesactivarCuentas(@RequestParam("id") Integer idCliente) {
+    public String doDesactivarCuentas(@RequestParam("id") Integer idCliente, @RequestParam("urlto") String urlTo) {
         ClienteEntity cliente = this.clienteRepository.findById(idCliente).orElse(null);
         EstadoCuentaEntity estadoBloqueado = this.estadoCuentaRepository.findByEstado("BLOQUEADA");
         if(cliente == null){
@@ -257,6 +257,13 @@ public class GestorController {
             cuenta.setEstadoCuentaByEstadoCuenta(estadoBloqueado);
             this.cuentaInternaRepository.save(cuenta);
         }
-        return "redirect:/gestor/inactivos";
+        return "redirect:/gestor/"+urlTo;
+    }
+
+    @GetMapping("/sospechosos")
+    public String doMostrarClientesSospechosos(Model model){
+        List<ClienteEntity> sospechosos = this.clienteRepository.buscarSospechosos();
+        separarIndividualesEmpresas(model, sospechosos);
+        return "gestor/sospechosos";
     }
 }
