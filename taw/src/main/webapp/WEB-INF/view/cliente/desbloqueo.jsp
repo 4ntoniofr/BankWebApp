@@ -9,6 +9,7 @@
 
     <body>
         <h1>Desbloqueo de Cuenta:</h1>
+
         <%
             CuentaInternaEntity cuenta = (CuentaInternaEntity) request.getAttribute("cuenta");
             if(cuenta != null){
@@ -36,7 +37,7 @@
         <h2>No hay ninguna cuenta asociada a este usuario</h2>
 
     <%
-        }
+            }
     %>
 
     </body>

@@ -11,6 +11,24 @@
     <h1>Transferencias bancarias</h1>
     <h2>Realizar transferencia desde Cuenta id: ${param.idCuenta}</h2>
 
+    <%
+        String error = (String) request.getAttribute("error");
+        if(error!=null){
+    %>
+    <h2><%=error%></h2>
+    <%
+    }else{
+    %>
+
+    <%
+        String errorTransferencia = (String) request.getAttribute("errorTransferencia");
+        if(errorTransferencia!=null){
+    %>
+    <p style="color:red;"><%=errorTransferencia%></p>
+    <%
+        }
+    %>
+
     <form:form method="post" action="transferencia?idCuenta=${param.idCuenta}" modelAttribute="pago">
         <form:hidden path="transaccionByTransaccion.id"></form:hidden>
         <form:hidden path="id"></form:hidden>
@@ -21,6 +39,9 @@
         <form:button>Realizar Transferencia</form:button>
     </form:form>
 
+<%
+    }
+%>
 </body>
 
 </html>

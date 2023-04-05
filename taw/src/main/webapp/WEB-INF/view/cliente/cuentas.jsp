@@ -39,8 +39,15 @@
                 <td><%=cuenta.getPais()%></td>
                 <td><%=cuenta.getEstadoCuentaByEstadoCuenta().getEstado()%></td>
                 <td><a href="operaciones?idCuenta=<%=cuenta.getId()%>">operaciones</a></td>
+                <%
+                    if(cuenta.getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")){
+                %>
                 <td><a href="divisas?idCuenta=<%=cuenta.getId()%>">cambio divisa</a></td>
                 <td><a href="transferencia?idCuenta=<%=cuenta.getCuentaBancariaByCuentaBancaria().getId()%>">realizar transferencia</a></td>
+                <%}else{%>
+                <td>cambio divisa</td>
+                <td>realizar transferencia</td>
+                <%}%>
                 <td><a href="desbloqueo?idCuenta=<%=cuenta.getId()%>">solicitar desbloqueo</a></td>
             </tr>
     <%
