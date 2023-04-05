@@ -13,6 +13,15 @@
 <h1>Cambio de Divisas</h1>
 
 <%
+    String error = (String) request.getAttribute("error");
+    if(error!=null){
+%>
+    <h2><%=error%></h2>
+<%
+    }else{
+%>
+
+<%
     CuentaInternaEntity cuenta = (CuentaInternaEntity) request.getAttribute("cuenta");
     if(cuenta!=null){
 %>
@@ -40,6 +49,7 @@
     <h2>No hay ninguna cuenta vinculada a este usuario</h2>
 
 <%
+        }
     }
 %>
     </body>
