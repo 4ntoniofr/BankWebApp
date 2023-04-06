@@ -8,12 +8,12 @@
     </head>
 
     <body>
-        <form:form method="post" action="nuevaCuenta" modelAttribute="formulario">
-            <form:hidden path="cuentaInterna.id"></form:hidden>
-            Moneda: <form:select path="cuentaInterna.moneda" items="${divisas}"/><br />
-            Pais: <form:select path="cuentaInterna.pais" items="${paises}"/><br />
-            Cantidad: <form:input path="cuentaInterna.cantidad" type="number" min="0" max="999999999999"></form:input></br>
-            <form:hidden path="cuentaBancaria.id"></form:hidden>
+        <form:form method="post" action="nuevaCuenta" modelAttribute="cuenta">
+            <form:hidden path="id"></form:hidden>
+            Moneda: <form:select path="moneda" items="${divisas}"/><br />
+            Pais: <form:select path="pais" items="${paises}"/><br />
+            Cantidad: <form:input path="cantidad" type="number" min="0" max="999999999999"></form:input></br>
+            <form:hidden path="cuentaBancariaByCuentaBancaria.id"></form:hidden>
             <form:button>Guardar</form:button>
         </form:form>
     </body>

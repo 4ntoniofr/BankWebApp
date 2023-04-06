@@ -11,6 +11,7 @@
     <li><a href="/gestor/pendientes">Ver clientes/empresas pendientes de autorizar</a></li>
     <li><a href="/gestor/clientes">Ver clientes/empresas del sistema</a></li>
     <li><a href="/gestor/inactivos">Ver clientes/empresas inactivos del sistema</a></li>
+    <li><a href="/gestor/sospechosos">Ver clientes/empresas que han realizado transferencias a cuentas sospechosas</a></li>
 </ul>
 </body>
 </html>

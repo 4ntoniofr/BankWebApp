@@ -9,10 +9,10 @@
 
 <html>
 <head>
-    <title>Clientes inactivos</title>
+    <title>Clientes sospechosos</title>
 </head>
 <body>
-<h1>Lista de clientes inactivos</h1>
+<h1>Lista de clientes sospechosos</h1>
 
 <h2>Clientes Individuales</h2>
 <table border="1">
@@ -48,7 +48,7 @@
         <td><%= persona.getDireccionByDireccion().getCalle() + " " + persona.getDireccionByDireccion().getNumero() + ", " +
                 persona.getDireccionByDireccion().getCiudad() + " (" + persona.getDireccionByDireccion().getPais() + ")" %>
         </td>
-        <td><a href="/gestor/desactivar?id=<%= persona.getId() %>&urlto=inactivos">Desactivar cuentas</a></td>
+        <td><a href="/gestor/desactivar?id=<%= persona.getId() %>&urlto=sospechosos">Desactivar cuentas</a></td>
     </tr>
 
 
@@ -78,7 +78,7 @@
         <td><%= empresa.getDireccionByDireccion().getCalle() + " " + empresa.getDireccionByDireccion().getNumero() + ", " +
                 empresa.getDireccionByDireccion().getCiudad() + " (" + empresa.getDireccionByDireccion().getPais() + ")" %>
         </td>
-        <td><a href="/gestor/desactivar?id=<%= empresa.getId() %>&urlto=inactivos">Desactivar cuentas</a></td>
+        <td><a href="/gestor/desactivar?id=<%= empresa.getId() %>&urlto=sospechosos">Desactivar cuentas</a></td>
     </tr>
 
 
