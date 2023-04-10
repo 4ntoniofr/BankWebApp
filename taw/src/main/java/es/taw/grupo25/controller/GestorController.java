@@ -4,6 +4,7 @@ import es.taw.grupo25.entity.*;
 import es.taw.grupo25.repository.*;
 import es.taw.grupo25.ui.FiltroClientes;
 import es.taw.grupo25.ui.FiltroOperaciones;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,9 +39,49 @@ public class GestorController {
     @Autowired
     private EstadoCuentaRepository estadoCuentaRepository;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     @GetMapping("/")
     public String doMostrarOpciones() {
         return "gestor/index";
+    }
+
+    @GetMapping("/login")
+    public String doMostrarInicioSesion(HttpSession session) {
+        String urlTo = "/gestor/login";
+
+        if(session.getAttribute("usuario") != null){
+            urlTo = "redirect:/gestor/";
+        }
+
+        return urlTo;
+    }
+
+    @PostMapping("/login")
+    public String doLogin(HttpSession session,
+                          @RequestParam("username") String username,
+                          @RequestParam("password") String password,
+                          Model model){
+
+        String urlTo = "redirect:/gestor/";
+        UsuarioEntity user = this.usuarioRepository.autenticar(username,password);
+
+        if(user != null && user.getEmpleadosById() != null && user.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")){
+            session.setAttribute("usuario", user);
+        }else{
+            model.addAttribute("error", "El usuario o la contraseña no son validos o no corresponden a un gestor");
+            urlTo = "/gestor/login";
+            urlTo = "/gestor/login";
+        }
+
+        return urlTo;
+    }
+
+    @GetMapping("/logout")
+    public String doLogout(HttpSession session){
+        session.invalidate();
+        return "redirect:/gestor/";
     }
 
     @GetMapping("/pendientes")
@@ -180,14 +221,14 @@ public class GestorController {
             transacciones.addAll(cuentaBancaria.getTransaccionsById_Entrantes());
             transacciones.addAll(cuentaBancaria.getTransaccionsById_Salientes());
 
-            if(!filtro.getIban().isEmpty()){
+            if (!filtro.getIban().isEmpty()) {
                 transacciones = transacciones.stream().filter(obj -> obj.getCuentaBancariaByCuentaDestino().getIban().contains(filtro.getIban()) || obj.getCuentaBancariaByCuentaOrigen().getIban().contains(filtro.getIban())).collect(Collectors.toList());
             }
-            if(!filtro.getFechaInstruccion().isEmpty()){
+            if (!filtro.getFechaInstruccion().isEmpty()) {
                 LocalDate fecha = LocalDate.parse(filtro.getFechaInstruccion());
                 transacciones = transacciones.stream().filter(obj -> obj.getFechaInstruccion().toLocalDateTime().toLocalDate().equals(fecha)).collect(Collectors.toList());
             }
-            if(!filtro.getFechaEjecucion().isEmpty()){
+            if (!filtro.getFechaEjecucion().isEmpty()) {
                 LocalDate fecha = LocalDate.parse(filtro.getFechaEjecucion());
                 transacciones = transacciones.stream().filter(obj -> obj.getFechaEjecucion().toLocalDateTime().toLocalDate().equals(fecha)).collect(Collectors.toList());
             }
@@ -239,7 +280,7 @@ public class GestorController {
     }
 
     @GetMapping("/inactivos")
-    public String doMostrarInactivos(Model model){
+    public String doMostrarInactivos(Model model) {
         List<ClienteEntity> inactivos = this.clienteRepository.buscarInactivos(new Date(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000));
         separarIndividualesEmpresas(model, inactivos);
         return "gestor/inactivos";
@@ -249,19 +290,19 @@ public class GestorController {
     public String doDesactivarCuentas(@RequestParam("id") Integer idCliente, @RequestParam("urlto") String urlTo) {
         ClienteEntity cliente = this.clienteRepository.findById(idCliente).orElse(null);
         EstadoCuentaEntity estadoBloqueado = this.estadoCuentaRepository.findByEstado("BLOQUEADA");
-        if(cliente == null){
+        if (cliente == null) {
             return "gestor/index";
         }
         List<CuentaInternaEntity> cuentas = cliente.getCuentaInternasById();
-        for (CuentaInternaEntity cuenta: cuentas) {
+        for (CuentaInternaEntity cuenta : cuentas) {
             cuenta.setEstadoCuentaByEstadoCuenta(estadoBloqueado);
             this.cuentaInternaRepository.save(cuenta);
         }
-        return "redirect:/gestor/"+urlTo;
+        return "redirect:/gestor/" + urlTo;
     }
 
     @GetMapping("/sospechosos")
-    public String doMostrarClientesSospechosos(Model model){
+    public String doMostrarClientesSospechosos(Model model) {
         List<ClienteEntity> sospechosos = this.clienteRepository.buscarSospechosos();
         separarIndividualesEmpresas(model, sospechosos);
         return "gestor/sospechosos";
