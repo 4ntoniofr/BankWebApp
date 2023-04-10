@@ -23,6 +23,7 @@
         </div>
         <br>
         <div style="border: 1px solid black">
+            <form:hidden path="clienteAsociado.id" />
             <h5>Direccion del asociado</h5>
             <form:hidden path="clienteAsociado.direccionByDireccion.id" />
             Calle: <form:input path="clienteAsociado.direccionByDireccion.calle" maxlength="100" /><br>

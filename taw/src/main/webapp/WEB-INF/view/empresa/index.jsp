@@ -4,8 +4,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    List<EmpresaEntity> lista = (List<EmpresaEntity>) request.getAttribute("empresas");
     ClienteEntity cliente = (ClienteEntity) session.getAttribute("cliente");
+    String error = (String) request.getAttribute("error");
 %>
 
 <html>
@@ -16,6 +16,16 @@
 %>
 
 <h2>Bienvenido, <%= cliente.getUsuarioByUsuarioId().getUsuario() %></h2>
+
+<%
+    }
+%>
+
+<%
+    if(error != null){
+%>
+
+<p style="color: red"><%= error %></p>
 
 <%
     }
@@ -41,6 +51,7 @@
     %>
 
     <li><a href="/empresa/updateAsociado">Modificar datos personales</a></li>
+    <li><a href="/empresa/sociosEmpresa">Mostrar socios/autorizados de la empresa</a></li>
 
     <%
             }else{
