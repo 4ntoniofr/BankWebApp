@@ -54,6 +54,16 @@
     <li><a href="/empresa/sociosEmpresa">Mostrar socios/autorizados de la empresa</a></li>
 
     <%
+        if(cliente.getEstadoClienteByEstadoCliente().getEstado().equals("BLOQUEADO")){
+    %>
+
+    <li><a href="/empresa/solicitudDesbloqueo">Solicitar desbloqueo</a></li>
+
+    <%
+        }
+    %>
+
+    <%
             }else{
                 //OPCIONES EMPRESA
     %>

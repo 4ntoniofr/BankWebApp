@@ -1,6 +1,7 @@
 package es.taw.grupo25.repository;
 
 import es.taw.grupo25.entity.ClienteEntity;
+import es.taw.grupo25.entity.EmpresaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -36,4 +37,7 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity,Integer> 
 
     @Query("select c from ClienteEntity c where exists (select ci from CuentaInternaEntity ci join ci.cuentaBancariaByCuentaBancaria cb join cb.transaccionsById_Salientes t where ci.estadoCuentaByEstadoCuenta.estado LIKE 'ACTIVA' and ci.clienteByPropietario = c and t.cuentaBancariaByCuentaDestino.cuentaExternasById.sospechosa = 1)")
     public List<ClienteEntity> buscarSospechosos();
+
+    @Query("select c from ClienteEntity c  left join fetch c.personaByPersonaId where c.empresaByEmpresaSocio = :empresa")
+    public List<ClienteEntity> buscarSociosConPersonaPorEmpresa(@Param("empresa") EmpresaEntity empresa);
 }

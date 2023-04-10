@@ -24,6 +24,7 @@
         <th>ROL</th>
         <th>ESTADO</th>
         <th></th>
+        <th></th>
     </tr>
     <%
         for (ClienteEntity socio: socios) {

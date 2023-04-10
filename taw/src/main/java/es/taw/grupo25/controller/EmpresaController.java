@@ -179,7 +179,7 @@ public class EmpresaController {
             urlTo = "empresa/index";
             model.addAttribute("error", "Accion no permitida");
         }else{
-            List<ClienteEntity> socios = cliente.getEmpresaByEmpresaSocio().getClientesById_Socios();
+            List<ClienteEntity> socios = this.clienteRep.buscarSociosConPersonaPorEmpresa(cliente.getEmpresaByEmpresaSocio());
             model.addAttribute("socios", socios);
             model.addAttribute("empresa", cliente.getEmpresaByEmpresaSocio());
         }
@@ -190,7 +190,7 @@ public class EmpresaController {
     @GetMapping("/bloquearSocio")
     public String doBloquearSocio(Model model, HttpSession session,
                                   @RequestParam("idCliente") Integer idCliente){
-        String urlTo = "empresa/sociosEmpresa";
+        String urlTo = "redirect:/empresa/sociosEmpresa";
         ClienteEntity solicitante = (ClienteEntity) session.getAttribute("cliente");
 
         if(solicitante == null || solicitante.getEmpresasById() != null ||
@@ -209,6 +209,24 @@ public class EmpresaController {
                 bloqueado.setEstadoClienteByEstadoCliente(this.estadoClienteRep.findByEstado("BLOQUEADO"));
                 this.clienteRep.save(bloqueado);
             }
+        }
+
+        return urlTo;
+    }
+
+    @GetMapping("/solicitudDesbloqueo")
+    public String doSolicitudDesbloqueo(HttpSession session, Model model){
+        String urlTo = "redirect:/empresa/";
+        ClienteEntity cliente = (ClienteEntity) session.getAttribute("cliente");
+
+        if(cliente == null || cliente.getEstadoClienteByEstadoCliente() == null ||
+            !cliente.getEstadoClienteByEstadoCliente().getEstado().equals("BLOQUEADO")){
+            urlTo = "empresa/index";
+            model.addAttribute("error", "Accion no permitida");
+        }else{
+            cliente.setEstadoClienteByEstadoCliente(this.estadoClienteRep.findByEstado("SOLICITADO"));
+            this.clienteRep.save(cliente);
+            session.setAttribute("cliente", cliente);
         }
 
         return urlTo;
