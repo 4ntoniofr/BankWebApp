@@ -115,7 +115,7 @@ public class GestorController {
         EstadoCuentaEntity estadoCuenta = this.estadoCuentaRepository.findByEstado("ACTIVA");
         cuentaInterna.setEstadoCuentaByEstadoCuenta(estadoCuenta);
 
-        cuentaInterna.setBloqueada((byte) 0);
+        cuentaInterna.setBloqueada(false);
         cuentaInterna.setCantidad(0.0);
 
         EmpleadoEntity gestor = this.empleadoRepository.findById(1).orElse(null); //TODO: do it using sessions

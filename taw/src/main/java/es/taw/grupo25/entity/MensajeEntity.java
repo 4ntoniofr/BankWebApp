@@ -18,6 +18,9 @@ public class MensajeEntity {
     @Basic
     @Column(name = "FECHA", nullable = false)
     private Timestamp fecha;
+    @Basic
+    @Column(name = "LEIDO", nullable = false)
+    private Boolean leido;
     @ManyToOne
     @JoinColumn(name = "EMISOR", referencedColumnName = "ID", nullable = false)
     private PersonaEntity personaByEmisor;
@@ -49,17 +52,25 @@ public class MensajeEntity {
         this.fecha = fecha;
     }
 
+    public Boolean getLeido() {
+        return leido;
+    }
+
+    public void setLeido(Boolean leido) {
+        this.leido = leido;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MensajeEntity that = (MensajeEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(texto, that.texto) && Objects.equals(fecha, that.fecha);
+        return Objects.equals(id, that.id) && Objects.equals(texto, that.texto) && Objects.equals(fecha, that.fecha) && Objects.equals(leido, that.leido);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, texto, fecha);
+        return Objects.hash(id, texto, fecha, leido);
     }
 
     public PersonaEntity getPersonaByEmisor() {

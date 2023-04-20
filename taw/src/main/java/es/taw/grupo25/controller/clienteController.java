@@ -171,7 +171,7 @@ public class clienteController {
             CuentaInternaEntity cuenta_cambio = rep_cuenta_interna.findById(cuenta.getId()).orElse(null);
             if(cuenta_cambio!=null){
                 if(cuenta_cambio.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId() && cuenta_cambio.getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")){
-                    cuenta_cambio.setMoneda(cuenta.getMoneda());
+                    cuenta_cambio.setMonedaByMoneda(cuenta.getMonedaByMoneda());
                     rep_cuenta_interna.save(cuenta_cambio);
                 }
             }
@@ -213,7 +213,7 @@ public class clienteController {
             urlTo="redirect:/login";
         }else{
             if(cuenta_destino!=null){
-                if(cuenta.getCuentaInternasById().getCantidad() > pago.getCantidad() && cuenta.getCuentaInternasById().getMoneda().equals(cuenta_destino.getCuentaInternasById().getMoneda())){
+                if(cuenta.getCuentaInternasById().getCantidad() > pago.getCantidad() && cuenta.getCuentaInternasById().getMonedaByMoneda().equals(cuenta_destino.getCuentaInternasById().getMonedaByMoneda())){
                     if(cuenta.getCuentaInternasById().getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")){
                         cuenta.getCuentaInternasById().setCantidad(cuenta.getCuentaInternasById().getCantidad()-pago.getCantidad());
                         pago.getTransaccionByTransaccion().setCuentaBancariaByCuentaOrigen(cuenta);
@@ -330,7 +330,7 @@ public class clienteController {
         cuenta.setEstadoCuentaByEstadoCuenta(estado);
         cuenta.setClienteByPropietario(usuario.getClientesById());
         cuenta.getCuentaBancariaByCuentaBancaria().setIban(getRandomIban(cuenta.getPais()));
-        cuenta.setBloqueada((byte) 0);
+        cuenta.setBloqueada(false);
 
         rep_cuenta_bancaria.save(cuenta.getCuentaBancariaByCuentaBancaria());
         rep_cuenta_interna.save(cuenta);

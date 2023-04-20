@@ -13,9 +13,6 @@ public class CuentaInternaEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "MONEDA", nullable = false, length = 45)
-    private String moneda;
-    @Basic
     @Column(name = "PAIS", nullable = false, length = 45)
     private String pais;
     @Basic
@@ -23,7 +20,7 @@ public class CuentaInternaEntity {
     private Double cantidad;
     @Basic
     @Column(name = "BLOQUEADA", nullable = false)
-    private Byte bloqueada;
+    private Boolean bloqueada;
     @OneToMany(mappedBy = "cuentaInternaByCuentaInternaId")
     private List<AutorizacionEntity> autorizacionsById;
     @OneToOne
@@ -35,6 +32,9 @@ public class CuentaInternaEntity {
     @ManyToOne
     @JoinColumn(name = "ESTADO_CUENTA", referencedColumnName = "ID", nullable = false)
     private EstadoCuentaEntity estadoCuentaByEstadoCuenta;
+    @ManyToOne
+    @JoinColumn(name = "MONEDA", referencedColumnName = "ID", nullable = false)
+    private MonedaEntity monedaByMoneda;
 
     public Integer getId() {
         return id;
@@ -42,14 +42,6 @@ public class CuentaInternaEntity {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getMoneda() {
-        return moneda;
-    }
-
-    public void setMoneda(String moneda) {
-        this.moneda = moneda;
     }
 
     public String getPais() {
@@ -68,11 +60,11 @@ public class CuentaInternaEntity {
         this.cantidad = cantidad;
     }
 
-    public Byte getBloqueada() {
+    public Boolean getBloqueada() {
         return bloqueada;
     }
 
-    public void setBloqueada(Byte bloqueada) {
+    public void setBloqueada(Boolean bloqueada) {
         this.bloqueada = bloqueada;
     }
 
@@ -81,12 +73,12 @@ public class CuentaInternaEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CuentaInternaEntity that = (CuentaInternaEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(moneda, that.moneda) && Objects.equals(pais, that.pais) && Objects.equals(cantidad, that.cantidad) && Objects.equals(bloqueada, that.bloqueada);
+        return Objects.equals(id, that.id) && Objects.equals(pais, that.pais) && Objects.equals(cantidad, that.cantidad) && Objects.equals(bloqueada, that.bloqueada);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, moneda, pais, cantidad, bloqueada);
+        return Objects.hash(id, pais, cantidad, bloqueada);
     }
 
     public List<AutorizacionEntity> getAutorizacionsById() {
@@ -119,5 +111,13 @@ public class CuentaInternaEntity {
 
     public void setEstadoCuentaByEstadoCuenta(EstadoCuentaEntity estadoCuentaByEstadoCuenta) {
         this.estadoCuentaByEstadoCuenta = estadoCuentaByEstadoCuenta;
+    }
+
+    public MonedaEntity getMonedaByMoneda() {
+        return monedaByMoneda;
+    }
+
+    public void setMonedaByMoneda(MonedaEntity monedaByMoneda) {
+        this.monedaByMoneda = monedaByMoneda;
     }
 }

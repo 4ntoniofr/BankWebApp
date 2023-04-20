@@ -20,7 +20,7 @@ public class TransaccionEntity {
     private Timestamp fechaEjecucion;
     @OneToOne(mappedBy = "transaccionByTransaccion")
     private CambioDivisaEntity cambioDivisasById;
-    @OneToOne(mappedBy = "transaccionByTransaccion", cascade=CascadeType.ALL)
+    @OneToOne(mappedBy = "transaccionByTransaccion")
     private PagoEntity pagosById;
     @ManyToOne
     @JoinColumn(name = "CUENTA_ORIGEN", referencedColumnName = "ID", nullable = false)
@@ -28,12 +28,15 @@ public class TransaccionEntity {
     @ManyToOne
     @JoinColumn(name = "CUENTA_DESTINO", referencedColumnName = "ID", nullable = false)
     private CuentaBancariaEntity cuentaBancariaByCuentaDestino;
+    @ManyToOne
+    @JoinColumn(name = "CLIENTE", referencedColumnName = "ID")
+    private ClienteEntity clienteByCliente;
 
     public Integer getId() {
         return id;
     }
 
-    public void setId() {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -96,5 +99,13 @@ public class TransaccionEntity {
 
     public void setCuentaBancariaByCuentaDestino(CuentaBancariaEntity cuentaBancariaByCuentaDestino) {
         this.cuentaBancariaByCuentaDestino = cuentaBancariaByCuentaDestino;
+    }
+
+    public ClienteEntity getClienteByCliente() {
+        return clienteByCliente;
+    }
+
+    public void setClienteByCliente(ClienteEntity clienteByCliente) {
+        this.clienteByCliente = clienteByCliente;
     }
 }

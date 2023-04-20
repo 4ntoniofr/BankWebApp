@@ -2,6 +2,7 @@ package es.taw.grupo25.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,9 +21,9 @@ public class CuentaBancariaEntity {
     @OneToOne(mappedBy = "cuentaBancariaByCuentaBancaria")
     private CuentaInternaEntity cuentaInternasById;
     @OneToMany(mappedBy = "cuentaBancariaByCuentaOrigen")
-    private List<TransaccionEntity> transaccionsById_Salientes;
-    @OneToMany(mappedBy = "cuentaBancariaByCuentaDestino")
     private List<TransaccionEntity> transaccionsById_Entrantes;
+    @OneToMany(mappedBy = "cuentaBancariaByCuentaDestino")
+    private List<TransaccionEntity> transaccionsById_Salientes;
 
     public Integer getId() {
         return id;
@@ -69,19 +70,19 @@ public class CuentaBancariaEntity {
         this.cuentaInternasById = cuentaInternasById;
     }
 
-    public List<TransaccionEntity> getTransaccionsById_Salientes() {
-        return transaccionsById_Salientes;
-    }
-
-    public void setTransaccionsById_Salientes(List<TransaccionEntity> transaccionsById_Salientes) {
-        this.transaccionsById_Salientes = transaccionsById_Salientes;
-    }
-
     public List<TransaccionEntity> getTransaccionsById_Entrantes() {
         return transaccionsById_Entrantes;
     }
 
     public void setTransaccionsById_Entrantes(List<TransaccionEntity> transaccionsById_Entrantes) {
         this.transaccionsById_Entrantes = transaccionsById_Entrantes;
+    }
+
+    public List<TransaccionEntity> getTransaccionsById_Salientes() {
+        return transaccionsById_Salientes;
+    }
+
+    public void setTransaccionsById_Salientes(List<TransaccionEntity> transaccionsById_Salientes) {
+        this.transaccionsById_Salientes = transaccionsById_Salientes;
     }
 }

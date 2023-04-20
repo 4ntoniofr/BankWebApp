@@ -2,7 +2,7 @@ package es.taw.grupo25.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,8 +53,8 @@ public class EmpresaEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EmpresaEntity that = (EmpresaEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(nombre, that.nombre) && Objects.equals(fechaCierre, that.fechaCierre);
+        EmpresaEntity empresa = (EmpresaEntity) o;
+        return Objects.equals(id, empresa.id) && Objects.equals(nombre, empresa.nombre) && Objects.equals(fechaCierre, empresa.fechaCierre);
     }
 
     @Override

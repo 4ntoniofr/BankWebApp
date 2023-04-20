@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Usuario;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -85,5 +86,13 @@ public class UsuarioEntity {
 
     public void setEmpleadosById(EmpleadoEntity empleadosById) {
         this.empleadosById = empleadosById;
+    }
+
+    public Usuario toDTO(){
+        Usuario usuario = new Usuario();
+        usuario.setId(this.id);
+        usuario.setUsuario(this.usuario);
+        usuario.setPassword(this.password);
+        return usuario;
     }
 }

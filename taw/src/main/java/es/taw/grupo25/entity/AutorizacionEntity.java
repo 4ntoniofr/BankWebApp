@@ -2,7 +2,7 @@ package es.taw.grupo25.entity;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity

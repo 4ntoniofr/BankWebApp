@@ -11,24 +11,15 @@ public class CambioDivisaEntity {
     @Id
     @Column(name = "ID", nullable = false)
     private Integer id;
-    @Basic
-    @Column(name = "MONEDA_VENTA", nullable = false, length = 45)
-    private String monedaVenta;
-    @Basic
-    @Column(name = "MONEDA_COMPRA", nullable = false, length = 45)
-    private String monedaCompra;
-    @Basic
-    @Column(name = "TIPO_CAMBIO", nullable = false, length = 45)
-    private String tipoCambio;
-    @Basic
-    @Column(name = "CANTIDAD_COMPRA", nullable = false, precision = 0)
-    private Double cantidadCompra;
-    @Basic
-    @Column(name = "CANTIDAD_VENTA", nullable = false, precision = 0)
-    private Double cantidadVenta;
     @OneToOne
     @JoinColumn(name = "TRANSACCION", referencedColumnName = "ID", nullable = false)
     private TransaccionEntity transaccionByTransaccion;
+    @ManyToOne
+    @JoinColumn(name = "MONEDA_COMPRA", referencedColumnName = "ID", nullable = false)
+    private MonedaEntity monedaByMonedaCompra;
+    @ManyToOne
+    @JoinColumn(name = "MONEDA_VENTA", referencedColumnName = "ID", nullable = false)
+    private MonedaEntity monedaByMonedaVenta;
     @OneToOne(mappedBy = "cambioDivisaByCambioDivisa")
     private PagoEntity pagosById;
 
@@ -40,57 +31,17 @@ public class CambioDivisaEntity {
         this.id = id;
     }
 
-    public String getMonedaVenta() {
-        return monedaVenta;
-    }
-
-    public void setMonedaVenta(String monedaVenta) {
-        this.monedaVenta = monedaVenta;
-    }
-
-    public String getMonedaCompra() {
-        return monedaCompra;
-    }
-
-    public void setMonedaCompra(String monedaCompra) {
-        this.monedaCompra = monedaCompra;
-    }
-
-    public String getTipoCambio() {
-        return tipoCambio;
-    }
-
-    public void setTipoCambio(String tipoCambio) {
-        this.tipoCambio = tipoCambio;
-    }
-
-    public Double getCantidadCompra() {
-        return cantidadCompra;
-    }
-
-    public void setCantidadCompra(Double cantidadCompra) {
-        this.cantidadCompra = cantidadCompra;
-    }
-
-    public Double getCantidadVenta() {
-        return cantidadVenta;
-    }
-
-    public void setCantidadVenta(Double cantidadVenta) {
-        this.cantidadVenta = cantidadVenta;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CambioDivisaEntity that = (CambioDivisaEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(monedaVenta, that.monedaVenta) && Objects.equals(monedaCompra, that.monedaCompra) && Objects.equals(tipoCambio, that.tipoCambio) && Objects.equals(cantidadCompra, that.cantidadCompra) && Objects.equals(cantidadVenta, that.cantidadVenta);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, monedaVenta, monedaCompra, tipoCambio, cantidadCompra, cantidadVenta);
+        return Objects.hash(id);
     }
 
     public TransaccionEntity getTransaccionByTransaccion() {
@@ -99,6 +50,22 @@ public class CambioDivisaEntity {
 
     public void setTransaccionByTransaccion(TransaccionEntity transaccionByTransaccion) {
         this.transaccionByTransaccion = transaccionByTransaccion;
+    }
+
+    public MonedaEntity getMonedaByMonedaCompra() {
+        return monedaByMonedaCompra;
+    }
+
+    public void setMonedaByMonedaCompra(MonedaEntity monedaByMonedaCompra) {
+        this.monedaByMonedaCompra = monedaByMonedaCompra;
+    }
+
+    public MonedaEntity getMonedaByMonedaVenta() {
+        return monedaByMonedaVenta;
+    }
+
+    public void setMonedaByMonedaVenta(MonedaEntity monedaByMonedaVenta) {
+        this.monedaByMonedaVenta = monedaByMonedaVenta;
     }
 
     public PagoEntity getPagosById() {

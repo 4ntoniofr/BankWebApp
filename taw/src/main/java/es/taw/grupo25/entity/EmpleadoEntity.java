@@ -17,7 +17,7 @@ public class EmpleadoEntity {
     @OneToMany(mappedBy = "empleadoByEmpleadoId")
     private List<ChatEntity> chatsById;
     @OneToMany(mappedBy = "empleadoByAutorizador")
-    private List<ClienteEntity> clientesById_Autorizados;
+    private List<ClienteEntity> clientesById;
     @OneToOne
     @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID", nullable = false)
     private UsuarioEntity usuarioByUsuarioId;
@@ -65,12 +65,12 @@ public class EmpleadoEntity {
         this.chatsById = chatsById;
     }
 
-    public List<ClienteEntity> getClientesById_Autorizados() {
-        return clientesById_Autorizados;
+    public List<ClienteEntity> getClientesById() {
+        return clientesById;
     }
 
-    public void setClientesById_Autorizados(List<ClienteEntity> clientesById_Autorizados) {
-        this.clientesById_Autorizados = clientesById_Autorizados;
+    public void setClientesById(List<ClienteEntity> clientesById) {
+        this.clientesById = clientesById;
     }
 
     public UsuarioEntity getUsuarioByUsuarioId() {

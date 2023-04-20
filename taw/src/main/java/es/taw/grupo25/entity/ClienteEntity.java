@@ -31,7 +31,7 @@ public class ClienteEntity {
     @JoinColumn(name = "PERSONA_ID", referencedColumnName = "ID")
     private PersonaEntity personaByPersonaId;
     @ManyToOne
-    @JoinColumn(name = "ROL_CLIENTE_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "ROL_CLIENTE_ID", referencedColumnName = "ID", nullable = false)
     private RolClienteEntity rolClienteByRolClienteId;
     @ManyToOne
     @JoinColumn(name = "AUTORIZADOR", referencedColumnName = "ID")
@@ -43,6 +43,8 @@ public class ClienteEntity {
     private List<CuentaInternaEntity> cuentaInternasById;
     @OneToOne(mappedBy = "clienteByClienteId")
     private EmpresaEntity empresasById;
+    @OneToMany(mappedBy = "clienteByCliente")
+    private List<TransaccionEntity> transaccionsById;
 
     public Integer getId() {
         return id;
@@ -151,5 +153,13 @@ public class ClienteEntity {
 
     public void setEmpresasById(EmpresaEntity empresasById) {
         this.empresasById = empresasById;
+    }
+
+    public List<TransaccionEntity> getTransaccionsById() {
+        return transaccionsById;
+    }
+
+    public void setTransaccionsById(List<TransaccionEntity> transaccionsById) {
+        this.transaccionsById = transaccionsById;
     }
 }
