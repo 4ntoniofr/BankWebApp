@@ -20,17 +20,20 @@
 
 
 <form:form action="/gestor/operaciones" method="post" modelAttribute="filtro">
-    <h2>Buscar por:</h2>
+    <h2>Filtro</h2>
     <form:hidden path="idCuenta"/>
-    IBAN: <form:input path="iban"/>
-    Fecha Instruccion: <form:input type="date" path="fechaInstruccion"></form:input>
-    Fecha Ejecucion: <form:input type="date" path="fechaEjecucion"></form:input>
-    <h2>Ordenar por:</h2>
-    <form:select path="orden" size="6">
-        <form:option value="instruccion" label="Fecha de instruccion"/>
-        <form:option value="ejecucion" label="Fecha de ejecucion"/>
-    </form:select>
-    <br>
+    <div>
+        <label style="margin-right: 30px"> IBAN: <form:input path="iban"/> </label>
+        <label style="margin-right: 30px"> Fecha Instruccion: <form:input type="date" path="fechaInstruccion"></form:input></label>
+        <label style="margin-right: 30px"> Fecha Ejecucion: <form:input type="date" path="fechaEjecucion"></form:input></label>
+        <label style="margin-right: 30px">Ordenar por:
+            <form:select path="orden">
+                <form:option value="instruccion" label="Fecha de instruccion"/>
+                <form:option value="ejecucion" label="Fecha de ejecucion"/>
+            </form:select>
+        </label>
+    </div>
+    <hr>
     <form:button>Filtrar y ordenar</form:button>
 </form:form>
 

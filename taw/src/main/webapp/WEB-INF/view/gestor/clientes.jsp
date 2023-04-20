@@ -23,7 +23,7 @@
 <form:form action="/gestor/filtrarClientes" method="post" modelAttribute="filtro">
     Contiene: <form:input path="texto"/>
     Estado:
-    <form:select path="estadoCliente"  size="6" >
+    <form:select path="estadoCliente">
         <form:option value="" label="No filter" />
         <form:options items="${estados}" itemLabel="estado" itemValue="estado" />
     </form:select>

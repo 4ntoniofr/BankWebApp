@@ -13,7 +13,10 @@
     <form:hidden path="clienteByPropietario"/>
 
     IBAN: <form:input path="cuentaBancariaByCuentaBancaria.iban"/><br>
-    Moneda: <form:input path="moneda"/><br>
+    Moneda:
+    <form:select path="monedaByMoneda">
+        <form:options items="${monedas}" itemValue="id" itemLabel="moneda"></form:options>
+    </form:select><br>
     Pais: <form:input path="pais"/><br>
 
     <form:button>Guardar</form:button>

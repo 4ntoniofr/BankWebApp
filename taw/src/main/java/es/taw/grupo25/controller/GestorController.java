@@ -31,7 +31,7 @@ public class GestorController {
     private EstadoClienteRepository estadoClienteRepository;
 
     @Autowired
-    private EmpleadoRepository empleadoRepository;
+    private AutorizacionRepository autorizacionRepository;
 
     @Autowired
     private CuentaBancariaRepository cuentaBancariaRepository;
@@ -42,6 +42,9 @@ public class GestorController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private MonedaRepository monedaRepository;
+
     @GetMapping("/")
     public String doMostrarOpciones() {
         return "gestor/index";
@@ -51,7 +54,7 @@ public class GestorController {
     public String doMostrarInicioSesion(HttpSession session) {
         String urlTo = "/gestor/login";
 
-        if(session.getAttribute("usuario") != null){
+        if (session.getAttribute("usuario") != null) {
             urlTo = "redirect:/gestor/";
         }
 
@@ -62,16 +65,15 @@ public class GestorController {
     public String doLogin(HttpSession session,
                           @RequestParam("username") String username,
                           @RequestParam("password") String password,
-                          Model model){
+                          Model model) {
 
         String urlTo = "redirect:/gestor/";
-        UsuarioEntity user = this.usuarioRepository.autenticar(username,password);
+        UsuarioEntity user = this.usuarioRepository.autenticar(username, password);
 
-        if(user != null && user.getEmpleadosById() != null && user.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")){
+        if (user != null && user.getEmpleadosById() != null && user.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             session.setAttribute("usuario", user);
-        }else{
+        } else {
             model.addAttribute("error", "El usuario o la contraseña no son validos o no corresponden a un gestor");
-            urlTo = "/gestor/login";
             urlTo = "/gestor/login";
         }
 
@@ -79,7 +81,7 @@ public class GestorController {
     }
 
     @GetMapping("/logout")
-    public String doLogout(HttpSession session){
+    public String doLogout(HttpSession session) {
         session.invalidate();
         return "redirect:/gestor/";
     }
@@ -100,30 +102,44 @@ public class GestorController {
         CuentaInternaEntity cuentaInterna = new CuentaInternaEntity();
         CuentaBancariaEntity cuentaBancaria = new CuentaBancariaEntity();
 
+        List<MonedaEntity> monedas = this.monedaRepository.findAll();
+
         cuentaInterna.setCuentaBancariaByCuentaBancaria(cuentaBancaria);
         cuentaInterna.setAutorizacionsById(null);
 
         cuentaInterna.setClienteByPropietario(cliente);
 
         model.addAttribute("cuenta", cuentaInterna);
+        model.addAttribute("monedas", monedas);
 
         return "gestor/autorizar";
     }
 
     @PostMapping("/autorizar")
-    public String doAutorizar(@ModelAttribute("autorizacionCliente") CuentaInternaEntity cuentaInterna) {
+    public String doAutorizar(@ModelAttribute("autorizacionCliente") CuentaInternaEntity cuentaInterna, HttpSession session) {
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/gestor/login";
+        }
+
         EstadoCuentaEntity estadoCuenta = this.estadoCuentaRepository.findByEstado("ACTIVA");
         cuentaInterna.setEstadoCuentaByEstadoCuenta(estadoCuenta);
 
         cuentaInterna.setBloqueada(false);
         cuentaInterna.setCantidad(0.0);
 
-        EmpleadoEntity gestor = this.empleadoRepository.findById(1).orElse(null); //TODO: do it using sessions
+        EmpleadoEntity gestor = usuario.getEmpleadosById();
         cuentaInterna.getClienteByPropietario().setEmpleadoByAutorizador(gestor);
+
+        AutorizacionEntity autorizacion = new AutorizacionEntity();
+        autorizacion.setEmpleadoByEmpleadoId(gestor);
+        autorizacion.setCuentaInternaByCuentaInternaId(cuentaInterna);
+        autorizacion.setFecha(new Date());
 
         this.clienteRepository.save(cuentaInterna.getClienteByPropietario());
         this.cuentaBancariaRepository.save(cuentaInterna.getCuentaBancariaByCuentaBancaria());
         this.cuentaInternaRepository.save(cuentaInterna);
+        this.autorizacionRepository.save(autorizacion);
 
         return "redirect:/gestor/pendientes";
     }

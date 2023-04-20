@@ -55,7 +55,7 @@
             %>
             <tr>
                 <td><%=cuenta.getCuentaBancariaByCuentaBancaria().getIban()%></td>
-                <td><%=cuenta.getMoneda()%></td>
+                <td><%=cuenta.getMonedaByMoneda().getMoneda()%></td>
                 <td><%=cuenta.getPais()%></td>
                 <td><%=cuenta.getCantidad()%></td>
                 <td><%=cuenta.getEstadoCuentaByEstadoCuenta().getEstado()%></td>
