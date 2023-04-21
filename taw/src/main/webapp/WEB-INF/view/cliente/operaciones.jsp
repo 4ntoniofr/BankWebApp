@@ -1,6 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.taw.grupo25.entity.TransaccionEntity" %>
+<%@ page import="es.taw.grupo25.dto.Transaccion" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -23,7 +23,7 @@
     </form:form>
 
 <%
-    List<TransaccionEntity> transacciones = (List<TransaccionEntity>) request.getAttribute("transacciones");
+    List<Transaccion> transacciones = (List<Transaccion>) request.getAttribute("transacciones");
     if(!transacciones.isEmpty()){
 %>
 
@@ -37,7 +37,7 @@
         </tr>
 
 <%
-        for(TransaccionEntity tran: transacciones){
+        for(Transaccion tran: transacciones){
 %>
 
         <tr>

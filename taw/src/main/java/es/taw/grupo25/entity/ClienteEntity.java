@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Cliente;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -161,5 +162,19 @@ public class ClienteEntity {
 
     public void setTransaccionsById(List<TransaccionEntity> transaccionsById) {
         this.transaccionsById = transaccionsById;
+    }
+
+    public Cliente toDTO(){
+        Cliente cliente = new Cliente();
+        cliente.setId(this.id);
+        cliente.setFechaInicio(this.fechaInicio);
+        cliente.setChatsById(this.chatsById);
+        cliente.setEstadoClienteByEstadoCliente(this.estadoClienteByEstadoCliente);
+        cliente.setDireccionByDireccion(this.direccionByDireccion);
+        cliente.setUsuarioByUsuarioId(this.usuarioByUsuarioId);
+        cliente.setPersonaByPersonaId(this.personaByPersonaId);
+        cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId);
+        cliente.setTransaccionsById(this.transaccionsById);
+        return cliente;
     }
 }

@@ -1,30 +1,19 @@
-package es.taw.grupo25.entity;
+package es.taw.grupo25.dto;
 
-import es.taw.grupo25.dto.CuentaBancaria;
-import es.taw.grupo25.dto.CuentaInterna;
+import es.taw.grupo25.entity.CuentaExternaEntity;
+import es.taw.grupo25.entity.CuentaInternaEntity;
+import es.taw.grupo25.entity.TransaccionEntity;
 import jakarta.persistence.*;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
-@Table(name = "CUENTA_BANCARIA", schema = "grupo25", catalog = "")
-public class CuentaBancariaEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "ID", nullable = false)
+public class CuentaBancaria {
     private Integer id;
-    @Basic
-    @Column(name = "IBAN", nullable = false, length = 45)
     private String iban;
-    @OneToOne(mappedBy = "cuentaBancariaByCuentaBancaria")
     private CuentaExternaEntity cuentaExternasById;
-    @OneToOne(mappedBy = "cuentaBancariaByCuentaBancaria")
     private CuentaInternaEntity cuentaInternasById;
-    @OneToMany(mappedBy = "cuentaBancariaByCuentaOrigen")
     private List<TransaccionEntity> transaccionsById_Entrantes;
-    @OneToMany(mappedBy = "cuentaBancariaByCuentaDestino")
     private List<TransaccionEntity> transaccionsById_Salientes;
 
     public Integer getId() {
@@ -41,19 +30,6 @@ public class CuentaBancariaEntity {
 
     public void setIban(String iban) {
         this.iban = iban;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CuentaBancariaEntity that = (CuentaBancariaEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(iban, that.iban);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, iban);
     }
 
     public CuentaExternaEntity getCuentaExternasById() {
@@ -88,14 +64,16 @@ public class CuentaBancariaEntity {
         this.transaccionsById_Salientes = transaccionsById_Salientes;
     }
 
-    public CuentaBancaria toDTO() {
-        CuentaBancaria cuenta = new CuentaBancaria();
-        cuenta.setId(this.id);
-        cuenta.setIban(this.iban);
-        cuenta.setCuentaExternasById(this.cuentaExternasById);
-        cuenta.setCuentaInternasById(this.cuentaInternasById);
-        cuenta.setTransaccionsById_Entrantes(this.transaccionsById_Entrantes);
-        cuenta.setTransaccionsById_Salientes(this.transaccionsById_Salientes);
-        return cuenta;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CuentaBancaria that = (CuentaBancaria) o;
+        return id.equals(that.id) && iban.equals(that.iban) && Objects.equals(cuentaExternasById, that.cuentaExternasById) && Objects.equals(cuentaInternasById, that.cuentaInternasById) && Objects.equals(transaccionsById_Entrantes, that.transaccionsById_Entrantes) && Objects.equals(transaccionsById_Salientes, that.transaccionsById_Salientes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, iban, cuentaExternasById, cuentaInternasById, transaccionsById_Entrantes, transaccionsById_Salientes);
     }
 }

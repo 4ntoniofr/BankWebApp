@@ -1,5 +1,6 @@
 <%@ page import="es.taw.grupo25.entity.CuentaInternaEntity" %>
 <%@ page import="java.util.List" %>
+<%@ page import="es.taw.grupo25.dto.CuentaInterna" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -10,7 +11,7 @@
     <body>
         <h1>Mis cuentas</h1>
     <%
-        List<CuentaInternaEntity> cuentas = (List<CuentaInternaEntity>) request.getAttribute("cuentas");
+        List<CuentaInterna> cuentas = (List<CuentaInterna>) request.getAttribute("cuentas");
         if(!cuentas.isEmpty()){
 
             %>
@@ -30,12 +31,12 @@
 
         <%
 
-            for(CuentaInternaEntity cuenta : cuentas){
+            for(CuentaInterna cuenta : cuentas){
     %>
             <tr>
                 <td><%=cuenta.getCuentaBancariaByCuentaBancaria().getIban()%></td>
                 <td><%=cuenta.getCantidad()%></td>
-                <td><%=cuenta.getMoneda()%></td>
+                <td><%=cuenta.getMonedaByMoneda()%></td>
                 <td><%=cuenta.getPais()%></td>
                 <td><%=cuenta.getEstadoCuentaByEstadoCuenta().getEstado()%></td>
                 <td><a href="operaciones?idCuenta=<%=cuenta.getId()%>">operaciones</a></td>
@@ -44,11 +45,12 @@
                 %>
                 <td><a href="divisas?idCuenta=<%=cuenta.getId()%>">cambio divisa</a></td>
                 <td><a href="transferencia?idCuenta=<%=cuenta.getCuentaBancariaByCuentaBancaria().getId()%>">realizar transferencia</a></td>
+                <td>solicitar desbloqueo</td>
                 <%}else{%>
                 <td>cambio divisa</td>
                 <td>realizar transferencia</td>
-                <%}%>
                 <td><a href="desbloqueo?idCuenta=<%=cuenta.getId()%>">solicitar desbloqueo</a></td>
+                <%}%>
             </tr>
     <%
             }
@@ -58,6 +60,6 @@
     <%
         }
     %>
-    <a href="nuevaCuenta"><h2>Añadir cuenta</h2></a>
+    <a href="nuevaCuenta"><h2>Añadir cuenta (Para Pruebas)</h2></a>
     </body>
 </html>

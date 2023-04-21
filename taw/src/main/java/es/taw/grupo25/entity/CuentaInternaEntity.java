@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.CuentaInterna;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -119,5 +120,21 @@ public class CuentaInternaEntity {
 
     public void setMonedaByMoneda(MonedaEntity monedaByMoneda) {
         this.monedaByMoneda = monedaByMoneda;
+    }
+
+
+    public CuentaInterna toDTO(){
+        CuentaInterna cuentaInterna = new CuentaInterna();
+
+        cuentaInterna.setId(this.id);
+        cuentaInterna.setPais(this.pais);
+        cuentaInterna.setCantidad(this.cantidad);
+        cuentaInterna.setBloqueada(this.bloqueada);
+        cuentaInterna.setCuentaBancariaByCuentaBancaria(this.cuentaBancariaByCuentaBancaria.toDTO());
+        cuentaInterna.setClienteByPropietario(this.clienteByPropietario.toDTO());
+        cuentaInterna.setEstadoCuentaByEstadoCuenta(this.estadoCuentaByEstadoCuenta.toDTO());
+        cuentaInterna.setMonedaByMoneda(this.monedaByMoneda.getId());
+
+        return cuentaInterna;
     }
 }

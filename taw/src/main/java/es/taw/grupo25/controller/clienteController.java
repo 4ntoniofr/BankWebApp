@@ -1,7 +1,9 @@
 package es.taw.grupo25.controller;
 
+import es.taw.grupo25.dto.*;
 import es.taw.grupo25.entity.*;
 import es.taw.grupo25.repository.*;
+import es.taw.grupo25.service.*;
 import es.taw.grupo25.ui.FiltroOperaciones;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,28 @@ import java.util.stream.Collectors;
 public class clienteController {
     private List<String> divisas = Arrays.asList("Euro", "Dollar", "Libra");
     private List<String> paises = Arrays.asList("España", "Estados Unidos", "Inglaterra");
+
+
+    @Autowired
+    private PersonaService personaService;
+
+    @Autowired
+    private CuentaInternaService cuentaInternaService;
+
+    @Autowired
+    private MonedaService monedaService;
+
+    @Autowired
+    EstadoCuentaService estadoCuentaService;
+
+    @Autowired
+    CuentaBancariaService cuentaBancariaService;
+
+    @Autowired
+    TransaccionService transaccionService;
+
+    @Autowired
+    PagoService pagoService;
 
     @Autowired
     private PersonaRepository rep_persona;
@@ -60,7 +84,7 @@ public class clienteController {
 
     @GetMapping("")
     public String cliente(Model model, HttpSession session){
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         String urlto = "cliente/cliente";
         if(usuario==null){
             urlto="redirect:/login";
@@ -71,36 +95,36 @@ public class clienteController {
     @GetMapping("/perfil")
     public String perfil(Model model, HttpSession session){
         String urlto = "cliente/perfil";
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         if(usuario == null){
             urlto = "redirect:/login";
         }else{
-            PersonaEntity persona = rep_persona.findById(usuario.getClientesById().getPersonaByPersonaId().getId()).orElse(null);
+            Persona persona = personaService.findById(usuario.getClientesById().getPersonaByPersonaId().getId());
             model.addAttribute("persona", persona);
         }
         return urlto;
     }
 
     @PostMapping("/guardar")
-    public String guardarCliente(@ModelAttribute("persona") PersonaEntity persona){
-        this.rep_persona.save(persona);
+    public String guardarCliente(@ModelAttribute("persona") Persona persona){
+        this.personaService.guardarPersona(persona);
         return "redirect:/cliente";
     }
 
     @GetMapping("/operaciones")
     public String listarOperaciones(Model model, HttpSession session, @RequestParam("idCuenta")int idCuenta){
         String urlto = "redirect:/cliente/cuentas";
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         if(usuario == null){
             urlto = "redirect:/login";
         }else{
-            CuentaInternaEntity cuenta = rep_cuenta_interna.findById(idCuenta).orElse(null);
+            CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
             if(cuenta != null){
                 if(cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId()==usuario.getId()){
                     FiltroOperaciones filtro = new FiltroOperaciones(cuenta.getCuentaBancariaByCuentaBancaria().getId());
-                    List<TransaccionEntity> transacciones =(rep_transaccion.findAllTransactionsById(cuenta.getCuentaBancariaByCuentaBancaria().getId()));model.addAttribute("filtro", filtro);
-                    model.addAttribute("transacciones", transacciones);
+                    List<Transaccion> transacciones =(transaccionService.findAllByIdCuenta(cuenta.getCuentaBancariaByCuentaBancaria().getId()));
                     model.addAttribute("filtro", filtro);
+                    model.addAttribute("transacciones", transacciones);
                     urlto="cliente/operaciones";
                 }
             }
@@ -181,17 +205,17 @@ public class clienteController {
 
     @GetMapping("/transferencia")
     public String hacerTransferencia(Model model, HttpSession session, @RequestParam("idCuenta") int idCuenta){
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         String urlTo = "redirect:/cliente/cuentas";
         if(usuario==null){
             urlTo="redirect:/login";
         }else{
-            CuentaBancariaEntity cuenta = rep_cuenta_bancaria.findById(idCuenta).orElse(null);
+            CuentaBancaria cuenta = cuentaBancariaService.findById(idCuenta);
             if(cuenta!=null){
                 if(cuenta.getCuentaInternasById().getClienteByPropietario().getUsuarioByUsuarioId().getId()==usuario.getId()){
                     if(cuenta.getCuentaInternasById().getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")){
-                        model.addAttribute("pago", new PagoEntity());
-                        model.addAttribute("divisas", divisas);
+                        model.addAttribute("pago", new Pago());
+                        model.addAttribute("monedas", monedaService.findAll());
                         urlTo = "cliente/transferencia";
                     }else{
                         model.addAttribute("error", "No se pueden hacer transferencias en cuentas que no esten Activas.");
@@ -204,10 +228,10 @@ public class clienteController {
     }
 
     @PostMapping("/transferencia")
-    public String guardarTransferencia(@ModelAttribute("pago") PagoEntity pago,@RequestParam("idCuenta") int idCuenta , Model model,HttpSession session){
-        CuentaBancariaEntity cuenta = rep_cuenta_bancaria.findById(idCuenta).orElse(null);
-        CuentaBancariaEntity cuenta_destino = rep_cuenta_bancaria.findByIban(pago.getTransaccionByTransaccion().getCuentaBancariaByCuentaDestino().getIban());
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+    public String guardarTransferencia(@ModelAttribute("pago") Pago pago,@RequestParam("idCuenta") int idCuenta , Model model,HttpSession session){
+        CuentaBancaria cuenta = cuentaBancariaService.findById(idCuenta);
+        CuentaBancaria cuenta_destino = cuentaBancariaService.findByIban(pago.getTransaccionByTransaccion().getCuentaBancariaByCuentaDestino().getIban());
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         String urlTo = "redirect:/cliente/cuentas";
         if(usuario==null){
             urlTo="redirect:/login";
@@ -223,9 +247,10 @@ public class clienteController {
 
                         pago.getTransaccionByTransaccion().setCuentaBancariaByCuentaDestino(cuenta_destino);
 
-                        rep_cuenta_bancaria.save(cuenta_destino);
-                        rep_cuenta_bancaria.save(cuenta);
-                        rep_transaccion.save(pago.getTransaccionByTransaccion());
+                        cuentaBancariaService.guardarCuenta(cuenta_destino);
+                        cuentaBancariaService.guardarCuenta(cuenta);
+                        transaccionService.guardarTransaccion(pago.getTransaccionByTransaccion());
+                        pagoService.guardarPago(pago);
                     }
                 }
             }else{
@@ -305,11 +330,11 @@ public class clienteController {
     @GetMapping("/cuentas")
     public String listarCuentas(HttpSession session, Model model){
         String urlto = "cliente/cuentas";
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         if(usuario == null){
             urlto = "redirect:/login";
         }else{
-            List<CuentaInternaEntity> cuentas = (rep_cuenta_interna.findCuentasInternasForClient(usuario.getClientesById().getId()));
+            List<CuentaInterna> cuentas = cuentaInternaService.findByClienteId(usuario.getClientesById().getId());
             model.addAttribute("cuentas", cuentas);
         }
         return urlto;
@@ -317,28 +342,28 @@ public class clienteController {
 
     @GetMapping("/nuevaCuenta")
     public String nuevaCuenta(Model model){
-        model.addAttribute("cuenta", new CuentaInternaEntity());
-        model.addAttribute("divisas", divisas);
+        model.addAttribute("cuenta", new CuentaInterna());
+        model.addAttribute("monedas", monedaService.findAll());
         model.addAttribute("paises", paises);
         return "cliente/nuevaCuenta";
     }
 
     @PostMapping("/nuevaCuenta")
-    public String aniadirCuenta(@ModelAttribute("cuenta") CuentaInternaEntity cuenta, HttpSession session){
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-        EstadoCuentaEntity estado = rep_estado_cuenta.findById(1).orElse(null);
+    public String aniadirCuenta(@ModelAttribute("cuenta") CuentaInterna cuenta, HttpSession session){
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        EstadoCuenta estado = estadoCuentaService.findById(1);
         cuenta.setEstadoCuentaByEstadoCuenta(estado);
         cuenta.setClienteByPropietario(usuario.getClientesById());
         cuenta.getCuentaBancariaByCuentaBancaria().setIban(getRandomIban(cuenta.getPais()));
         cuenta.setBloqueada(false);
 
-        rep_cuenta_bancaria.save(cuenta.getCuentaBancariaByCuentaBancaria());
-        rep_cuenta_interna.save(cuenta);
+        cuentaBancariaService.guardarCuenta(cuenta.getCuentaBancariaByCuentaBancaria());
+        cuentaInternaService.guardarCuenta(cuenta);
 
         return "redirect:/cliente/cuentas";
     }
 
-    public String getRandomIban(String country){
+    private String getRandomIban(String country){
         Random rand = new Random();
         StringBuilder sb = new StringBuilder();
         sb.append(getCoutryCode(country));
@@ -348,7 +373,7 @@ public class clienteController {
         return sb.toString();
     }
 
-    public String getCoutryCode(String country){
+    private String getCoutryCode(String country){
         return "XX";
     }
 
@@ -357,8 +382,5 @@ public class clienteController {
         session.invalidate();
         return "redirect:/cliente";
     }
-
-
-
 
 }

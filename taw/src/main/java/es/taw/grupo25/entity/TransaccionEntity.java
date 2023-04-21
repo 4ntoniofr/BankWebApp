@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Transaccion;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -107,5 +108,19 @@ public class TransaccionEntity {
 
     public void setClienteByCliente(ClienteEntity clienteByCliente) {
         this.clienteByCliente = clienteByCliente;
+    }
+
+    public Transaccion toDTO(){
+        Transaccion transaccion = new Transaccion();
+
+        transaccion.setId(this.id);
+        transaccion.setFechaInstruccion(this.fechaInstruccion);
+        transaccion.setFechaEjecucion(this.fechaEjecucion);
+        transaccion.setPagosById(this.pagosById);
+        transaccion.setCuentaBancariaByCuentaOrigen(this.cuentaBancariaByCuentaOrigen.toDTO());
+        transaccion.setCuentaBancariaByCuentaDestino(this.cuentaBancariaByCuentaDestino.toDTO());
+        transaccion.setClienteByCliente(this.clienteByCliente);
+
+        return transaccion;
     }
 }

@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.EstadoCuenta;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -53,5 +54,12 @@ public class EstadoCuentaEntity {
 
     public void setCuentaInternasById(List<CuentaInternaEntity> cuentaInternasById) {
         this.cuentaInternasById = cuentaInternasById;
+    }
+
+    public EstadoCuenta toDTO(){
+        EstadoCuenta estado = new EstadoCuenta();
+        estado.setId(this.id);
+        estado.setEstado(this.estado);
+        return estado;
     }
 }

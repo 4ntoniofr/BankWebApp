@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Persona;
 import jakarta.persistence.*;
 
 import java.sql.Date;
@@ -119,4 +120,20 @@ public class PersonaEntity {
     public void setMensajesById(List<MensajeEntity> mensajesById) {
         this.mensajesById = mensajesById;
     }
+
+
+    public Persona toDTO(){
+        Persona persona = new Persona();
+        persona.setId(this.id);
+        persona.setDni(this.dni);
+        persona.setNombre(this.nombre);
+        persona.setPrimerApellido(this.primerApellido);
+        persona.setSegundoApellido(this.segundoApellido);
+        persona.setFechaNacimiento(this.fechaNacimiento);
+        persona.setClientesById(this.clientesById);
+        persona.setEmpleadosById(this.empleadosById);
+        return persona;
+    }
+
+
 }

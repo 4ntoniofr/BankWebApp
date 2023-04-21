@@ -1,11 +1,14 @@
 package es.taw.grupo25.dto;
 
+import es.taw.grupo25.entity.ClienteEntity;
+
 import java.util.Objects;
 
 public class Usuario {
     private Integer id;
     private String usuario;
     private String password;
+    private Cliente clientesById;
 
     public Integer getId() {
         return id;
@@ -29,6 +32,14 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Cliente getClientesById() {
+        return clientesById;
+    }
+
+    public void setClientesById(Cliente clientesById) {
+        this.clientesById = clientesById;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Moneda;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -85,4 +86,13 @@ public class MonedaEntity {
     public void setCuentaInternasById(List<CuentaInternaEntity> cuentaInternasById) {
         this.cuentaInternasById = cuentaInternasById;
     }
+
+    public Moneda toDTO(){
+        Moneda moneda = new Moneda();
+        moneda.setId(this.id);
+        moneda.setMoneda(this.moneda);
+        moneda.setCambioEuro(this.cambioEuro);
+        return moneda;
+    }
+
 }
