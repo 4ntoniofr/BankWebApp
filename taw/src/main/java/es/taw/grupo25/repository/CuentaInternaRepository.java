@@ -11,4 +11,7 @@ public interface CuentaInternaRepository extends JpaRepository<CuentaInternaEnti
 
     @Query("select c from CuentaInternaEntity c where c.clienteByPropietario.id = :id")
     public List<CuentaInternaEntity> findCuentasInternasForClient(@Param("id") Integer id);
+
+    @Query("select c from CuentaInternaEntity c where c.estadoCuentaByEstadoCuenta.estado = 'SOLICITADO'")
+    public List<CuentaInternaEntity> findCuentaInternasSolicitantes();
 }

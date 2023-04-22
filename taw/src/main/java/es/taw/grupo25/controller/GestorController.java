@@ -323,4 +323,37 @@ public class GestorController {
         separarIndividualesEmpresas(model, sospechosos);
         return "gestor/sospechosos";
     }
+
+    @GetMapping("/solicitudes")
+    public String doMostrarSolicitudes(Model model){
+        List<CuentaInternaEntity> cuentasSolicitantes = this.cuentaInternaRepository.findCuentaInternasSolicitantes();
+        model.addAttribute("cuentas", cuentasSolicitantes);
+        return "gestor/solicitudes";
+    }
+
+    @GetMapping("/desbloquear")
+    public String doDesbloquearCuenta(@RequestParam("id") Integer idCuenta, HttpSession session){
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/gestor/login";
+        }
+
+        CuentaInternaEntity cuentaInterna = this.cuentaInternaRepository.findById(idCuenta).orElse(null);
+        if(cuentaInterna == null){
+            return "redirect:/gestor/solicitudes";
+        }
+
+        EstadoCuentaEntity estadoCuenta = this.estadoCuentaRepository.findByEstado("ACTIVA");
+
+        cuentaInterna.setEstadoCuentaByEstadoCuenta(estadoCuenta);
+        this.cuentaInternaRepository.save(cuentaInterna);
+
+        AutorizacionEntity autorizacion = new AutorizacionEntity();
+        autorizacion.setFecha(new Date());
+        autorizacion.setEmpleadoByEmpleadoId(usuario.getEmpleadosById());
+        autorizacion.setCuentaInternaByCuentaInternaId(cuentaInterna);
+        this.autorizacionRepository.save(autorizacion);
+
+        return "redirect:/gestor/solicitudes";
+    }
 }
