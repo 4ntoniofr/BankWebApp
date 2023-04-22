@@ -2,7 +2,7 @@ package es.taw.grupo25.dto;
 
 import java.util.Objects;
 
-public class EstadoCuenta {
+public class EstadoCliente {
     private Integer id;
     private String estado;
 
@@ -26,7 +26,7 @@ public class EstadoCuenta {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EstadoCuenta that = (EstadoCuenta) o;
+        EstadoCliente that = (EstadoCliente) o;
         return id.equals(that.id) && estado.equals(that.estado);
     }
 

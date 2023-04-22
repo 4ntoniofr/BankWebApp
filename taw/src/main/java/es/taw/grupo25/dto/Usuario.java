@@ -1,7 +1,5 @@
 package es.taw.grupo25.dto;
-
-import es.taw.grupo25.entity.ClienteEntity;
-
+import java.util.Date;
 import java.util.Objects;
 
 public class Usuario {
@@ -9,6 +7,7 @@ public class Usuario {
     private String usuario;
     private String password;
     private Cliente clientesById;
+    private Date fechaRegistro;
 
     public Integer getId() {
         return id;
@@ -40,6 +39,14 @@ public class Usuario {
 
     public void setClientesById(Cliente clientesById) {
         this.clientesById = clientesById;
+    }
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
 
     @Override

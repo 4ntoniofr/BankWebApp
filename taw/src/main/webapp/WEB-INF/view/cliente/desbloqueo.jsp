@@ -1,5 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="es.taw.grupo25.entity.CuentaInternaEntity" %>
+<%@ page import="es.taw.grupo25.dto.CuentaInterna" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -11,7 +11,7 @@
         <h1>Desbloqueo de Cuenta:</h1>
 
         <%
-            CuentaInternaEntity cuenta = (CuentaInternaEntity) request.getAttribute("cuenta");
+            CuentaInterna cuenta = (CuentaInterna) request.getAttribute("cuenta");
             if(cuenta != null){
         %>
 

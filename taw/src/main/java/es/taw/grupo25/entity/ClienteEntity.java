@@ -1,6 +1,7 @@
 package es.taw.grupo25.entity;
 
 import es.taw.grupo25.dto.Cliente;
+import es.taw.grupo25.dto.Usuario;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -169,11 +170,25 @@ public class ClienteEntity {
         cliente.setId(this.id);
         cliente.setFechaInicio(this.fechaInicio);
         cliente.setChatsById(this.chatsById);
-        cliente.setEstadoClienteByEstadoCliente(this.estadoClienteByEstadoCliente);
-        cliente.setDireccionByDireccion(this.direccionByDireccion);
-        cliente.setUsuarioByUsuarioId(this.usuarioByUsuarioId);
-        cliente.setPersonaByPersonaId(this.personaByPersonaId);
-        cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId);
+        cliente.setEstadoClienteByEstadoCliente(this.estadoClienteByEstadoCliente.toDTO());
+        cliente.setDireccionByDireccion(this.direccionByDireccion.toDTO());
+        cliente.setUsuarioByUsuarioId(this.usuarioByUsuarioId.toDTO());
+        cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO());
+        cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId.toDTO());
+        cliente.setTransaccionsById(this.transaccionsById);
+        return cliente;
+    }
+
+    public Cliente toDTO(Usuario usuario){
+        Cliente cliente = new Cliente();
+        cliente.setId(this.id);
+        cliente.setFechaInicio(this.fechaInicio);
+        cliente.setChatsById(this.chatsById);
+        cliente.setEstadoClienteByEstadoCliente(this.estadoClienteByEstadoCliente.toDTO());
+        cliente.setDireccionByDireccion(this.direccionByDireccion.toDTO());
+        cliente.setUsuarioByUsuarioId(usuario);
+        cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO());
+        cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId.toDTO());
         cliente.setTransaccionsById(this.transaccionsById);
         return cliente;
     }

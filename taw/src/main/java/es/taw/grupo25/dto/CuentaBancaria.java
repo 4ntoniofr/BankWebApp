@@ -3,7 +3,6 @@ package es.taw.grupo25.dto;
 import es.taw.grupo25.entity.CuentaExternaEntity;
 import es.taw.grupo25.entity.CuentaInternaEntity;
 import es.taw.grupo25.entity.TransaccionEntity;
-import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;

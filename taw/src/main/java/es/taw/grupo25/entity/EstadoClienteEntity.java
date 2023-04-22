@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.EstadoCliente;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -53,5 +54,12 @@ public class EstadoClienteEntity {
 
     public void setClientesById(List<ClienteEntity> clientesById) {
         this.clientesById = clientesById;
+    }
+
+    public EstadoCliente toDTO(){
+        EstadoCliente estadoCliente = new EstadoCliente();
+        estadoCliente.setId(this.id);
+        estadoCliente.setEstado(this.estado);
+        return estadoCliente;
     }
 }

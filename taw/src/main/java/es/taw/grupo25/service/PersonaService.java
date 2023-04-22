@@ -28,7 +28,7 @@ public class PersonaService {
         persona.setFechaNacimiento(dto.getFechaNacimiento());
 
         this.personaRepository.save(persona);
-
+        dto.setId(persona.getId());
     }
 
 }

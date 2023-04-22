@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.CambioDivisa;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -74,5 +75,14 @@ public class CambioDivisaEntity {
 
     public void setPagosById(PagoEntity pagosById) {
         this.pagosById = pagosById;
+    }
+
+    public CambioDivisa toDTO(){
+        CambioDivisa cambioDivisa = new CambioDivisa();
+        cambioDivisa.setId(this.id);
+        cambioDivisa.setTransaccionByTransaccion(this.transaccionByTransaccion.toDTO());
+        cambioDivisa.setMonedaByMonedaCompra(this.monedaByMonedaCompra.toDTO());
+        cambioDivisa.setMonedaByMonedaVenta(this.monedaByMonedaVenta.toDTO());
+        return cambioDivisa;
     }
 }

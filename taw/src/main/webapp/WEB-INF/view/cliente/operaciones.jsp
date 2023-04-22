@@ -29,7 +29,7 @@
 
     <table border="1">
         <tr>
-            <th>Id</th>
+            <th>Tipo</th>
             <th>Fecha Instrucción</th>
             <th>Fecha Ejecución</th>
             <th>IBAN Origen</th>
@@ -41,7 +41,7 @@
 %>
 
         <tr>
-            <td><%=tran.getId()%></td>
+            <td><%=tran.isCambioDivisa()?"Cambio Divisa":"Transferencia"%></td>
             <td><%=tran.getFechaInstruccion()%></td>
             <td><%=tran.getFechaEjecucion()%></td>
             <td><%=tran.getCuentaBancariaByCuentaOrigen().getIban()%></td>
@@ -60,6 +60,8 @@
 <%
     }
 %>
+
+    <a href="/cliente/cuentas">Volver a mis cuentas</a>
 
 
     </body>

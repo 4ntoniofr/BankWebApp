@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Direccion;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -97,5 +98,16 @@ public class DireccionEntity {
 
     public void setClientesById(List<ClienteEntity> clientesById) {
         this.clientesById = clientesById;
+    }
+
+    public Direccion toDTO(){
+        Direccion direccion = new Direccion();
+        direccion.setId(this.id);
+        direccion.setCalle(this.calle);
+        direccion.setNumero(this.numero);
+        direccion.setCiudad(this.ciudad);
+        direccion.setCodigoPostal(this.codigoPostal);
+        direccion.setPais(this.pais);
+        return direccion;
     }
 }

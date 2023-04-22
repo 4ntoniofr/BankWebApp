@@ -1,4 +1,3 @@
-<%@ page import="es.taw.grupo25.entity.CuentaBancariaEntity" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -34,7 +33,7 @@
         <form:hidden path="id"></form:hidden>
         <form:hidden path="transaccionByTransaccion.cuentaBancariaByCuentaDestino.id"></form:hidden>
         Iban Destino: <form:input path="transaccionByTransaccion.cuentaBancariaByCuentaDestino.iban" size="50" maxlength="45"></form:input></br>
-        Moneda Transferencia: Moneda: <form:select path="moneda" items="${monedas}" itemLabel="moneda"/><br />
+        <form:hidden path="moneda"/>
         Cantidad A Enviar: <form:input path="cantidad" type="number" min="0" max="999999999999"></form:input></br>
         <form:button>Realizar Transferencia</form:button>
     </form:form>

@@ -11,6 +11,15 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    public void guardarUsuario(Usuario usuario){
+        UsuarioEntity usuarioEntity = new UsuarioEntity();
+        usuarioEntity.setUsuario(usuario.getUsuario());
+        usuarioEntity.setPassword(usuario.getPassword());
+        usuarioEntity.setFechaRegistro(usuario.getFechaRegistro());
+
+        usuarioRepository.save(usuarioEntity);
+        usuario.setId(usuarioEntity.getId());
+    }
 
     public Usuario doAutenticarUsuario(String user, String password){
         UsuarioEntity usuario = usuarioRepository.autenticar(user, password);

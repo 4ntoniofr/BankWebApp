@@ -1,10 +1,4 @@
 package es.taw.grupo25.dto;
-
-import es.taw.grupo25.entity.CambioDivisaEntity;
-import es.taw.grupo25.entity.CuentaInternaEntity;
-import jakarta.persistence.*;
-
-import java.util.List;
 import java.util.Objects;
 
 public class Moneda {
@@ -41,7 +35,7 @@ public class Moneda {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Moneda moneda1 = (Moneda) o;
-        return id.equals(moneda1.id) && moneda.equals(moneda1.moneda) && cambioEuro.equals(moneda1.cambioEuro);
+        return id.equals(moneda1.id);
     }
 
     @Override

@@ -2,11 +2,8 @@ package es.taw.grupo25.dto;
 
 import es.taw.grupo25.entity.ClienteEntity;
 import es.taw.grupo25.entity.EmpleadoEntity;
-import es.taw.grupo25.entity.MensajeEntity;
-import jakarta.persistence.*;
 
 import java.sql.Date;
-import java.util.List;
 import java.util.Objects;
 
 public class Persona {

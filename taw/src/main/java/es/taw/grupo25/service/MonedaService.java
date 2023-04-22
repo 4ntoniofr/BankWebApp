@@ -2,7 +2,6 @@ package es.taw.grupo25.service;
 
 import es.taw.grupo25.dto.CuentaInterna;
 import es.taw.grupo25.dto.Moneda;
-import es.taw.grupo25.entity.CuentaInternaEntity;
 import es.taw.grupo25.entity.MonedaEntity;
 import es.taw.grupo25.repository.MonedaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,11 @@ public class MonedaService {
     public List<Moneda> findAll(){
         List<MonedaEntity> monedas = monedaRepository.findAll();
         return listaEntidadesADTO(monedas);
+    }
+
+    public Moneda findById(Integer id){
+        MonedaEntity monedaEntity = monedaRepository.findById(id).orElse(null);
+        return monedaEntity==null?null:monedaEntity.toDTO();
     }
 
     public MonedaEntity getEntity(Moneda moneda){

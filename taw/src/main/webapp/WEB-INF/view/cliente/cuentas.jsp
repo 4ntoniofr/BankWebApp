@@ -1,6 +1,6 @@
-<%@ page import="es.taw.grupo25.entity.CuentaInternaEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.taw.grupo25.dto.CuentaInterna" %>
+<%@ page import="es.taw.grupo25.dto.Moneda" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -12,6 +12,7 @@
         <h1>Mis cuentas</h1>
     <%
         List<CuentaInterna> cuentas = (List<CuentaInterna>) request.getAttribute("cuentas");
+        List<Moneda> monedas = (List<Moneda>) request.getAttribute("monedas");
         if(!cuentas.isEmpty()){
 
             %>
@@ -32,11 +33,13 @@
         <%
 
             for(CuentaInterna cuenta : cuentas){
+                Moneda moneda = new Moneda();
+                moneda.setId(cuenta.getMonedaByMoneda());
     %>
             <tr>
                 <td><%=cuenta.getCuentaBancariaByCuentaBancaria().getIban()%></td>
                 <td><%=cuenta.getCantidad()%></td>
-                <td><%=cuenta.getMonedaByMoneda()%></td>
+                <td><%=monedas.get(monedas.indexOf(moneda)).getMoneda()%></td>
                 <td><%=cuenta.getPais()%></td>
                 <td><%=cuenta.getEstadoCuentaByEstadoCuenta().getEstado()%></td>
                 <td><a href="operaciones?idCuenta=<%=cuenta.getId()%>">operaciones</a></td>

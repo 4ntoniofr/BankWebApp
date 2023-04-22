@@ -1,7 +1,6 @@
 package es.taw.grupo25.dto;
 
 import es.taw.grupo25.entity.*;
-import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.List;
@@ -11,11 +10,11 @@ public class Cliente {
     private Integer id;
     private Date fechaInicio;
     private List<ChatEntity> chatsById;
-    private EstadoClienteEntity estadoClienteByEstadoCliente;
-    private DireccionEntity direccionByDireccion;
-    private UsuarioEntity usuarioByUsuarioId;
-    private PersonaEntity personaByPersonaId;
-    private RolClienteEntity rolClienteByRolClienteId;
+    private EstadoCliente estadoClienteByEstadoCliente;
+    private Direccion direccionByDireccion;
+    private Usuario usuarioByUsuarioId;
+    private Persona personaByPersonaId;
+    private RolCliente rolClienteByRolClienteId;
     private List<TransaccionEntity> transaccionsById;
 
     public Integer getId() {
@@ -42,43 +41,43 @@ public class Cliente {
         this.chatsById = chatsById;
     }
 
-    public EstadoClienteEntity getEstadoClienteByEstadoCliente() {
+    public EstadoCliente getEstadoClienteByEstadoCliente() {
         return estadoClienteByEstadoCliente;
     }
 
-    public void setEstadoClienteByEstadoCliente(EstadoClienteEntity estadoClienteByEstadoCliente) {
+    public void setEstadoClienteByEstadoCliente(EstadoCliente estadoClienteByEstadoCliente) {
         this.estadoClienteByEstadoCliente = estadoClienteByEstadoCliente;
     }
 
-    public DireccionEntity getDireccionByDireccion() {
+    public Direccion getDireccionByDireccion() {
         return direccionByDireccion;
     }
 
-    public void setDireccionByDireccion(DireccionEntity direccionByDireccion) {
+    public void setDireccionByDireccion(Direccion direccionByDireccion) {
         this.direccionByDireccion = direccionByDireccion;
     }
 
-    public UsuarioEntity getUsuarioByUsuarioId() {
+    public Usuario getUsuarioByUsuarioId() {
         return usuarioByUsuarioId;
     }
 
-    public void setUsuarioByUsuarioId(UsuarioEntity usuarioByUsuarioId) {
+    public void setUsuarioByUsuarioId(Usuario usuarioByUsuarioId) {
         this.usuarioByUsuarioId = usuarioByUsuarioId;
     }
 
-    public PersonaEntity getPersonaByPersonaId() {
+    public Persona getPersonaByPersonaId() {
         return personaByPersonaId;
     }
 
-    public void setPersonaByPersonaId(PersonaEntity personaByPersonaId) {
+    public void setPersonaByPersonaId(Persona personaByPersonaId) {
         this.personaByPersonaId = personaByPersonaId;
     }
 
-    public RolClienteEntity getRolClienteByRolClienteId() {
+    public RolCliente getRolClienteByRolClienteId() {
         return rolClienteByRolClienteId;
     }
 
-    public void setRolClienteByRolClienteId(RolClienteEntity rolClienteByRolClienteId) {
+    public void setRolClienteByRolClienteId(RolCliente rolClienteByRolClienteId) {
         this.rolClienteByRolClienteId = rolClienteByRolClienteId;
     }
 

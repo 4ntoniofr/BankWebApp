@@ -1,8 +1,6 @@
 package es.taw.grupo25.service;
 
-import es.taw.grupo25.dto.CuentaBancaria;
 import es.taw.grupo25.dto.CuentaInterna;
-import es.taw.grupo25.dto.EstadoCuenta;
 import es.taw.grupo25.entity.*;
 import es.taw.grupo25.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;

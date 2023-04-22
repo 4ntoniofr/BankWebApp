@@ -1,11 +1,10 @@
 package es.taw.grupo25.service;
 
 import es.taw.grupo25.dto.CuentaInterna;
-import es.taw.grupo25.dto.Moneda;
 import es.taw.grupo25.dto.Transaccion;
 import es.taw.grupo25.entity.CuentaBancariaEntity;
-import es.taw.grupo25.entity.MonedaEntity;
 import es.taw.grupo25.entity.TransaccionEntity;
+import es.taw.grupo25.repository.ClienteRepository;
 import es.taw.grupo25.repository.CuentaBancariaRepository;
 import es.taw.grupo25.repository.TransaccionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +22,14 @@ public class TransaccionService {
     @Autowired
     protected CuentaBancariaRepository cuentaBancariaRepository;
 
+    @Autowired
+    protected ClienteRepository clienteRepository;
+
     public void guardarTransaccion(Transaccion transaccion){
         TransaccionEntity transaccionEntity = new TransaccionEntity();
         transaccionEntity.setFechaInstruccion(transaccion.getFechaInstruccion());
         transaccionEntity.setFechaEjecucion(transaccion.getFechaEjecucion());
         transaccionEntity.setPagosById(transaccion.getPagosById());
-        transaccionEntity.setClienteByCliente(transaccion.getClienteByCliente());
 
         CuentaBancariaEntity cuentaBancariaEntityOrigen = cuentaBancariaRepository.findById(transaccion.getCuentaBancariaByCuentaOrigen().getId()).orElse(null);
         transaccionEntity.setCuentaBancariaByCuentaOrigen(cuentaBancariaEntityOrigen);
@@ -37,6 +38,7 @@ public class TransaccionService {
         transaccionEntity.setCuentaBancariaByCuentaDestino(cuentaBancariaEntityDestino);
 
         transaccionRepository.save(transaccionEntity);
+        transaccion.setId(transaccionEntity.getId());
     }
 
     public List<Transaccion> findAllByIdCuenta(Integer id){

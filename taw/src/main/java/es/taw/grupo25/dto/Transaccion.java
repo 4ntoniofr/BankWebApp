@@ -1,10 +1,6 @@
 package es.taw.grupo25.dto;
-
-import es.taw.grupo25.entity.CambioDivisaEntity;
 import es.taw.grupo25.entity.ClienteEntity;
-import es.taw.grupo25.entity.CuentaBancariaEntity;
 import es.taw.grupo25.entity.PagoEntity;
-import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -17,6 +13,8 @@ public class Transaccion {
     private CuentaBancaria cuentaBancariaByCuentaOrigen;
     private CuentaBancaria cuentaBancariaByCuentaDestino;
     private ClienteEntity clienteByCliente;
+
+    private boolean isCambioDivisa;
 
     public Integer getId() {
         return id;
@@ -72,6 +70,14 @@ public class Transaccion {
 
     public void setClienteByCliente(ClienteEntity clienteByCliente) {
         this.clienteByCliente = clienteByCliente;
+    }
+
+    public boolean isCambioDivisa() {
+        return isCambioDivisa;
+    }
+
+    public void setCambioDivisa(boolean cambioDivisa) {
+        isCambioDivisa = cambioDivisa;
     }
 
     @Override

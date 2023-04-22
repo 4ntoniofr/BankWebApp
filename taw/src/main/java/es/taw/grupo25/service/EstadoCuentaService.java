@@ -17,6 +17,11 @@ public class EstadoCuentaService {
         return estado==null?null:estado.toDTO();
     }
 
+    public EstadoCuenta findByEstado(String estado){
+        EstadoCuentaEntity estadoCuentaEntity = estadoCuentaRepository.findByEstado(estado);
+        return estado==null?null:estadoCuentaEntity.toDTO();
+    }
+
     public EstadoCuentaEntity getEntity(EstadoCuenta estadoCuenta){
         EstadoCuentaEntity estadoCuentaEntity = new EstadoCuentaEntity();
 

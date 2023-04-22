@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.RolCliente;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -53,5 +54,12 @@ public class RolClienteEntity {
 
     public void setClientesById(List<ClienteEntity> clientesById) {
         this.clientesById = clientesById;
+    }
+
+    public RolCliente toDTO(){
+        RolCliente rolCliente = new RolCliente();
+        rolCliente.setId(this.id);
+        rolCliente.setRol(this.rol);
+        return rolCliente;
     }
 }
