@@ -114,6 +114,7 @@ public class clienteController {
                         List<Pago> pagos = pagoService.findByCuentaId(cuenta.getCuentaBancariaByCuentaBancaria().getId());
                         model.addAttribute("filtro", filtro);
                         model.addAttribute("pagos", pagos);
+                        model.addAttribute("iban", cuenta.getCuentaBancariaByCuentaBancaria().getIban());
                         urlto="cliente/operaciones";
                     }
                 }
@@ -280,7 +281,7 @@ public class clienteController {
      */
     private boolean isCorrect(CuentaBancaria cuenta, CuentaBancaria cuenta_destino, Pago pago, Model model, HttpSession session, Integer idCuenta){
         if(cuenta_destino!=null) {
-            if (cuenta.getCuentaInternasById().getCantidad() > pago.getCantidad()) {
+            if (cuenta.getCuentaInternasById().getCantidad() >= pago.getCantidad()) {
                 if (cuenta.getCuentaInternasById().getMonedaByMoneda().equals(cuenta_destino.getCuentaInternasById().getMonedaByMoneda())) {
                     if (cuenta.getCuentaInternasById().getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")) {
                         return true;

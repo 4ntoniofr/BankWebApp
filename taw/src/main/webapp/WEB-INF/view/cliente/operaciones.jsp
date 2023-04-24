@@ -11,6 +11,9 @@
 
     <body>
 
+    <%
+        String iban = (String) request.getAttribute("iban");
+    %>
 
     <h1>Mis Operaciones</h1>
 
@@ -30,6 +33,7 @@
 
     <table border="1">
         <tr>
+            <th>Tipo</th>
             <th>Fecha Instrucción</th>
             <th>Fecha Ejecución</th>
             <th>IBAN Origen</th>
@@ -42,6 +46,7 @@
 %>
 
         <tr>
+            <td><%=pago.getTransaccionByTransaccion().getCuentaBancariaByCuentaOrigen().getIban().equals(iban)?"PAGO":"INGRESO"%></td>
             <td><%=pago.getTransaccionByTransaccion().getFechaInstruccion()%></td>
             <td><%=pago.getTransaccionByTransaccion().getFechaEjecucion()%></td>
             <td><%=pago.getTransaccionByTransaccion().getCuentaBancariaByCuentaOrigen().getIban()%></td>
