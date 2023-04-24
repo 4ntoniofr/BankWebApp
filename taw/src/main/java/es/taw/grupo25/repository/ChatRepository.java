@@ -10,5 +10,5 @@ import java.util.List;
 public interface ChatRepository extends JpaRepository<ChatEntity, Integer> {
 
     @Query("select c from ChatEntity c where c.empleadoByEmpleadoId.id = :id")
-    public List<ChatEntity> findChatsByEmpleadoId(@Param("id") String id);
+    public List<ChatEntity> findChatsByEmpleadoId(@Param("id") Integer id);
 }
