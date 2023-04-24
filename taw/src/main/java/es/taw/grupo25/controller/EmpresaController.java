@@ -1,7 +1,9 @@
 package es.taw.grupo25.controller;
 
+import es.taw.grupo25.dto.EstadoCliente;
 import es.taw.grupo25.entity.*;
 import es.taw.grupo25.repository.*;
+import es.taw.grupo25.service.EstadoClienteService;
 import es.taw.grupo25.ui.FormularioRegistroAsociado;
 import es.taw.grupo25.ui.FormularioRegistroEmpresa;
 import jakarta.servlet.http.HttpSession;
@@ -26,7 +28,7 @@ public class EmpresaController {
     @Autowired
     private RolClienteRepository rolClienteRep;
     @Autowired
-    private EstadoClienteRepository estadoClienteRep;
+    private EstadoClienteService estadoClienteService;
     @Autowired
     private DireccionRepository direccionRep;
 
@@ -52,7 +54,7 @@ public class EmpresaController {
     @PostMapping("/registrar")
     public String registerEmpresa(@ModelAttribute("registroEmpresa") FormularioRegistroEmpresa registroEmpresa,
                                   HttpSession session){
-        EstadoClienteEntity estadoEmpresa = this.estadoClienteRep.findByEstado("ACTIVO");
+        EstadoCliente estadoEmpresa = this.estadoClienteService.findByEstado("ACTIVO");
         registroEmpresa.getClienteEmpresa().setEstadoClienteByEstadoCliente(estadoEmpresa);
         this.usuarioRep.save(registroEmpresa.getUsuarioEmpresa());
         this.direccionRep.save(registroEmpresa.getClienteEmpresa().getDireccionByDireccion());
@@ -60,7 +62,7 @@ public class EmpresaController {
         this.empresaRep.save(registroEmpresa.getEmpresa());
 
         RolClienteEntity rolCliente = this.rolClienteRep.findByRol("AUTORIZADO");
-        EstadoClienteEntity estadoAutorizado = this.estadoClienteRep.findByEstado("ACTIVO");
+        EstadoCliente estadoAutorizado = this.estadoClienteService.findByEstado("ACTIVO");
         registroEmpresa.getAsociadoEmpresa().getClienteAsociado().setRolClienteByRolClienteId(rolCliente);
         registroEmpresa.getAsociadoEmpresa().getClienteAsociado().setEstadoClienteByEstadoCliente(estadoAutorizado);
         registroEmpresa.getAsociadoEmpresa().getClienteAsociado().setEmpresaByEmpresaSocio(registroEmpresa.getEmpresa());
@@ -93,7 +95,7 @@ public class EmpresaController {
     public String addAsociado(@ModelAttribute("registroAsociado") FormularioRegistroAsociado registroAsociado,
                               HttpSession session){
         RolClienteEntity rolCliente = this.rolClienteRep.findByRol("AUTORIZADO");
-        EstadoClienteEntity estadoAutorizado = this.estadoClienteRep.findByEstado("ACTIVO");
+        EstadoClienteEntity estadoAutorizado = this.estadoClienteService.findByEstado("ACTIVO");
         registroAsociado.getClienteAsociado().setRolClienteByRolClienteId(rolCliente);
         registroAsociado.getClienteAsociado().setEstadoClienteByEstadoCliente(estadoAutorizado);
 
@@ -206,7 +208,7 @@ public class EmpresaController {
                 urlTo = "empresa/index";
                 model.addAttribute("error", "Cliente a bloquear perteneciente a otra empresa");
             }else{
-                bloqueado.setEstadoClienteByEstadoCliente(this.estadoClienteRep.findByEstado("BLOQUEADO"));
+                bloqueado.setEstadoClienteByEstadoCliente(this.estadoClienteService.findByEstado("BLOQUEADO"));
                 this.clienteRep.save(bloqueado);
             }
         }
@@ -224,7 +226,7 @@ public class EmpresaController {
             urlTo = "empresa/index";
             model.addAttribute("error", "Accion no permitida");
         }else{
-            cliente.setEstadoClienteByEstadoCliente(this.estadoClienteRep.findByEstado("SOLICITADO"));
+            cliente.setEstadoClienteByEstadoCliente(this.estadoClienteService.findByEstado("SOLICITADO"));
             this.clienteRep.save(cliente);
             session.setAttribute("cliente", cliente);
         }
