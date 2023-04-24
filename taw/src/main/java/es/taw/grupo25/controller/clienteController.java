@@ -236,38 +236,50 @@ public class clienteController {
         if(usuario==null){
             urlTo="redirect:/login";
         }else{
-            if(cuenta_destino!=null){
-                if(cuenta.getCuentaInternasById().getCantidad() > pago.getCantidad()){
-                    if(cuenta.getCuentaInternasById().getMonedaByMoneda().equals(cuenta_destino.getCuentaInternasById().getMonedaByMoneda())){
-                        if(cuenta.getCuentaInternasById().getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")){
-                            cuenta.getCuentaInternasById().setCantidad(cuenta.getCuentaInternasById().getCantidad()-pago.getCantidad());
-                            pago.getTransaccionByTransaccion().setCuentaBancariaByCuentaOrigen(cuenta);
+            if(isCorrect(cuenta, cuenta_destino, pago, model, session, idCuenta)){
+                cuenta.getCuentaInternasById().setCantidad(cuenta.getCuentaInternasById().getCantidad()-pago.getCantidad());
+                pago.getTransaccionByTransaccion().setCuentaBancariaByCuentaOrigen(cuenta);
 
-                            pago.getTransaccionByTransaccion().setFechaInstruccion(Timestamp.valueOf(LocalDateTime.now()));
-                            pago.getTransaccionByTransaccion().setFechaEjecucion(Timestamp.valueOf(LocalDateTime.now()));
+                pago.getTransaccionByTransaccion().setFechaInstruccion(Timestamp.valueOf(LocalDateTime.now()));
+                pago.getTransaccionByTransaccion().setFechaEjecucion(Timestamp.valueOf(LocalDateTime.now()));
 
-                            cuenta_destino.getCuentaInternasById().setCantidad(cuenta_destino.getCuentaInternasById().getCantidad()+pago.getCantidad());
-                            pago.getTransaccionByTransaccion().setCuentaBancariaByCuentaDestino(cuenta_destino);
+                cuenta_destino.getCuentaInternasById().setCantidad(cuenta_destino.getCuentaInternasById().getCantidad()+pago.getCantidad());
+                pago.getTransaccionByTransaccion().setCuentaBancariaByCuentaDestino(cuenta_destino);
 
-                            cuentaBancariaService.guardarCuenta(cuenta_destino);
-                            cuentaBancariaService.guardarCuenta(cuenta);
-                            transaccionService.guardarTransaccion(pago.getTransaccionByTransaccion());
-                            pagoService.guardarPago(pago);
-                        }
-                    }else{
-                        model.addAttribute("errorTransferencia", "ERROR: Ambas cuentas deben usar la misma divisa.");
-                        return hacerTransferencia(model, session, idCuenta);
-                    }
-                }else{
-                    model.addAttribute("errorTransferencia", "ERROR: No tienes saldo suficiente");
-                    return hacerTransferencia(model, session, idCuenta);
-                }
-            }else{
-                model.addAttribute("errorTransferencia", "ERROR: El iban introducido no existe.");
-                return hacerTransferencia(model, session, idCuenta);
+                cuentaBancariaService.guardarCuenta(cuenta_destino);
+                cuentaBancariaService.guardarCuenta(cuenta);
+                transaccionService.guardarTransaccion(pago.getTransaccionByTransaccion());
+                pagoService.guardarPago(pago);
             }
         }
         return urlTo;
+    }
+
+    /*
+        Helper method for post transferencia
+     */
+    private boolean isCorrect(CuentaBancaria cuenta, CuentaBancaria cuenta_destino, Pago pago, Model model, HttpSession session, Integer idCuenta){
+        if(cuenta_destino!=null) {
+            if (cuenta.getCuentaInternasById().getCantidad() > pago.getCantidad()) {
+                if (cuenta.getCuentaInternasById().getMonedaByMoneda().equals(cuenta_destino.getCuentaInternasById().getMonedaByMoneda())) {
+                    if (cuenta.getCuentaInternasById().getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")) {
+                        return true;
+                    } else {
+                        model.addAttribute("errorTransferencia", "ERROR: La cuenta no está activa.");
+                        return false;
+                    }
+                } else {
+                    model.addAttribute("errorTransferencia", "ERROR: Ambas cuentas deben usar la misma divisa.");
+                    return false;
+                }
+            } else {
+                model.addAttribute("errorTransferencia", "ERROR: No tienes saldo suficiente");
+                return false;
+            }
+        } else{
+            model.addAttribute("errorTransferencia", "ERROR: El iban introducido no existe.");
+            return false;
+        }
     }
 
     @GetMapping("/desbloqueo")
