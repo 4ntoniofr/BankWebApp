@@ -19,9 +19,6 @@ public class CuentaInternaEntity {
     @Basic
     @Column(name = "CANTIDAD", nullable = false, precision = 0)
     private Double cantidad;
-    @Basic
-    @Column(name = "BLOQUEADA", nullable = false)
-    private Boolean bloqueada;
     @OneToMany(mappedBy = "cuentaInternaByCuentaInternaId")
     private List<AutorizacionEntity> autorizacionsById;
     @OneToOne
@@ -61,25 +58,17 @@ public class CuentaInternaEntity {
         this.cantidad = cantidad;
     }
 
-    public Boolean getBloqueada() {
-        return bloqueada;
-    }
-
-    public void setBloqueada(Boolean bloqueada) {
-        this.bloqueada = bloqueada;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CuentaInternaEntity that = (CuentaInternaEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(pais, that.pais) && Objects.equals(cantidad, that.cantidad) && Objects.equals(bloqueada, that.bloqueada);
+        return Objects.equals(id, that.id) && Objects.equals(pais, that.pais) && Objects.equals(cantidad, that.cantidad);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, pais, cantidad, bloqueada);
+        return Objects.hash(id, pais, cantidad);
     }
 
     public List<AutorizacionEntity> getAutorizacionsById() {
@@ -129,7 +118,6 @@ public class CuentaInternaEntity {
         cuentaInterna.setId(this.id);
         cuentaInterna.setPais(this.pais);
         cuentaInterna.setCantidad(this.cantidad);
-        cuentaInterna.setBloqueada(this.bloqueada);
         cuentaInterna.setCuentaBancariaByCuentaBancaria(this.cuentaBancariaByCuentaBancaria.toDTO());
         cuentaInterna.setClienteByPropietario(this.clienteByPropietario.toDTO());
         cuentaInterna.setEstadoCuentaByEstadoCuenta(this.estadoCuentaByEstadoCuenta.toDTO());

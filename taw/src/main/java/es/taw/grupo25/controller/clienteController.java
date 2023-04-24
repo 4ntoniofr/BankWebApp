@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class clienteController {
     private List<String> paises = Arrays.asList("España", "Estados Unidos", "Inglaterra");
 
-
     @Autowired
     private PersonaService personaService;
 
@@ -69,6 +68,10 @@ public class clienteController {
         String urlto = "cliente/cliente";
         if(usuario==null){
             urlto="redirect:/login";
+        }else{
+            if(usuario.getClientesById().getEmpleadoByAutorizador()==null){
+                model.addAttribute("error", "Debe esperar a que un gestor autorize este usuario.");
+            }
         }
         return urlto;
     }
@@ -80,8 +83,12 @@ public class clienteController {
         if(usuario == null){
             urlto = "redirect:/login";
         }else{
-            Persona persona = personaService.findById(usuario.getClientesById().getPersonaByPersonaId().getId());
-            model.addAttribute("persona", persona);
+            if(isAutorizado(usuario)){
+                Persona persona = personaService.findById(usuario.getClientesById().getPersonaByPersonaId().getId());
+                model.addAttribute("persona", persona);
+            }else{
+                urlto = "redirect:/cliente";
+            }
         }
         return urlto;
     }
@@ -99,15 +106,19 @@ public class clienteController {
         if(usuario == null){
             urlto = "redirect:/login";
         }else{
-            CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
-            if(cuenta != null){
-                if(cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId()==usuario.getId()){
-                    FiltroOperaciones filtro = new FiltroOperaciones(cuenta.getCuentaBancariaByCuentaBancaria().getId());
-                    List<Transaccion> transacciones =(transaccionService.findAllByIdCuenta(cuenta.getCuentaBancariaByCuentaBancaria().getId()));
-                    model.addAttribute("filtro", filtro);
-                    model.addAttribute("transacciones", transacciones);
-                    urlto="cliente/operaciones";
+            if(isAutorizado(usuario)){
+                CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
+                if(cuenta != null){
+                    if(cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId()==usuario.getId()){
+                        FiltroOperaciones filtro = new FiltroOperaciones(cuenta.getCuentaBancariaByCuentaBancaria().getId());
+                        List<Pago> pagos = pagoService.findByCuentaId(cuenta.getCuentaBancariaByCuentaBancaria().getId());
+                        model.addAttribute("filtro", filtro);
+                        model.addAttribute("pagos", pagos);
+                        urlto="cliente/operaciones";
+                    }
                 }
+            }else{
+                urlto = "redirect:/cliente";
             }
         }
         return urlto;
@@ -116,7 +127,7 @@ public class clienteController {
     @PostMapping("/operaciones")
     public String aplicarFiltroOperaciones(@ModelAttribute("filtro") FiltroOperaciones filtro ,Model model,HttpSession session){
         String urlTo="/login";
-        List<Transaccion> transacciones = transaccionService.findAllByIdCuenta(filtro.getIdCuenta());
+        List<Pago> pagos = pagoService.findByCuentaId(filtro.getIdCuenta());
 
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         if(usuario==null){
@@ -127,18 +138,18 @@ public class clienteController {
 
             }else{
                 if(!filtro.getIban().isEmpty()){
-                    transacciones = transacciones.stream().filter(obj -> obj.getCuentaBancariaByCuentaDestino().getIban().contains(filtro.getIban())).collect(Collectors.toList());
+                    pagos = pagos.stream().filter(obj -> obj.getTransaccionByTransaccion().getCuentaBancariaByCuentaDestino().getIban().contains(filtro.getIban())).collect(Collectors.toList());
                 }
                 if(!filtro.getFechaInstruccion().isEmpty()){
                     LocalDate fecha = LocalDate.parse(filtro.getFechaInstruccion());
-                    transacciones = transacciones.stream().filter(obj -> obj.getFechaInstruccion().toLocalDateTime().toLocalDate().equals(fecha)).collect(Collectors.toList());
+                    pagos = pagos.stream().filter(obj -> obj.getTransaccionByTransaccion().getFechaInstruccion().toLocalDateTime().toLocalDate().equals(fecha)).collect(Collectors.toList());
                 }
                 if(!filtro.getFechaEjecucion().isEmpty()){
                     LocalDate fecha = LocalDate.parse(filtro.getFechaEjecucion());
-                    transacciones = transacciones.stream().filter(obj -> obj.getFechaEjecucion().toLocalDateTime().toLocalDate().equals(fecha)).collect(Collectors.toList());
+                    pagos = pagos.stream().filter(obj -> obj.getTransaccionByTransaccion().getFechaEjecucion().toLocalDateTime().toLocalDate().equals(fecha)).collect(Collectors.toList());
                 }
             }
-            model.addAttribute("transacciones", transacciones);
+            model.addAttribute("pagos", pagos);
         }
         return urlTo;
     }
@@ -150,18 +161,23 @@ public class clienteController {
         if(usuario==null){
             urlTo="redirect:/login";
         }else{
-            CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
-            if(cuenta != null){
-                if(cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId()){
-                    if(cuenta.getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")){
-                        model.addAttribute("cuenta", cuenta);
-                        model.addAttribute("monedas", monedaService.findAll());
-                        urlTo = "cliente/divisas";
-                    }else{
-                        model.addAttribute("error", "No se pueden hacer cambios de divisa en cuentas que no esten Activas.");
-                        urlTo="/cliente/divisas";
+            if(isAutorizado(usuario)){
+                CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
+                if(cuenta != null){
+                    if(cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId()){
+                        if(cuenta.getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")){
+                            model.addAttribute("cuenta", cuenta);
+                            model.addAttribute("monedas", monedaService.findAll());
+                            model.addAttribute("cambioDivisas", cambioDivisaService.findByCuentaId(cuenta.getCuentaBancariaByCuentaBancaria().getId()));
+                            urlTo = "cliente/divisas";
+                        }else{
+                            model.addAttribute("error", "No se pueden hacer cambios de divisa en cuentas que no esten Activas.");
+                            urlTo="/cliente/divisas";
+                        }
                     }
                 }
+            }else{
+                urlTo = "redirect:/cliente";
             }
         }
         return urlTo;
@@ -210,18 +226,22 @@ public class clienteController {
         if(usuario==null){
             urlTo="redirect:/login";
         }else{
-            CuentaBancaria cuenta = cuentaBancariaService.findById(idCuenta);
-            if(cuenta!=null){
-                if(cuenta.getCuentaInternasById().getClienteByPropietario().getUsuarioByUsuarioId().getId()==usuario.getId()){
-                    if(cuenta.getCuentaInternasById().getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")){
-                        model.addAttribute("pago", new Pago());
-                        model.addAttribute("monedas", monedaService.findAll());
-                        urlTo = "cliente/transferencia";
-                    }else{
-                        model.addAttribute("error", "No se pueden hacer transferencias en cuentas que no esten Activas.");
-                        urlTo="/cliente/transferencia";
+            if(isAutorizado(usuario)){
+                CuentaBancaria cuenta = cuentaBancariaService.findById(idCuenta);
+                if(cuenta!=null){
+                    if(cuenta.getCuentaInternasById().getClienteByPropietario().getUsuarioByUsuarioId().getId()==usuario.getId()){
+                        if(cuenta.getCuentaInternasById().getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")){
+                            model.addAttribute("pago", new Pago());
+                            model.addAttribute("monedas", monedaService.findAll());
+                            urlTo = "cliente/transferencia";
+                        }else{
+                            model.addAttribute("error", "No se pueden hacer transferencias en cuentas que no esten Activas.");
+                            urlTo="/cliente/transferencia";
+                        }
                     }
                 }
+            }else{
+                urlTo = "redirect:/cliente";
             }
         }
         return urlTo;
@@ -236,38 +256,50 @@ public class clienteController {
         if(usuario==null){
             urlTo="redirect:/login";
         }else{
-            if(cuenta_destino!=null){
-                if(cuenta.getCuentaInternasById().getCantidad() > pago.getCantidad()){
-                    if(cuenta.getCuentaInternasById().getMonedaByMoneda().equals(cuenta_destino.getCuentaInternasById().getMonedaByMoneda())){
-                        if(cuenta.getCuentaInternasById().getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")){
-                            cuenta.getCuentaInternasById().setCantidad(cuenta.getCuentaInternasById().getCantidad()-pago.getCantidad());
-                            pago.getTransaccionByTransaccion().setCuentaBancariaByCuentaOrigen(cuenta);
+            if(isCorrect(cuenta, cuenta_destino, pago, model, session, idCuenta)){
+                cuenta.getCuentaInternasById().setCantidad(cuenta.getCuentaInternasById().getCantidad()-pago.getCantidad());
+                pago.getTransaccionByTransaccion().setCuentaBancariaByCuentaOrigen(cuenta);
 
-                            pago.getTransaccionByTransaccion().setFechaInstruccion(Timestamp.valueOf(LocalDateTime.now()));
-                            pago.getTransaccionByTransaccion().setFechaEjecucion(Timestamp.valueOf(LocalDateTime.now()));
+                pago.getTransaccionByTransaccion().setFechaInstruccion(Timestamp.valueOf(LocalDateTime.now()));
+                pago.getTransaccionByTransaccion().setFechaEjecucion(Timestamp.valueOf(LocalDateTime.now()));
 
-                            cuenta_destino.getCuentaInternasById().setCantidad(cuenta_destino.getCuentaInternasById().getCantidad()+pago.getCantidad());
-                            pago.getTransaccionByTransaccion().setCuentaBancariaByCuentaDestino(cuenta_destino);
+                cuenta_destino.getCuentaInternasById().setCantidad(cuenta_destino.getCuentaInternasById().getCantidad()+pago.getCantidad());
+                pago.getTransaccionByTransaccion().setCuentaBancariaByCuentaDestino(cuenta_destino);
 
-                            cuentaBancariaService.guardarCuenta(cuenta_destino);
-                            cuentaBancariaService.guardarCuenta(cuenta);
-                            transaccionService.guardarTransaccion(pago.getTransaccionByTransaccion());
-                            pagoService.guardarPago(pago);
-                        }
-                    }else{
-                        model.addAttribute("errorTransferencia", "ERROR: Ambas cuentas deben usar la misma divisa.");
-                        return hacerTransferencia(model, session, idCuenta);
-                    }
-                }else{
-                    model.addAttribute("errorTransferencia", "ERROR: No tienes saldo suficiente");
-                    return hacerTransferencia(model, session, idCuenta);
-                }
-            }else{
-                model.addAttribute("errorTransferencia", "ERROR: El iban introducido no existe.");
-                return hacerTransferencia(model, session, idCuenta);
+                cuentaBancariaService.guardarCuenta(cuenta_destino);
+                cuentaBancariaService.guardarCuenta(cuenta);
+                transaccionService.guardarTransaccion(pago.getTransaccionByTransaccion());
+                pagoService.guardarPago(pago);
             }
         }
         return urlTo;
+    }
+
+    /*
+        Helper method for post transferencia
+     */
+    private boolean isCorrect(CuentaBancaria cuenta, CuentaBancaria cuenta_destino, Pago pago, Model model, HttpSession session, Integer idCuenta){
+        if(cuenta_destino!=null) {
+            if (cuenta.getCuentaInternasById().getCantidad() > pago.getCantidad()) {
+                if (cuenta.getCuentaInternasById().getMonedaByMoneda().equals(cuenta_destino.getCuentaInternasById().getMonedaByMoneda())) {
+                    if (cuenta.getCuentaInternasById().getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")) {
+                        return true;
+                    } else {
+                        model.addAttribute("errorTransferencia", "ERROR: La cuenta no está activa.");
+                        return false;
+                    }
+                } else {
+                    model.addAttribute("errorTransferencia", "ERROR: Ambas cuentas deben usar la misma divisa.");
+                    return false;
+                }
+            } else {
+                model.addAttribute("errorTransferencia", "ERROR: No tienes saldo suficiente");
+                return false;
+            }
+        } else{
+            model.addAttribute("errorTransferencia", "ERROR: El iban introducido no existe.");
+            return false;
+        }
     }
 
     @GetMapping("/desbloqueo")
@@ -277,12 +309,16 @@ public class clienteController {
         if(usuario==null){
             urlTo="redirect:/login";
         }else{
-            CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
-            if(cuenta!=null){
-                if(cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId()==usuario.getId()){
-                    model.addAttribute("cuenta", cuenta);
-                    urlTo = "cliente/desbloqueo";
+            if(isAutorizado(usuario)){
+                CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
+                if(cuenta!=null){
+                    if(cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId()==usuario.getId()){
+                        model.addAttribute("cuenta", cuenta);
+                        urlTo = "cliente/desbloqueo";
+                    }
                 }
+            }else{
+                urlTo = "redirect:/cliente";
             }
         }
         return urlTo;
@@ -344,20 +380,35 @@ public class clienteController {
         if(usuario == null){
             urlto = "redirect:/login";
         }else{
-            List<CuentaInterna> cuentas = cuentaInternaService.findByClienteId(usuario.getClientesById().getId());
-            List<Moneda> monedas = monedaService.findAll();
-            model.addAttribute("cuentas", cuentas);
-            model.addAttribute("monedas", monedas);
+            if(isAutorizado(usuario)){
+                List<CuentaInterna> cuentas = cuentaInternaService.findByClienteId(usuario.getClientesById().getId());
+                List<Moneda> monedas = monedaService.findAll();
+                model.addAttribute("cuentas", cuentas);
+                model.addAttribute("monedas", monedas);
+            }else{
+                urlto = "redirect:/cliente";
+            }
         }
         return urlto;
     }
 
     @GetMapping("/nuevaCuenta")
-    public String nuevaCuenta(Model model){
-        model.addAttribute("cuenta", new CuentaInterna());
-        model.addAttribute("monedas", monedaService.findAll());
-        model.addAttribute("paises", paises);
-        return "cliente/nuevaCuenta";
+    public String nuevaCuenta(Model model, HttpSession session){
+        String urlto = "cliente/cuentas";
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if(usuario == null) {
+            urlto = "redirect:/login";
+        }else{
+            if(isAutorizado(usuario)){
+                model.addAttribute("cuenta", new CuentaInterna());
+                model.addAttribute("monedas", monedaService.findAll());
+                model.addAttribute("paises", paises);
+                urlto = "cliente/nuevaCuenta";
+            }else{
+                urlto = "redirect:/cliente";
+            }
+        }
+        return urlto;
     }
 
     @PostMapping("/nuevaCuenta")
@@ -367,7 +418,6 @@ public class clienteController {
         cuenta.setEstadoCuentaByEstadoCuenta(estado);
         cuenta.setClienteByPropietario(usuario.getClientesById());
         cuenta.getCuentaBancariaByCuentaBancaria().setIban(getRandomIban(cuenta.getPais()));
-        cuenta.setBloqueada(false);
 
         cuentaBancariaService.guardarCuenta(cuenta.getCuentaBancariaByCuentaBancaria());
         cuentaInternaService.guardarCuenta(cuenta);
@@ -387,6 +437,10 @@ public class clienteController {
 
     private String getCoutryCode(String country){
         return "XX";
+    }
+
+    private boolean isAutorizado(Usuario usuario){
+        return usuario.getClientesById().getEmpleadoByAutorizador()!=null;
     }
 
     @GetMapping("/logout")

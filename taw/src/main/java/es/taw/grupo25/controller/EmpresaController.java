@@ -1,7 +1,9 @@
 package es.taw.grupo25.controller;
 
+import es.taw.grupo25.dto.EstadoCliente;
 import es.taw.grupo25.entity.*;
 import es.taw.grupo25.repository.*;
+import es.taw.grupo25.service.EstadoClienteService;
 import es.taw.grupo25.ui.FormularioRegistroAsociado;
 import es.taw.grupo25.ui.FormularioRegistroEmpresa;
 import jakarta.servlet.http.HttpSession;
@@ -26,9 +28,11 @@ public class EmpresaController {
     @Autowired
     private RolClienteRepository rolClienteRep;
     @Autowired
-    private EstadoClienteRepository estadoClienteRep;
+    private EstadoClienteService estadoClienteService;
     @Autowired
     private DireccionRepository direccionRep;
+    @Autowired
+    private EstadoClienteRepository estadoClienteRep;
 
     @GetMapping("/")
     public String showOptions(){

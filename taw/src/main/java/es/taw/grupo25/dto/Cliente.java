@@ -17,6 +17,8 @@ public class Cliente {
     private RolCliente rolClienteByRolClienteId;
     private List<TransaccionEntity> transaccionsById;
 
+    private EmpleadoEntity empleadoByAutorizador;
+
     public Integer getId() {
         return id;
     }
@@ -87,6 +89,14 @@ public class Cliente {
 
     public void setTransaccionsById(List<TransaccionEntity> transaccionsById) {
         this.transaccionsById = transaccionsById;
+    }
+
+    public EmpleadoEntity getEmpleadoByAutorizador() {
+        return empleadoByAutorizador;
+    }
+
+    public void setEmpleadoByAutorizador(EmpleadoEntity empleadoByAutorizador) {
+        this.empleadoByAutorizador = empleadoByAutorizador;
     }
 
     @Override
