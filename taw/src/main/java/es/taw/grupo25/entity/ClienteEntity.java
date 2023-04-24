@@ -190,6 +190,7 @@ public class ClienteEntity {
         cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO());
         cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId.toDTO());
         cliente.setTransaccionsById(this.transaccionsById);
+        cliente.setEmpleadoByAutorizador(this.empleadoByAutorizador);
         return cliente;
     }
 }

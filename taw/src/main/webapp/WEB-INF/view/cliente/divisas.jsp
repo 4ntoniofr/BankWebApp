@@ -1,5 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.taw.grupo25.dto.CuentaInterna" %>
+<%@ page import="java.util.List" %>
+<%@ page import="es.taw.grupo25.dto.CambioDivisa" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -38,12 +40,39 @@
         <form:button>Realizar Cambio</form:button>
     </form:form>
 
+    <h2>Antiguos cambios de divisa</h2>
+
+    <table border="1">
+        <tr>
+            <th>Fecha Instrucción</th>
+            <th>Fecha Ejecución</th>
+            <th>Moneda Anterior</th>
+            <th>Moneda Posterior</th>
+        </tr>
+
+    <%
+        List<CambioDivisa> cambioDivisas = (List<CambioDivisa>) request.getAttribute("cambioDivisas");
+        for(CambioDivisa cambio : cambioDivisas){
+    %>
+
+        <tr>
+            <td><%=cambio.getTransaccionByTransaccion().getFechaInstruccion()%></td>
+            <td><%=cambio.getTransaccionByTransaccion().getFechaEjecucion()%></td>
+            <td><%=cambio.getMonedaByMonedaCompra().getMoneda()%></td>
+            <td><%=cambio.getMonedaByMonedaVenta().getMoneda()%></td>
+        </tr>
+
+    <%
+        }
+    %>
+
+    </table>
 <%
     } else{
 
 %>
 
-    <h2>No hay ninguna cuenta vinculada a este usuario</h2>
+    <h2>No existe la cuenta</h2>
 
 <%
         }
