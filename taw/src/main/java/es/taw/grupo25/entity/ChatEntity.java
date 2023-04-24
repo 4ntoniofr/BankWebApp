@@ -2,6 +2,7 @@ package es.taw.grupo25.entity;
 
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,6 +19,9 @@ public class ChatEntity {
     @ManyToOne
     @JoinColumn(name = "CLIENTE_ID", referencedColumnName = "ID", nullable = false)
     private ClienteEntity clienteByClienteId;
+    @Basic
+    @Column(name = "FECHA_CIERRE")
+    private Timestamp fechaCierre;
     @OneToMany(mappedBy = "chatByChat")
     private List<MensajeEntity> mensajesById;
 
@@ -48,6 +52,14 @@ public class ChatEntity {
 
     public void setEmpleadoByEmpleadoId(EmpleadoEntity empleadoByEmpleadoId) {
         this.empleadoByEmpleadoId = empleadoByEmpleadoId;
+    }
+
+    public Timestamp getFechaCierre() {
+        return fechaCierre;
+    }
+
+    public void setFechaCierre(Timestamp fechaCierre) {
+        this.fechaCierre = fechaCierre;
     }
 
     public ClienteEntity getClienteByClienteId() {

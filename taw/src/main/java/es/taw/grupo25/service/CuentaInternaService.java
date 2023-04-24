@@ -39,7 +39,6 @@ public class CuentaInternaService {
         cuentaInternaEntity.setId(cuentaInterna.getId());
         cuentaInternaEntity.setPais(cuentaInterna.getPais());
         cuentaInternaEntity.setCantidad(cuentaInterna.getCantidad());
-        cuentaInternaEntity.setBloqueada(cuentaInterna.getBloqueada());
 
         EstadoCuentaEntity estadoCuenta = estadoCuentaRepository.findById(cuentaInterna.getEstadoCuentaByEstadoCuenta().getId()).orElse(null);
         cuentaInternaEntity.setEstadoCuentaByEstadoCuenta(estadoCuenta);
