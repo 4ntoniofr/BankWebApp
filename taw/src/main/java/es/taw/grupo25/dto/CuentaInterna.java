@@ -5,7 +5,6 @@ public class CuentaInterna {
     private Integer id;
     private String pais;
     private Double cantidad;
-    private Boolean bloqueada;
     private CuentaBancaria cuentaBancariaByCuentaBancaria;
     private Cliente clienteByPropietario;
     private EstadoCuenta estadoCuentaByEstadoCuenta;
@@ -33,14 +32,6 @@ public class CuentaInterna {
 
     public void setCantidad(Double cantidad) {
         this.cantidad = cantidad;
-    }
-
-    public Boolean getBloqueada() {
-        return bloqueada;
-    }
-
-    public void setBloqueada(Boolean bloqueada) {
-        this.bloqueada = bloqueada;
     }
 
     public CuentaBancaria getCuentaBancariaByCuentaBancaria() {
@@ -80,11 +71,11 @@ public class CuentaInterna {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CuentaInterna that = (CuentaInterna) o;
-        return id.equals(that.id) && pais.equals(that.pais) && cantidad.equals(that.cantidad) && bloqueada.equals(that.bloqueada) && cuentaBancariaByCuentaBancaria.equals(that.cuentaBancariaByCuentaBancaria) && clienteByPropietario.equals(that.clienteByPropietario) && estadoCuentaByEstadoCuenta.equals(that.estadoCuentaByEstadoCuenta) && monedaByMoneda.equals(that.monedaByMoneda);
+        return id.equals(that.id) && pais.equals(that.pais) && cantidad.equals(that.cantidad) && cuentaBancariaByCuentaBancaria.equals(that.cuentaBancariaByCuentaBancaria) && clienteByPropietario.equals(that.clienteByPropietario) && estadoCuentaByEstadoCuenta.equals(that.estadoCuentaByEstadoCuenta) && monedaByMoneda.equals(that.monedaByMoneda);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, pais, cantidad, bloqueada, cuentaBancariaByCuentaBancaria, clienteByPropietario, estadoCuentaByEstadoCuenta, monedaByMoneda);
+        return Objects.hash(id, pais, cantidad, cuentaBancariaByCuentaBancaria, clienteByPropietario, estadoCuentaByEstadoCuenta, monedaByMoneda);
     }
 }
