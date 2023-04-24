@@ -32,7 +32,6 @@
         <form:hidden path="id"></form:hidden>
         <form:hidden path="pais"></form:hidden>
         <form:hidden path="cantidad"></form:hidden>
-        <form:hidden path="bloqueada"></form:hidden>
         <form:hidden path="cuentaBancariaByCuentaBancaria.iban"></form:hidden>
         <form:hidden path="clienteByPropietario.id"></form:hidden>
         <form:hidden path="estadoCuentaByEstadoCuenta.id"></form:hidden>
