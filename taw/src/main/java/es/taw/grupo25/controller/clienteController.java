@@ -367,7 +367,6 @@ public class clienteController {
         cuenta.setEstadoCuentaByEstadoCuenta(estado);
         cuenta.setClienteByPropietario(usuario.getClientesById());
         cuenta.getCuentaBancariaByCuentaBancaria().setIban(getRandomIban(cuenta.getPais()));
-        cuenta.setBloqueada(false);
 
         cuentaBancariaService.guardarCuenta(cuenta.getCuentaBancariaByCuentaBancaria());
         cuentaInternaService.guardarCuenta(cuenta);

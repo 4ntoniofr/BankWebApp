@@ -125,7 +125,6 @@ public class GestorController {
         EstadoCuentaEntity estadoCuenta = this.estadoCuentaRepository.findByEstado("ACTIVA");
         cuentaInterna.setEstadoCuentaByEstadoCuenta(estadoCuenta);
 
-        cuentaInterna.setBloqueada(false);
         cuentaInterna.setCantidad(0.0);
 
         EmpleadoEntity gestor = usuario.getEmpleadosById();
