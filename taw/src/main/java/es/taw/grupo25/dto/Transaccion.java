@@ -2,10 +2,11 @@ package es.taw.grupo25.dto;
 import es.taw.grupo25.entity.ClienteEntity;
 import es.taw.grupo25.entity.PagoEntity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class Transaccion {
+public class Transaccion implements Serializable {
     private Integer id;
     private Timestamp fechaInstruccion;
     private Timestamp fechaEjecucion;

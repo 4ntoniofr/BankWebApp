@@ -1,13 +1,18 @@
 package es.taw.grupo25.dto;
+import es.taw.grupo25.entity.EmpleadoEntity;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class Usuario {
+public class Usuario implements Serializable {
     private Integer id;
     private String usuario;
     private String password;
     private Cliente clientesById;
     private Date fechaRegistro;
+    private Empleado empleadosById;
+
 
     public Integer getId() {
         return id;
@@ -47,6 +52,14 @@ public class Usuario {
 
     public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public Empleado getEmpleadosById() {
+        return empleadosById;
+    }
+
+    public void setEmpleadosById(Empleado empleadosById) {
+        this.empleadosById = empleadosById;
     }
 
     @Override

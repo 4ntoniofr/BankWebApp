@@ -1,8 +1,9 @@
 package es.taw.grupo25.dto;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Direccion {
+public class Direccion implements Serializable {
     private Integer id;
     private String calle;
     private Integer numero;

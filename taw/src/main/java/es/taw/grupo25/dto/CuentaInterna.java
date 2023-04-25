@@ -1,14 +1,22 @@
 package es.taw.grupo25.dto;
+
+import es.taw.grupo25.entity.MonedaEntity;
+
+import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
-public class CuentaInterna {
+public class CuentaInterna implements Serializable {
     private Integer id;
     private String pais;
     private Double cantidad;
     private CuentaBancaria cuentaBancariaByCuentaBancaria;
     private Cliente clienteByPropietario;
     private EstadoCuenta estadoCuentaByEstadoCuenta;
-    private Integer monedaByMoneda;
+    private Moneda monedaByMoneda;
+
+    private List<Autorizacion> autorizacionsById;
+
 
     public Integer getId() {
         return id;
@@ -58,12 +66,20 @@ public class CuentaInterna {
         this.estadoCuentaByEstadoCuenta = estadoCuentaByEstadoCuenta;
     }
 
-    public Integer getMonedaByMoneda() {
+    public Moneda getMonedaByMoneda() {
         return monedaByMoneda;
     }
 
-    public void setMonedaByMoneda(Integer monedaByMoneda) {
+    public void setMonedaByMoneda(Moneda monedaByMoneda) {
         this.monedaByMoneda = monedaByMoneda;
+    }
+
+    public List<Autorizacion> getAutorizacionsById() {
+        return autorizacionsById;
+    }
+
+    public void setAutorizacionsById(List<Autorizacion> autorizacionsById) {
+        this.autorizacionsById = autorizacionsById;
     }
 
     @Override

@@ -1,8 +1,9 @@
 package es.taw.grupo25.dto;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class EstadoCuenta {
+public class EstadoCuenta implements Serializable {
     private Integer id;
     private String estado;
 

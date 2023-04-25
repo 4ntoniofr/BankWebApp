@@ -3,10 +3,11 @@ package es.taw.grupo25.dto;
 import es.taw.grupo25.entity.ClienteEntity;
 import es.taw.grupo25.entity.EmpleadoEntity;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Objects;
 
-public class Persona {
+public class Persona implements Serializable {
     private Integer id;
     private String dni;
     private String nombre;

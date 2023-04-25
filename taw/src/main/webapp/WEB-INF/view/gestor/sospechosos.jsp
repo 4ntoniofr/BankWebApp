@@ -1,10 +1,10 @@
 <%@ page import="java.util.List" %>
-<%@ page import="es.taw.grupo25.entity.ClienteEntity" %>
+<%@ page import="es.taw.grupo25.dto.Cliente" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    List<ClienteEntity> personas = (List<ClienteEntity>) request.getAttribute("personas");
-    List<ClienteEntity> empresas = (List<ClienteEntity>) request.getAttribute("empresas");
+    List<Cliente> personas = (List<Cliente>) request.getAttribute("personas");
+    List<Cliente> empresas = (List<Cliente>) request.getAttribute("empresas");
 %>
 
 <html>
@@ -28,7 +28,7 @@
     </tr>
 
     <%
-        for (ClienteEntity persona : personas) {
+        for (Cliente persona : personas) {
     %>
 
     <tr>
@@ -48,7 +48,7 @@
         <td><%= persona.getDireccionByDireccion().getCalle() + " " + persona.getDireccionByDireccion().getNumero() + ", " +
                 persona.getDireccionByDireccion().getCiudad() + " (" + persona.getDireccionByDireccion().getPais() + ")" %>
         </td>
-        <td><a href="/gestor/desactivar?id=<%= persona.getId() %>&urlto=sospechosos">Desactivar cuentas</a></td>
+        <td><a href="/gestor/desactivar/<%= persona.getId() %>/sospechosos">Desactivar cuentas</a></td>
     </tr>
 
 

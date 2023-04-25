@@ -1,21 +1,27 @@
 package es.taw.grupo25.dto;
 
-import es.taw.grupo25.entity.*;
 
+import es.taw.grupo25.entity.CuentaInternaEntity;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class Cliente {
+public class Cliente implements Serializable {
     private Integer id;
     private Date fechaInicio;
-    private List<ChatEntity> chatsById;
     private EstadoCliente estadoClienteByEstadoCliente;
     private Direccion direccionByDireccion;
     private Usuario usuarioByUsuarioId;
     private Persona personaByPersonaId;
     private RolCliente rolClienteByRolClienteId;
-    private List<TransaccionEntity> transaccionsById;
+    private Empresa empresasById;
+
+    private List<CuentaInterna> cuentaInternasById;
+
+    private Empleado empleadoByAutorizador;
 
     public Integer getId() {
         return id;
@@ -33,13 +39,6 @@ public class Cliente {
         this.fechaInicio = fechaInicio;
     }
 
-    public List<ChatEntity> getChatsById() {
-        return chatsById;
-    }
-
-    public void setChatsById(List<ChatEntity> chatsById) {
-        this.chatsById = chatsById;
-    }
 
     public EstadoCliente getEstadoClienteByEstadoCliente() {
         return estadoClienteByEstadoCliente;
@@ -81,12 +80,37 @@ public class Cliente {
         this.rolClienteByRolClienteId = rolClienteByRolClienteId;
     }
 
-    public List<TransaccionEntity> getTransaccionsById() {
-        return transaccionsById;
+
+    public Empresa getEmpresasById() {
+        return this.empresasById;
     }
 
-    public void setTransaccionsById(List<TransaccionEntity> transaccionsById) {
-        this.transaccionsById = transaccionsById;
+    public void setEmpresasById(Empresa empresasById) {
+        this.empresasById = empresasById;
+    }
+
+    public Empleado getEmpleadoByAutorizador() {
+        return empleadoByAutorizador;
+    }
+
+    public void setEmpleadoByAutorizador(Empleado empleadoByAutorizador) {
+        this.empleadoByAutorizador = empleadoByAutorizador;
+    }
+
+    public List<CuentaInterna> getCuentaInternasById() {
+        return cuentaInternasById;
+    }
+
+    public void setCuentaInternasById(List<CuentaInterna> cuentaInternasById) {
+        this.cuentaInternasById = cuentaInternasById;
+    }
+
+    public void setCuentaInternasEntitiesById(List<CuentaInternaEntity> cuentaInternasById) {
+        List<CuentaInterna> cuentaInternas = new ArrayList<>();
+        for (CuentaInternaEntity cuenta : cuentaInternasById) {
+            cuentaInternas.add(cuenta.toDTO());
+        }
+        this.cuentaInternasById = cuentaInternas;
     }
 
     @Override
@@ -94,11 +118,19 @@ public class Cliente {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cliente cliente = (Cliente) o;
-        return id.equals(cliente.id) && fechaInicio.equals(cliente.fechaInicio) && Objects.equals(chatsById, cliente.chatsById) && estadoClienteByEstadoCliente.equals(cliente.estadoClienteByEstadoCliente) && direccionByDireccion.equals(cliente.direccionByDireccion) && usuarioByUsuarioId.equals(cliente.usuarioByUsuarioId) && Objects.equals(personaByPersonaId, cliente.personaByPersonaId) && rolClienteByRolClienteId.equals(cliente.rolClienteByRolClienteId) && Objects.equals(transaccionsById, cliente.transaccionsById);
+        return id.equals(cliente.id) &&
+                fechaInicio.equals(cliente.fechaInicio) &&
+                estadoClienteByEstadoCliente.equals(cliente.estadoClienteByEstadoCliente) &&
+                direccionByDireccion.equals(cliente.direccionByDireccion) &&
+                usuarioByUsuarioId.equals(cliente.usuarioByUsuarioId) &&
+                Objects.equals(personaByPersonaId, cliente.personaByPersonaId) &&
+                rolClienteByRolClienteId.equals(cliente.rolClienteByRolClienteId);
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fechaInicio, chatsById, estadoClienteByEstadoCliente, direccionByDireccion, usuarioByUsuarioId, personaByPersonaId, rolClienteByRolClienteId, transaccionsById);
+        return Objects.hash(id, fechaInicio, estadoClienteByEstadoCliente, direccionByDireccion, usuarioByUsuarioId, personaByPersonaId, rolClienteByRolClienteId);
     }
+
 }

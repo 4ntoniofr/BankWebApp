@@ -1,8 +1,9 @@
 package es.taw.grupo25.dto;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Pago {
+public class Pago implements Serializable {
     private Integer id;
     private String moneda;
     private Double cantidad;

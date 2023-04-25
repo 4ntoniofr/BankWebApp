@@ -94,8 +94,8 @@ public class CuentaBancariaEntity {
         cuenta.setIban(this.iban);
         cuenta.setCuentaExternasById(this.cuentaExternasById);
         cuenta.setCuentaInternasById(this.cuentaInternasById);
-        cuenta.setTransaccionsById_Entrantes(this.transaccionsById_Entrantes);
-        cuenta.setTransaccionsById_Salientes(this.transaccionsById_Salientes);
+        cuenta.setTransaccionsEntitiesById_Entrantes(this.transaccionsById_Entrantes);
+        cuenta.setTransaccionsEntitiesById_Salientes(this.transaccionsById_Salientes);
         return cuenta;
     }
 }

@@ -1,14 +1,12 @@
-<%@ page import="es.taw.grupo25.entity.ClienteEntity" %>
-<%@ page import="java.util.List" %>
-<%@ page import="es.taw.grupo25.entity.EstadoClienteEntity" %>
+    <%@ page import="java.util.List" %>
+<%@ page import="es.taw.grupo25.dto.Cliente" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
 <%
-    List<ClienteEntity> personas = (List<ClienteEntity>) request.getAttribute("personas");
-    List<ClienteEntity> empresas = (List<ClienteEntity>) request.getAttribute("empresas");
-    List<EstadoClienteEntity> estados = (List<EstadoClienteEntity>) request.getAttribute("estados");
+    List<Cliente> personas = (List<Cliente>) request.getAttribute("personas");
+    List<Cliente> empresas = (List<Cliente>) request.getAttribute("empresas");
 %>
 
 <html>
@@ -44,7 +42,7 @@
     </tr>
 
     <%
-        for (ClienteEntity persona : personas) {
+        for (Cliente persona : personas) {
     %>
 
     <tr>
@@ -64,7 +62,7 @@
         <td><%= persona.getDireccionByDireccion().getCalle() + " " + persona.getDireccionByDireccion().getNumero() + ", " +
                 persona.getDireccionByDireccion().getCiudad() + " (" + persona.getDireccionByDireccion().getPais() + ")" %>
         </td>
-        <td><a href="/gestor/individual?id=<%= persona.getId() %>">Detalles</a></td>
+        <td><a href="/gestor/individual/<%= persona.getId() %>">Detalles</a></td>
     </tr>
 
 
@@ -83,7 +81,7 @@
     </tr>
 
     <%
-        for (ClienteEntity empresa : empresas) {
+        for (Cliente empresa : empresas) {
     %>
 
     <tr>
@@ -94,7 +92,7 @@
         <td><%= empresa.getDireccionByDireccion().getCalle() + " " + empresa.getDireccionByDireccion().getNumero() + ", " +
                 empresa.getDireccionByDireccion().getCiudad() + " (" + empresa.getDireccionByDireccion().getPais() + ")" %>
         </td>
-        <td><a href="/gestor/empresa?id=<%= empresa.getId() %>">Detalles</a></td>
+        <td><a href="/gestor/empresa/<%= empresa.getId() %>">Detalles</a></td>
     </tr>
 
 
