@@ -23,6 +23,8 @@ public class Cliente implements Serializable {
 
     private Empleado empleadoByAutorizador;
 
+    private EmpleadoEntity empleadoByAutorizador;
+
     public Integer getId() {
         return id;
     }
@@ -111,6 +113,14 @@ public class Cliente implements Serializable {
             cuentaInternas.add(cuenta.toDTO());
         }
         this.cuentaInternasById = cuentaInternas;
+    }
+
+    public EmpleadoEntity getEmpleadoByAutorizador() {
+        return empleadoByAutorizador;
+    }
+
+    public void setEmpleadoByAutorizador(EmpleadoEntity empleadoByAutorizador) {
+        this.empleadoByAutorizador = empleadoByAutorizador;
     }
 
     @Override

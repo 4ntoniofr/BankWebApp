@@ -19,6 +19,16 @@
 %>
 
 <h1> Bienvenido <%=nombreDelEmpleado%> </h1>
+
+<form:form modelAttribute="filtro" method="post" action="filtrar">
+    Nombre: <form:input path="nombre"/> <br/>
+    Chats que esten abiertos: <form:checkbox path="abierto" /> <br/>
+    Mensajes antes de: <form:input type="datetime-local" path="ultimoMensajeAntesDe" /> <br/>
+    <form:button> Aplicar filtro </form:button>
+</form:form>
+
+
+
 <h2>Estos son los chats disponibles con los clientes</h2>
 
 <%
