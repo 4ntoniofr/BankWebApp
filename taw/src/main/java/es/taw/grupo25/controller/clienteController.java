@@ -1,6 +1,10 @@
 package es.taw.grupo25.controller;
 
 import es.taw.grupo25.dto.*;
+import es.taw.grupo25.entity.Chat;
+import es.taw.grupo25.entity.ClienteEntity;
+import es.taw.grupo25.entity.EmpleadoEntity;
+import es.taw.grupo25.entity.MensajeEntity;
 import es.taw.grupo25.service.*;
 import es.taw.grupo25.ui.FiltroOperaciones;
 import jakarta.servlet.http.HttpSession;
@@ -61,6 +65,12 @@ public class clienteController {
     DireccionService direccionService;
     @Autowired
     CambioDivisaService cambioDivisaService;
+
+    @Autowired
+    ChatService chatService;
+
+    @Autowired
+    MensajeService mensajeService;
 
     @GetMapping("")
     public String cliente(Model model, HttpSession session){
@@ -447,6 +457,45 @@ public class clienteController {
     public String logout(HttpSession session){
         session.invalidate();
         return "redirect:/cliente";
+    }
+
+    // Parte de Jorge
+
+    //TODO: cambiar a chat reformateado y eliminar importacion
+    @GetMapping("/chat")
+    public String chatConAsistencia(HttpSession session, Model model){
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        Chat chat = chatService.findChatAbiertoByClienteId(usuario.getId());
+
+        model.addAttribute("chat", chat);
+
+        List<MensajeEntity> mensajes = mensajeService.findMensajesByChatId(chat.getId());
+        model.addAttribute("mensajes", mensajes);
+
+        MensajeEntity siguienteMensaje = new MensajeEntity();
+        model.addAttribute("siguienteMensaje", siguienteMensaje);
+
+        ClienteEntity cliente = chat.getClienteByClienteId();
+        model.addAttribute("cliente", cliente);
+
+        EmpleadoEntity asistente = chat.getEmpleadoByEmpleadoId();
+        model.addAttribute("asistente", asistente);
+
+        model.addAttribute("rol", "c");
+
+        return "/asistente/chat";
+    }
+
+    @PostMapping("/enviar-mensaje")
+    public String doEnviarMensaje(@ModelAttribute("siguienteMensaje") MensajeEntity mensaje) {
+
+        java.sql.Timestamp sqlDate = new java.sql.Timestamp(System.currentTimeMillis());
+        mensaje.setFecha(sqlDate);
+        mensaje.setLeido(false);
+        this.mensajeService.save(mensaje);
+
+        return "redirect:/cliente/chat";
     }
 
 }

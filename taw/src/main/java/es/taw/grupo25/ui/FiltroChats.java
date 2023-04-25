@@ -1,14 +1,14 @@
 package es.taw.grupo25.ui;
 
-import java.util.Date;
-
 public class FiltroChats {
 
     String nombre;
 
-    boolean abierto;
+    boolean soloAbiertos;
 
     String ultimoMensajeAntesDe;
+
+    String orderBy;
 
     public String getNombre() {
         return nombre;
@@ -18,12 +18,12 @@ public class FiltroChats {
         this.nombre = nombre;
     }
 
-    public boolean isAbierto() {
-        return abierto;
+    public boolean isSoloAbiertos() {
+        return soloAbiertos;
     }
 
-    public void setAbierto(boolean abierto) {
-        this.abierto = abierto;
+    public void setSoloAbiertos(boolean soloAbiertos) {
+        this.soloAbiertos = soloAbiertos;
     }
 
     public String getUltimoMensajeAntesDe() {
@@ -32,5 +32,13 @@ public class FiltroChats {
 
     public void setUltimoMensajeAntesDe(String ultimoMensajeAntesDe) {
         this.ultimoMensajeAntesDe = ultimoMensajeAntesDe;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
     }
 }
