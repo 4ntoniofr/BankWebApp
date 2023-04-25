@@ -44,7 +44,7 @@ public class ClienteService {
         UsuarioEntity usuarioEntity = usuarioRepository.findById(cliente.getUsuarioByUsuarioId().getId()).orElse(null);
         clienteEntity.setUsuarioByUsuarioId(usuarioEntity);
 
-        PersonaEntity personaEntity = personaRepository.findById(cliente.getPersonaByPersonaId().getId()).orElse(null);
+        Persona personaEntity = personaRepository.findById(cliente.getPersonaByPersonaId().getId()).orElse(null);
         clienteEntity.setPersonaByPersonaId(personaEntity);
 
         RolClienteEntity rolClienteEntity = rolClienteRepository.findByRol(cliente.getRolClienteByRolClienteId().getRol());

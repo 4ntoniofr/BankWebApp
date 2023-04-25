@@ -20,8 +20,9 @@
             }else{
         %>
 
-        <a href="/cliente/perfil">Modificar Perfil</a></br>
-        <a href="/cliente/cuentas">Mis Cuentas</a>
+        <a href="/cliente/perfil">Modificar Perfil</a> </br>
+        <a href="/cliente/cuentas">Mis Cuentas</a> </br>
+        <a href="/cliente/chat"> Chat con la asistencia </a>
 
     <%
         }

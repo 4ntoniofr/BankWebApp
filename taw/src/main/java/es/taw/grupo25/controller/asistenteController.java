@@ -9,10 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.HashMap;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller()
@@ -56,23 +56,29 @@ public class asistenteController {
             return "redirect:/asistente/iniciar-sesion";
         } else {
             model.addAttribute("empleado", empleadoQueSoy);
-            List<ChatEntity> chats = chatRepository.findChatsByEmpleadoId(empleadoQueSoy.getId());
+            List<Chat> chats = chatRepository.findChatsByEmpleadoId(empleadoQueSoy.getId());
 
-            if (filtro == null || filtro.getNombre().isEmpty() && filtro.getUltimoMensajeAntesDe().isEmpty() && filtro.isAbierto()) {
+            if (filtro == null || filtro.getNombre().isEmpty() && filtro.getUltimoMensajeAntesDe().isEmpty() && !filtro.isSoloAbiertos()) {
                 filtro = new FiltroChats();
             } else {
+                // Filtros
+                if (!filtro.getNombre().isEmpty()) {
+                    String nombre = filtro.getNombre().toLowerCase();
+                    chats = chats.stream().filter(obj -> obj.getClienteByClienteId().getPersonaByPersonaId().getNombre().toLowerCase().contains(nombre)).collect(Collectors.toList());
+                }
+                if (!filtro.getUltimoMensajeAntesDe().isEmpty()) {
+                    LocalDateTime fecha = LocalDateTime.parse(filtro.getUltimoMensajeAntesDe());
+                    chats = chats.stream().filter(obj -> obj.getMensajesById().size() > 0 && obj.getMensajesById().get(obj.getMensajesById().size() - 1).getFecha().toLocalDateTime().isAfter(fecha)).collect(Collectors.toList());
+                }
+                if (filtro.isSoloAbiertos()) {
+                    chats = chats.stream().filter(obj -> obj.getFechaCierre() == null).collect(Collectors.toList());
+                }
 
-                if(!filtro.getNombre().isEmpty()){
-                    String nombre = filtro.getNombre();
-                    chats = chats.stream().filter(obj -> obj.getClienteByClienteId().getPersonaByPersonaId().getNombre().contains(nombre)).collect(Collectors.toList());
-                }
-                if(!filtro.getUltimoMensajeAntesDe().isEmpty()){
-                    LocalDate fecha = LocalDate.parse(filtro.getUltimoMensajeAntesDe());
-                    chats = chats.stream().filter(obj -> obj.getMensajesById().get(0).getFecha().toLocalDateTime().toLocalDate().isAfter(fecha)).collect(Collectors.toList());
-                }
-                if(!filtro.isAbierto()){
-                    //TODO: cambiar el entity añadiendo el booleano
-                    //chats = chats.stream().filter(obj -> obj..collect(Collectors.toList());
+                // Orden
+                if(filtro.getOrderBy().equals("1")){
+                    chats.sort(Comparator.comparing(chat -> chat.getMensajesById().isEmpty()? Timestamp.valueOf(LocalDateTime.MIN) : chat.getMensajesById().get(chat.getMensajesById().size() - 1).getFecha()));
+                }else if(filtro.getOrderBy().equals("2")){
+                    chats.sort(Comparator.comparing(chat -> chat.getClienteByClienteId().getPersonaByPersonaId().getNombre()));
                 }
             }
 
@@ -86,7 +92,7 @@ public class asistenteController {
 
     @GetMapping("/chat")
     public String getChat(Model model, @RequestParam("id") Integer chatId) {
-        ChatEntity chat = chatRepository.findById(chatId).orElse(null);
+        Chat chat = chatRepository.findById(chatId).orElse(null);
         if (chat == null) {
             // TODO: Página con un mensaje de error y con un enlace para redirigir a todos los chats
             return "redirect:/chats";
@@ -108,6 +114,16 @@ public class asistenteController {
         return "/asistente/chat";
     }
 
+    @PostMapping("/cerrar-chat")
+    public String doCerrarChat(Model mode, @RequestParam("id") Integer chatId){
+        Chat chat = chatRepository.findById(chatId).orElse(null);
+        if(chat != null){
+            chat.setFechaCierre(new Timestamp(System.currentTimeMillis()));
+            chatRepository.save(chat);
+        }
+
+        return "redirect:/asistente/chats";
+    }
 
     @PostMapping("/enviar-mensaje")
     public String doEnviarMensaje(@ModelAttribute("siguienteMensaje") MensajeEntity mensaje) {
