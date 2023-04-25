@@ -1,8 +1,8 @@
-<%@ page import="es.taw.grupo25.entity.UsuarioEntity" %>
+<%@ page import="es.taw.grupo25.dto.Usuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
 %>
 <html>
 <head>

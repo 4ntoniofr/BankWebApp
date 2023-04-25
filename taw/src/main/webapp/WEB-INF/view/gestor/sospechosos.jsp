@@ -67,7 +67,7 @@
     </tr>
 
     <%
-        for (ClienteEntity empresa : empresas) {
+        for (Cliente empresa : empresas) {
     %>
 
     <tr>
