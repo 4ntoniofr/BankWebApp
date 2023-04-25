@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Autorizacion;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -65,5 +66,13 @@ public class AutorizacionEntity {
 
     public void setCuentaInternaByCuentaInternaId(CuentaInternaEntity cuentaInternaByCuentaInternaId) {
         this.cuentaInternaByCuentaInternaId = cuentaInternaByCuentaInternaId;
+    }
+
+    public Autorizacion toDTO(){
+        Autorizacion autorizacion = new Autorizacion();
+        autorizacion.setFecha(this.fecha);
+        autorizacion.setEmpleadoByEmpleadoId(this.empleadoByEmpleadoId.toDTO());
+        autorizacion.setCuentaInternaByCuentaInternaId(this.cuentaInternaByCuentaInternaId.toDTO());
+        return autorizacion;
     }
 }

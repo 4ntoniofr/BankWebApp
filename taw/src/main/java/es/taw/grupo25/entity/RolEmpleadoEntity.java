@@ -1,5 +1,7 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Empleado;
+import es.taw.grupo25.dto.RolEmpleado;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -54,4 +56,11 @@ public class RolEmpleadoEntity {
     public void setEmpleadosById(List<EmpleadoEntity> empleadosById) {
         this.empleadosById = empleadosById;
     }
+
+    public RolEmpleado toDTO(){
+        RolEmpleado rolEmpleado = new RolEmpleado();
+        rolEmpleado.setRol(this.rol);
+        return rolEmpleado;
+    }
+
 }

@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Empleado;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -95,5 +96,15 @@ public class EmpleadoEntity {
 
     public void setRolEmpleadoByRolEmpleadoId(RolEmpleadoEntity rolEmpleadoByRolEmpleadoId) {
         this.rolEmpleadoByRolEmpleadoId = rolEmpleadoByRolEmpleadoId;
+    }
+
+    public Empleado toDTO() {
+        Empleado empleado = new Empleado();
+        empleado.setAutorizacionsEntitieById(this.autorizacionsById);
+        empleado.setRolEmpleadoByRolEmpleadoId(this.rolEmpleadoByRolEmpleadoId.toDTO());
+        empleado.setClientesEntitiesById(this.clientesById);
+        empleado.setPersonaByPersonaId(this.personaByPersonaId.toDTO());
+        empleado.setUsuarioByUsuarioId(this.usuarioByUsuarioId.toDTO());
+        return empleado;
     }
 }

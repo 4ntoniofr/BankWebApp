@@ -61,4 +61,7 @@ public class CuentaInternaService {
         return dtos;
     }
 
+    public List<CuentaInterna> findCuentaInternasSolicitantes() {
+        return listaEntidadesADTO(this.cuentaInternaRepository.findCuentaInternasSolicitantes());
+    }
 }

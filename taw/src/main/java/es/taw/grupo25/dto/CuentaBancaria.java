@@ -4,16 +4,18 @@ import es.taw.grupo25.entity.CuentaExternaEntity;
 import es.taw.grupo25.entity.CuentaInternaEntity;
 import es.taw.grupo25.entity.TransaccionEntity;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class CuentaBancaria {
+public class CuentaBancaria implements Serializable {
     private Integer id;
     private String iban;
     private CuentaExternaEntity cuentaExternasById;
     private CuentaInternaEntity cuentaInternasById;
-    private List<TransaccionEntity> transaccionsById_Entrantes;
-    private List<TransaccionEntity> transaccionsById_Salientes;
+    private List<Transaccion> transaccionsById_Entrantes;
+    private List<Transaccion> transaccionsById_Salientes;
 
     public Integer getId() {
         return id;
@@ -47,20 +49,36 @@ public class CuentaBancaria {
         this.cuentaInternasById = cuentaInternasById;
     }
 
-    public List<TransaccionEntity> getTransaccionsById_Entrantes() {
+    public List<Transaccion> getTransaccionsById_Entrantes() {
         return transaccionsById_Entrantes;
     }
 
-    public void setTransaccionsById_Entrantes(List<TransaccionEntity> transaccionsById_Entrantes) {
+    public void setTransaccionsById_Entrantes(List<Transaccion> transaccionsById_Entrantes) {
         this.transaccionsById_Entrantes = transaccionsById_Entrantes;
     }
 
-    public List<TransaccionEntity> getTransaccionsById_Salientes() {
+    public void setTransaccionsEntitiesById_Entrantes(List<TransaccionEntity> transaccionsById_Entrantes) {
+        List<Transaccion> transaccions = new ArrayList<>();
+        for (TransaccionEntity transaccion : transaccionsById_Entrantes) {
+            transaccions.add(transaccion.toDTO());
+        }
+        this.transaccionsById_Entrantes = transaccions;
+    }
+
+    public List<Transaccion> getTransaccionsById_Salientes() {
         return transaccionsById_Salientes;
     }
 
-    public void setTransaccionsById_Salientes(List<TransaccionEntity> transaccionsById_Salientes) {
+    public void setTransaccionsById_Salientes(List<Transaccion> transaccionsById_Salientes) {
         this.transaccionsById_Salientes = transaccionsById_Salientes;
+    }
+
+    public void setTransaccionsEntitiesById_Salientes(List<TransaccionEntity> transaccionsById_Salientes) {
+        List<Transaccion> transaccions = new ArrayList<>();
+        for (TransaccionEntity transaccion : transaccionsById_Salientes) {
+            transaccions.add(transaccion.toDTO());
+        }
+        this.transaccionsById_Salientes = transaccions;
     }
 
     @Override

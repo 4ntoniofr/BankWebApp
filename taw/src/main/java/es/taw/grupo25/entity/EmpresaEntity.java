@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Empresa;
 import jakarta.persistence.*;
 
 import java.sql.Date;
@@ -76,5 +77,13 @@ public class EmpresaEntity {
 
     public void setClienteByClienteId(ClienteEntity clienteByClienteId) {
         this.clienteByClienteId = clienteByClienteId;
+    }
+
+    public Empresa toDTO(){
+        Empresa empresa = new Empresa();
+        empresa.setClienteByClienteId(this.clienteByClienteId.toDTO());
+        empresa.setFechaCierre(this.fechaCierre);
+        empresa.setNombre(this.nombre);
+        return empresa;
     }
 }
