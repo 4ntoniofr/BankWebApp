@@ -10,9 +10,9 @@
 
 <%
 
-    Chat chat = (Chat) request.getAttribute("chat");
-    Persona asistentePersona = null;
-    Persona clientePersona = null;
+    ChatEntity chat = (ChatEntity) request.getAttribute("chat");
+    PersonaEntity asistentePersona = null;
+    PersonaEntity clientePersona = null;
 
     List<MensajeEntity> mensajes = (List<MensajeEntity>) request.getAttribute("mensajes");
 

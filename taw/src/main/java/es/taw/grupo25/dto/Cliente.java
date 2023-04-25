@@ -23,7 +23,7 @@ public class Cliente implements Serializable {
 
     private Empleado empleadoByAutorizador;
 
-    
+
     public Integer getId() {
         return id;
     }
@@ -113,7 +113,6 @@ public class Cliente implements Serializable {
         }
         this.cuentaInternasById = cuentaInternas;
     }
-
 
     @Override
     public boolean equals(Object o) {

@@ -1,7 +1,7 @@
 package es.taw.grupo25.controller;
 
 import es.taw.grupo25.dto.*;
-import es.taw.grupo25.entity.Chat;
+import es.taw.grupo25.entity.ChatEntity;
 import es.taw.grupo25.entity.ClienteEntity;
 import es.taw.grupo25.entity.EmpleadoEntity;
 import es.taw.grupo25.entity.MensajeEntity;
@@ -67,10 +67,10 @@ public class clienteController {
     CambioDivisaService cambioDivisaService;
 
     @Autowired
-    ChatService chatService;
+    MensajeService mensajeService;
 
     @Autowired
-    MensajeService mensajeService;
+    ChatService chatService;
 
     @GetMapping("")
     public String cliente(Model model, HttpSession session){
@@ -209,9 +209,9 @@ public class clienteController {
                     transaccion.setCuentaBancariaByCuentaOrigen(cuenta_cambio.getCuentaBancariaByCuentaBancaria());
                     transaccion.setCuentaBancariaByCuentaDestino(cuenta_cambio.getCuentaBancariaByCuentaBancaria());
                     CambioDivisa cambioDivisa = new CambioDivisa();
-                    Moneda moneda_compra = cuenta_cambio.getMonedaByMoneda();
+                    Moneda moneda_compra = monedaService.findById(cuenta_cambio.getMonedaByMoneda().getId());
                     cambioDivisa.setMonedaByMonedaCompra(moneda_compra);
-                    Moneda moneda_venta = cuenta.getMonedaByMoneda();
+                    Moneda moneda_venta = monedaService.findById(cuenta.getMonedaByMoneda().getId());
                     cambioDivisa.setMonedaByMonedaVenta(moneda_venta);
                     cambioDivisa.setTransaccionByTransaccion(transaccion);
                     cuenta_cambio.setMonedaByMoneda(cuenta.getMonedaByMoneda());
@@ -460,6 +460,8 @@ public class clienteController {
         return "redirect:/cliente";
     }
 
+
+
     // Parte de Jorge
 
     //TODO: cambiar a chat reformateado y eliminar importacion
@@ -467,7 +469,7 @@ public class clienteController {
     public String chatConAsistencia(HttpSession session, Model model){
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        Chat chat = chatService.findChatAbiertoByClienteId(usuario.getId());
+        ChatEntity chat = chatService.findChatAbiertoByClienteId(usuario.getId());
 
         model.addAttribute("chat", chat);
 

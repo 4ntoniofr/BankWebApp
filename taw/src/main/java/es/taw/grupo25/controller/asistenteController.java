@@ -56,7 +56,7 @@ public class asistenteController {
             return "redirect:/asistente/iniciar-sesion";
         } else {
             model.addAttribute("empleado", empleadoQueSoy);
-            List<Chat> chats = chatRepository.findChatsByEmpleadoId(empleadoQueSoy.getId());
+            List<ChatEntity> chats = chatRepository.findChatsByEmpleadoId(empleadoQueSoy.getId());
 
             if (filtro == null || filtro.getNombre().isEmpty() && filtro.getUltimoMensajeAntesDe().isEmpty() && !filtro.isSoloAbiertos()) {
                 filtro = new FiltroChats();
@@ -92,7 +92,7 @@ public class asistenteController {
 
     @GetMapping("/chat")
     public String getChat(Model model, @RequestParam("id") Integer chatId) {
-        Chat chat = chatRepository.findById(chatId).orElse(null);
+        ChatEntity chat = chatRepository.findById(chatId).orElse(null);
         if (chat == null) {
             // TODO: Página con un mensaje de error y con un enlace para redirigir a todos los chats
             return "redirect:/chats";
@@ -116,7 +116,7 @@ public class asistenteController {
 
     @PostMapping("/cerrar-chat")
     public String doCerrarChat(Model mode, @RequestParam("id") Integer chatId){
-        Chat chat = chatRepository.findById(chatId).orElse(null);
+        ChatEntity chat = chatRepository.findById(chatId).orElse(null);
         if(chat != null){
             chat.setFechaCierre(new Timestamp(System.currentTimeMillis()));
             chatRepository.save(chat);

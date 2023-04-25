@@ -104,7 +104,7 @@ public class EmpleadoEntity {
         empleado.setRolEmpleadoByRolEmpleadoId(this.rolEmpleadoByRolEmpleadoId.toDTO());
         empleado.setClientesEntitiesById(this.clientesById);
         empleado.setPersonaByPersonaId(this.personaByPersonaId.toDTO());
-        empleado.setUsuarioByUsuarioId(this.usuarioByUsuarioId.toDTO(empleado));
+        empleado.setUsuarioByUsuarioId(this.usuarioByUsuarioId.toDTO());
         return empleado;
     }
 }

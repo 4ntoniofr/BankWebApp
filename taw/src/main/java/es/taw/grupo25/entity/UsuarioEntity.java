@@ -89,25 +89,14 @@ public class UsuarioEntity {
         this.empleadosById = empleadosById;
     }
 
-    public Usuario toDTO() {
+    public Usuario toDTO(){
         Usuario usuario = new Usuario();
         usuario.setId(this.id);
         usuario.setUsuario(this.usuario);
         usuario.setPassword(this.password);
-        usuario.setClientesById(this.clientesById == null ? null : this.clientesById.toDTO(usuario));
+        usuario.setClientesById(this.clientesById.toDTO(usuario));
         usuario.setFechaRegistro(this.fechaRegistro);
         usuario.setEmpleadosById(this.empleadosById.toDTO());
-        return usuario;
-    }
-
-    public Usuario toDTO(Empleado empleado) {
-        Usuario usuario = new Usuario();
-        usuario.setId(this.id);
-        usuario.setUsuario(this.usuario);
-        usuario.setPassword(this.password);
-        usuario.setClientesById(this.clientesById == null ? null : this.clientesById.toDTO(usuario));
-        usuario.setFechaRegistro(this.fechaRegistro);
-        usuario.setEmpleadosById(empleado);
         return usuario;
     }
 
