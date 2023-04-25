@@ -22,9 +22,7 @@ public class Cliente implements Serializable {
     private List<CuentaInterna> cuentaInternasById;
 
     private Empleado empleadoByAutorizador;
-
-    private EmpleadoEntity empleadoByAutorizador;
-
+    
     public Integer getId() {
         return id;
     }
@@ -115,13 +113,6 @@ public class Cliente implements Serializable {
         this.cuentaInternasById = cuentaInternas;
     }
 
-    public EmpleadoEntity getEmpleadoByAutorizador() {
-        return empleadoByAutorizador;
-    }
-
-    public void setEmpleadoByAutorizador(EmpleadoEntity empleadoByAutorizador) {
-        this.empleadoByAutorizador = empleadoByAutorizador;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,6 +1,6 @@
 package es.taw.grupo25.dto;
-import es.taw.grupo25.entity.ClienteEntity;
-import es.taw.grupo25.entity.PagoEntity;
+import es.taw.grupo25.entity.*;
+import es.taw.grupo25.service.CuentaBancariaService;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -15,7 +15,7 @@ public class Transaccion implements Serializable {
     private CuentaBancaria cuentaBancariaByCuentaDestino;
     private ClienteEntity clienteByCliente;
 
-    private boolean isCambioDivisa;
+    private CambioDivisaEntity cambioDivisa;
 
     public Integer getId() {
         return id;
@@ -73,12 +73,12 @@ public class Transaccion implements Serializable {
         this.clienteByCliente = clienteByCliente;
     }
 
-    public boolean isCambioDivisa() {
-        return isCambioDivisa;
+    public CambioDivisaEntity getCambioDivisa() {
+        return cambioDivisa;
     }
 
-    public void setCambioDivisa(boolean cambioDivisa) {
-        isCambioDivisa = cambioDivisa;
+    public void setCambioDivisa(CambioDivisaEntity cambioDivisa) {
+        this.cambioDivisa = cambioDivisa;
     }
 
     @Override
@@ -93,4 +93,6 @@ public class Transaccion implements Serializable {
     public int hashCode() {
         return Objects.hash(id, fechaInstruccion, fechaEjecucion, pagosById, cuentaBancariaByCuentaOrigen, cuentaBancariaByCuentaDestino, clienteByCliente);
     }
+
+
 }

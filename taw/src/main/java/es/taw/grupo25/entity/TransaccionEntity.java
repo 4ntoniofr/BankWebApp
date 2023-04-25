@@ -120,7 +120,7 @@ public class TransaccionEntity {
         transaccion.setCuentaBancariaByCuentaOrigen(this.cuentaBancariaByCuentaOrigen.toDTO());
         transaccion.setCuentaBancariaByCuentaDestino(this.cuentaBancariaByCuentaDestino.toDTO());
         transaccion.setClienteByCliente(this.clienteByCliente);
-        transaccion.setCambioDivisa(this.cambioDivisasById!=null);
+        transaccion.setCambioDivisa(this.cambioDivisasById);
 
         return transaccion;
     }

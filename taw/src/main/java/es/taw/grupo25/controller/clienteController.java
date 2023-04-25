@@ -199,9 +199,9 @@ public class clienteController {
                     transaccion.setCuentaBancariaByCuentaOrigen(cuenta_cambio.getCuentaBancariaByCuentaBancaria());
                     transaccion.setCuentaBancariaByCuentaDestino(cuenta_cambio.getCuentaBancariaByCuentaBancaria());
                     CambioDivisa cambioDivisa = new CambioDivisa();
-                    Moneda moneda_compra = monedaService.findById(cuenta_cambio.getMonedaByMoneda());
+                    Moneda moneda_compra = cuenta_cambio.getMonedaByMoneda();
                     cambioDivisa.setMonedaByMonedaCompra(moneda_compra);
-                    Moneda moneda_venta = monedaService.findById(cuenta.getMonedaByMoneda());
+                    Moneda moneda_venta = cuenta.getMonedaByMoneda();
                     cambioDivisa.setMonedaByMonedaVenta(moneda_venta);
                     cambioDivisa.setTransaccionByTransaccion(transaccion);
                     cuenta_cambio.setMonedaByMoneda(cuenta.getMonedaByMoneda());

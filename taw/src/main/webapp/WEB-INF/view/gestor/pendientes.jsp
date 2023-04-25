@@ -49,8 +49,8 @@
         <td><%= persona.getDireccionByDireccion().getCalle() + " " + persona.getDireccionByDireccion().getNumero() + ", " +
                 persona.getDireccionByDireccion().getCiudad() + " (" + persona.getDireccionByDireccion().getPais() + ")" %>
         </td>
-        <td><a href="/gestor/autorizar?id=<%= persona.getId() %>"> Autorizar</a></td>
-        <td><a href="/gestor/rechazar?id=<%= persona.getId() %>"> Rechazar</a></td>
+        <td><a href="/gestor/autorizar/<%= persona.getId() %>"> Autorizar</a></td>
+        <td><a href="/gestor/rechazar/<%= persona.getId() %>"> Rechazar</a></td>
     </tr>
 
 

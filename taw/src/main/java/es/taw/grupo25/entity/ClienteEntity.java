@@ -165,7 +165,7 @@ public class ClienteEntity {
         this.transaccionsById = transaccionsById;
     }
 
-    public Cliente toDTO(){
+    public Cliente toDTO() {
         Cliente cliente = new Cliente();
         cliente.setId(this.id);
         cliente.setFechaInicio(this.fechaInicio);
@@ -174,13 +174,13 @@ public class ClienteEntity {
         cliente.setUsuarioByUsuarioId(this.usuarioByUsuarioId.toDTO());
         cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO());
         cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId.toDTO());
-        cliente.setEmpresasById(this.empresasById.toDTO());
-        cliente.setEmpleadoByAutorizador(this.empleadoByAutorizador.toDTO());
+        cliente.setEmpresasById(this.empresasById == null ? null : this.empresasById.toDTO());
+        cliente.setEmpleadoByAutorizador(this.empleadoByAutorizador == null ? null : this.empleadoByAutorizador.toDTO());
         cliente.setCuentaInternasEntitiesById(this.cuentaInternasById);
         return cliente;
     }
 
-    public Cliente toDTO(Usuario usuario){
+    public Cliente toDTO(Usuario usuario) {
         Cliente cliente = new Cliente();
         cliente.setId(this.id);
         cliente.setFechaInicio(this.fechaInicio);
@@ -189,8 +189,8 @@ public class ClienteEntity {
         cliente.setUsuarioByUsuarioId(usuario);
         cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO());
         cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId.toDTO());
-        cliente.setEmpresasById(this.empresasById.toDTO());
-        cliente.setEmpleadoByAutorizador(this.empleadoByAutorizador.toDTO());
+        cliente.setEmpresasById(this.empresasById == null ? null : this.empresasById.toDTO());
+        cliente.setEmpleadoByAutorizador(this.empleadoByAutorizador == null ? null : this.empleadoByAutorizador.toDTO());
         cliente.setCuentaInternasEntitiesById(this.cuentaInternasById);
         return cliente;
     }
