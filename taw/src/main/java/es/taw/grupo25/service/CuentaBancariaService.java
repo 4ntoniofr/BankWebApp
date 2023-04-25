@@ -51,6 +51,8 @@ public class CuentaBancariaService {
         cuentaBancariaEntity.setCuentaInternasById(cuentaBancaria.getCuentaInternasById());
         cuentaBancariaEntity.setCuentaExternasById(cuentaBancaria.getCuentaExternasById());
 
+
+
         cuentaBancariaEntity.setTransaccionsById_Entrantes(listDTOToListEntity(cuentaBancaria.getTransaccionsById_Entrantes()));
         cuentaBancariaEntity.setTransaccionsById_Salientes(listDTOToListEntity(cuentaBancaria.getTransaccionsById_Salientes()));
 

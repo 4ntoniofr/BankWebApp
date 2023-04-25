@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Cliente;
 import es.taw.grupo25.dto.Empresa;
 import jakarta.persistence.*;
 
@@ -79,7 +80,7 @@ public class EmpresaEntity {
         this.clienteByClienteId = clienteByClienteId;
     }
 
-    public Empresa toDTO(){
+    public Empresa toDTO(Cliente cliente){
         Empresa empresa = new Empresa();
         empresa.setClienteByClienteId(this.clienteByClienteId.toDTO());
         empresa.setFechaCierre(this.fechaCierre);

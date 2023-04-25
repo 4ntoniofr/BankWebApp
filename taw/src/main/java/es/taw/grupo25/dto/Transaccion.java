@@ -1,4 +1,5 @@
 package es.taw.grupo25.dto;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import es.taw.grupo25.entity.*;
 import es.taw.grupo25.service.CuentaBancariaService;
 
@@ -11,7 +12,10 @@ public class Transaccion implements Serializable {
     private Timestamp fechaInstruccion;
     private Timestamp fechaEjecucion;
     private PagoEntity pagosById;
+
+    @JsonIgnoreProperties({"transaccionsById_Entrantes", "transaccionsById_Salientes"})
     private CuentaBancaria cuentaBancariaByCuentaOrigen;
+    @JsonIgnoreProperties({"transaccionsById_Entrantes", "transaccionsById_Salientes"})
     private CuentaBancaria cuentaBancariaByCuentaDestino;
     private ClienteEntity clienteByCliente;
 

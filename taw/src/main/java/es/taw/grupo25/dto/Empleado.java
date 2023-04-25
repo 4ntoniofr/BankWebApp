@@ -32,10 +32,10 @@ public class Empleado implements Serializable {
         this.autorizacionsById = autorizacionsById;
     }
 
-    public void setAutorizacionsEntitieById(List<AutorizacionEntity> autorizacionsById) {
+    public void setAutorizacionsEntitieById(List<AutorizacionEntity> autorizacionsById, Empleado empleado) {
         List<Autorizacion> autorizacions = new ArrayList<>();
         for (AutorizacionEntity autorizacion:autorizacionsById) {
-            autorizacions.add(autorizacion.toDTO());
+            autorizacions.add(autorizacion.toDTO(empleado));
         }
 
         this.autorizacionsById = autorizacions;
@@ -49,7 +49,7 @@ public class Empleado implements Serializable {
         this.clientesById = clientesById;
     }
 
-    public void setClientesEntitiesById(List<ClienteEntity> clienteEntities){
+    public void setClientesEntitiesById(List<ClienteEntity> clienteEntities, Usuario usuario, Empleado empleado){
         List<Cliente> clientes = new ArrayList<>();
         for (ClienteEntity cliente: clienteEntities) {
             clientes.add(cliente.toDTO());

@@ -94,9 +94,8 @@ public class UsuarioEntity {
         usuario.setId(this.id);
         usuario.setUsuario(this.usuario);
         usuario.setPassword(this.password);
-        usuario.setClientesById(this.clientesById.toDTO(usuario));
+        if(clientesById!=null)usuario.setClientesById(this.clientesById.toDTO(usuario));
         usuario.setFechaRegistro(this.fechaRegistro);
-        usuario.setEmpleadosById(this.empleadosById.toDTO());
         return usuario;
     }
 

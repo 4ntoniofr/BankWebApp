@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Cliente;
 import es.taw.grupo25.dto.CuentaInterna;
 import jakarta.persistence.*;
 
@@ -121,8 +122,24 @@ public class CuentaInternaEntity {
         cuentaInterna.setCuentaBancariaByCuentaBancaria(this.cuentaBancariaByCuentaBancaria.toDTO());
         cuentaInterna.setClienteByPropietario(this.clienteByPropietario.toDTO());
         cuentaInterna.setEstadoCuentaByEstadoCuenta(this.estadoCuentaByEstadoCuenta.toDTO());
-        cuentaInterna.setMonedaByMoneda(this.monedaByMoneda.toDTO());
+        cuentaInterna.setMonedaByMoneda(this.monedaByMoneda.getId());
 
         return cuentaInterna;
     }
+
+    public CuentaInterna toDTO(Cliente cliente){
+        CuentaInterna cuentaInterna = new CuentaInterna();
+
+        cuentaInterna.setId(this.id);
+        cuentaInterna.setPais(this.pais);
+        cuentaInterna.setCantidad(this.cantidad);
+        cuentaInterna.setCuentaBancariaByCuentaBancaria(this.cuentaBancariaByCuentaBancaria.toDTO());
+        cuentaInterna.setClienteByPropietario(cliente);
+        cuentaInterna.setEstadoCuentaByEstadoCuenta(this.estadoCuentaByEstadoCuenta.toDTO());
+        cuentaInterna.setMonedaByMoneda(this.monedaByMoneda.getId());
+
+        return cuentaInterna;
+    }
+
+
 }

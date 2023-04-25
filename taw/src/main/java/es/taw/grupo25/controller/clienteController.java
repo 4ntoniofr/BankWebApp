@@ -79,9 +79,9 @@ public class clienteController {
         if(usuario==null){
             urlto="redirect:/login";
         }else{
-            if(usuario.getClientesById().getEmpleadoByAutorizador()==null){
-                model.addAttribute("error", "Debe esperar a que un gestor autorize este usuario.");
-            }
+            //if(usuario.getClientesById().getEmpleadoByAutorizador()==null){
+            //    model.addAttribute("error", "Debe esperar a que un gestor autorize este usuario.");
+            //}
         }
         return urlto;
     }
@@ -93,12 +93,12 @@ public class clienteController {
         if(usuario == null){
             urlto = "redirect:/login";
         }else{
-            if(isAutorizado(usuario)){
+            //if(isAutorizado(usuario)){
                 Persona persona = personaService.findById(usuario.getClientesById().getPersonaByPersonaId().getId());
                 model.addAttribute("persona", persona);
-            }else{
-                urlto = "redirect:/cliente";
-            }
+            //}else{
+              //  urlto = "redirect:/cliente";
+           // }
         }
         return urlto;
     }
@@ -209,9 +209,9 @@ public class clienteController {
                     transaccion.setCuentaBancariaByCuentaOrigen(cuenta_cambio.getCuentaBancariaByCuentaBancaria());
                     transaccion.setCuentaBancariaByCuentaDestino(cuenta_cambio.getCuentaBancariaByCuentaBancaria());
                     CambioDivisa cambioDivisa = new CambioDivisa();
-                    Moneda moneda_compra = monedaService.findById(cuenta_cambio.getMonedaByMoneda().getId());
+                    Moneda moneda_compra = monedaService.findById(cuenta_cambio.getMonedaByMoneda());
                     cambioDivisa.setMonedaByMonedaCompra(moneda_compra);
-                    Moneda moneda_venta = monedaService.findById(cuenta.getMonedaByMoneda().getId());
+                    Moneda moneda_venta = monedaService.findById(cuenta.getMonedaByMoneda());
                     cambioDivisa.setMonedaByMonedaVenta(moneda_venta);
                     cambioDivisa.setTransaccionByTransaccion(transaccion);
                     cuenta_cambio.setMonedaByMoneda(cuenta.getMonedaByMoneda());
@@ -451,7 +451,8 @@ public class clienteController {
     }
 
     private boolean isAutorizado(Usuario usuario){
-        return usuario.getClientesById().getEmpleadoByAutorizador()!=null;
+        //return usuario.getClientesById().getEmpleadoByAutorizador()!=null;
+        return true;
     }
 
     @GetMapping("/logout")

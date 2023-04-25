@@ -21,7 +21,7 @@ public class Cliente implements Serializable {
 
     private List<CuentaInterna> cuentaInternasById;
 
-    private Empleado empleadoByAutorizador;
+    //private Empleado empleadoByAutorizador;
 
 
     public Integer getId() {
@@ -90,14 +90,6 @@ public class Cliente implements Serializable {
         this.empresasById = empresasById;
     }
 
-    public Empleado getEmpleadoByAutorizador() {
-        return empleadoByAutorizador;
-    }
-
-    public void setEmpleadoByAutorizador(Empleado empleadoByAutorizador) {
-        this.empleadoByAutorizador = empleadoByAutorizador;
-    }
-
     public List<CuentaInterna> getCuentaInternasById() {
         return cuentaInternasById;
     }
@@ -106,10 +98,10 @@ public class Cliente implements Serializable {
         this.cuentaInternasById = cuentaInternasById;
     }
 
-    public void setCuentaInternasEntitiesById(List<CuentaInternaEntity> cuentaInternasById) {
+    public void setCuentaInternasEntitiesById(List<CuentaInternaEntity> cuentaInternasById, Cliente cliente) {
         List<CuentaInterna> cuentaInternas = new ArrayList<>();
         for (CuentaInternaEntity cuenta : cuentaInternasById) {
-            cuentaInternas.add(cuenta.toDTO());
+            cuentaInternas.add(cuenta.toDTO(cliente));
         }
         this.cuentaInternasById = cuentaInternas;
     }

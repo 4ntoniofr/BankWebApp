@@ -133,7 +133,7 @@ public class GestorController {
         cuentaInterna.setCantidad(0.0);
 
         Empleado gestor = usuario.getEmpleadosById();
-        cuentaInterna.getClienteByPropietario().setEmpleadoByAutorizador(gestor);
+        //cuentaInterna.getClienteByPropietario().setEmpleadoByAutorizador(gestor);
 
         Autorizacion autorizacion = new Autorizacion();
         autorizacion.setEmpleadoByEmpleadoId(gestor);

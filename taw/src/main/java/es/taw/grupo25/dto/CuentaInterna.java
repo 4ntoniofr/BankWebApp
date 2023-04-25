@@ -13,7 +13,7 @@ public class CuentaInterna implements Serializable {
     private CuentaBancaria cuentaBancariaByCuentaBancaria;
     private Cliente clienteByPropietario;
     private EstadoCuenta estadoCuentaByEstadoCuenta;
-    private Moneda monedaByMoneda;
+    private int monedaByMoneda;
 
     private List<Autorizacion> autorizacionsById;
 
@@ -66,11 +66,11 @@ public class CuentaInterna implements Serializable {
         this.estadoCuentaByEstadoCuenta = estadoCuentaByEstadoCuenta;
     }
 
-    public Moneda getMonedaByMoneda() {
+    public int getMonedaByMoneda() {
         return monedaByMoneda;
     }
 
-    public void setMonedaByMoneda(Moneda monedaByMoneda) {
+    public void setMonedaByMoneda(int monedaByMoneda) {
         this.monedaByMoneda = monedaByMoneda;
     }
 
@@ -87,7 +87,7 @@ public class CuentaInterna implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CuentaInterna that = (CuentaInterna) o;
-        return id.equals(that.id) && pais.equals(that.pais) && cantidad.equals(that.cantidad) && cuentaBancariaByCuentaBancaria.equals(that.cuentaBancariaByCuentaBancaria) && clienteByPropietario.equals(that.clienteByPropietario) && estadoCuentaByEstadoCuenta.equals(that.estadoCuentaByEstadoCuenta) && monedaByMoneda.equals(that.monedaByMoneda);
+        return id.equals(that.id) && pais.equals(that.pais) && cantidad.equals(that.cantidad) && cuentaBancariaByCuentaBancaria.equals(that.cuentaBancariaByCuentaBancaria) && clienteByPropietario.equals(that.clienteByPropietario) && estadoCuentaByEstadoCuenta.equals(that.estadoCuentaByEstadoCuenta);
     }
 
     @Override

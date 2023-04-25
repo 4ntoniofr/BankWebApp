@@ -1,6 +1,7 @@
 package es.taw.grupo25.entity;
 
 import es.taw.grupo25.dto.Cliente;
+import es.taw.grupo25.dto.Empleado;
 import es.taw.grupo25.dto.Usuario;
 import jakarta.persistence.*;
 
@@ -172,11 +173,11 @@ public class ClienteEntity {
         cliente.setEstadoClienteByEstadoCliente(this.estadoClienteByEstadoCliente.toDTO());
         cliente.setDireccionByDireccion(this.direccionByDireccion.toDTO());
         cliente.setUsuarioByUsuarioId(this.usuarioByUsuarioId.toDTO());
-        cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO());
         cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId.toDTO());
-        cliente.setEmpresasById(this.empresasById.toDTO());
-        cliente.setEmpleadoByAutorizador(this.empleadoByAutorizador.toDTO());
-        cliente.setCuentaInternasEntitiesById(this.cuentaInternasById);
+        //cliente.setEmpleadoByAutorizador(this.empleadoByAutorizador.toDTO());
+        cliente.setCuentaInternasEntitiesById(this.cuentaInternasById, cliente);
+        if(empresasById!=null)cliente.setEmpresasById(this.empresasById.toDTO(cliente));
+        cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO(cliente));
         return cliente;
     }
 
@@ -187,11 +188,10 @@ public class ClienteEntity {
         cliente.setEstadoClienteByEstadoCliente(this.estadoClienteByEstadoCliente.toDTO());
         cliente.setDireccionByDireccion(this.direccionByDireccion.toDTO());
         cliente.setUsuarioByUsuarioId(usuario);
-        cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO());
         cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId.toDTO());
-        cliente.setEmpresasById(this.empresasById.toDTO());
-        cliente.setEmpleadoByAutorizador(this.empleadoByAutorizador.toDTO());
-        cliente.setCuentaInternasEntitiesById(this.cuentaInternasById);
+        cliente.setCuentaInternasEntitiesById(this.cuentaInternasById, cliente);
+        if(this.empresasById!=null)cliente.setEmpresasById(this.empresasById.toDTO(cliente));
+        cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO(cliente));
         return cliente;
     }
 }

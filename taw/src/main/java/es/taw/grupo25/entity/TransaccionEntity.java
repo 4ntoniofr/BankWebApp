@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.CuentaBancaria;
 import es.taw.grupo25.dto.Transaccion;
 import jakarta.persistence.*;
 

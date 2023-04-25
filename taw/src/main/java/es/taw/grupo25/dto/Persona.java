@@ -14,7 +14,7 @@ public class Persona implements Serializable {
     private String primerApellido;
     private String segundoApellido;
     private Date fechaNacimiento;
-    private ClienteEntity clientesById;
+    private Cliente clientesById;
     private EmpleadoEntity empleadosById;
 
     public Integer getId() {
@@ -65,11 +65,11 @@ public class Persona implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public ClienteEntity getClientesById() {
+    public Cliente getClientesById() {
         return clientesById;
     }
 
-    public void setClientesById(ClienteEntity clientesById) {
+    public void setClientesById(Cliente clientesById) {
         this.clientesById = clientesById;
     }
 
