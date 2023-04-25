@@ -1,8 +1,5 @@
 package es.taw.grupo25.dto;
 
-import es.taw.grupo25.entity.Chat;
-import es.taw.grupo25.entity.Persona;
-
 import java.sql.Timestamp;
 import java.util.Objects;
 
