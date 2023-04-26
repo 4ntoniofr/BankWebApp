@@ -1,9 +1,9 @@
 <%@ page import="java.util.List" %>
-<%@ page import="es.taw.grupo25.entity.CuentaInternaEntity" %>
+<%@ page import="es.taw.grupo25.dto.CuentaInterna" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    List<CuentaInternaEntity> cuentas = (List<CuentaInternaEntity>) request.getAttribute("cuentas");
+    List<CuentaInterna> cuentas = (List<CuentaInterna>) request.getAttribute("cuentas");
 %>
 
 <html>
@@ -21,7 +21,7 @@
         <th></th>
         <th></th>
     </tr>
-    <% for (CuentaInternaEntity cuenta : cuentas) { %>
+    <% for (CuentaInterna cuenta : cuentas) { %>
     <tr>
         <td><%=cuenta.getCuentaBancariaByCuentaBancaria().getIban()%>
         </td>
@@ -31,8 +31,8 @@
         </td>
         <td><%=cuenta.getCantidad()%>
         </td>
-        <td><a href="/gestor/operaciones?id=<%=cuenta.getId()%>">Operaciones</a></td>
-        <td><a href="/gestor/desbloquear?id=<%=cuenta.getId()%>">Desbloquear</a></td>
+        <td><a href="/gestor/operaciones/<%=cuenta.getId()%>">Operaciones</a></td>
+        <td><a href="/gestor/desbloquear/<%=cuenta.getId()%>">Desbloquear</a></td>
     </tr>
     <% } %>
 </table>

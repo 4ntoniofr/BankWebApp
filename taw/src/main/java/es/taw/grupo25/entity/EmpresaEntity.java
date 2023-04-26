@@ -87,13 +87,13 @@ public class EmpresaEntity {
         empresa.setId(this.id);
         empresa.setNombre(this.nombre);
         empresa.setFechaCierre(this.fechaCierre);
-        empresa.setClienteByClienteId(this.clienteByClienteId.toDTO(empresa));
+        empresa.setClienteByClienteId(this.clienteByClienteId.toDTO());
         empresa.setClientesById_Socios(ClienteService.listaEntidadesADTO(this.clientesById_Socios));
 
         return empresa;
     }
 
-    public Empresa toDTO(Cliente cliente){
+    public Empresa toDTO(Cliente cliente) {
         Empresa empresa = new Empresa();
 
         empresa.setId(this.id);

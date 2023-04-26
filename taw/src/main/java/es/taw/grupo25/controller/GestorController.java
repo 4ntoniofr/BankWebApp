@@ -1,7 +1,7 @@
 package es.taw.grupo25.controller;
 
-import es.taw.grupo25.entity.*;
-import es.taw.grupo25.repository.*;
+import es.taw.grupo25.dto.*;
+import es.taw.grupo25.service.*;
 import es.taw.grupo25.ui.FiltroClientes;
 import es.taw.grupo25.ui.FiltroOperaciones;
 import jakarta.servlet.http.HttpSession;
@@ -22,28 +22,28 @@ import java.util.stream.Collectors;
 public class GestorController {
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private ClienteService clienteService;
 
     @Autowired
-    private CuentaInternaRepository cuentaInternaRepository;
+    private CuentaInternaService cuentaInternaService;
 
     @Autowired
-    private EstadoClienteRepository estadoClienteRepository;
+    private EstadoClienteService estadoClienteService;
 
     @Autowired
-    private AutorizacionRepository autorizacionRepository;
+    private AutorizacionService autorizacionService;
 
     @Autowired
-    private CuentaBancariaRepository cuentaBancariaRepository;
+    private CuentaBancariaService cuentaBancariaService;
 
     @Autowired
-    private EstadoCuentaRepository estadoCuentaRepository;
+    private EstadoCuentaService estadoCuentaService;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
     @Autowired
-    private MonedaRepository monedaRepository;
+    private MonedaService monedaService;
 
     @GetMapping("/")
     public String doMostrarOpciones() {
@@ -68,7 +68,7 @@ public class GestorController {
                           Model model) {
 
         String urlTo = "redirect:/gestor/";
-        UsuarioEntity user = this.usuarioRepository.autenticar(username, password);
+        Usuario user = this.usuarioService.doAutenticarUsuario(username, password);
 
         if (user != null && user.getEmpleadosById() != null && user.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             session.setAttribute("usuario", user);
@@ -88,21 +88,26 @@ public class GestorController {
 
     @GetMapping("/pendientes")
     public String doMostrarPendientes(Model model) {
-        List<ClienteEntity> list = this.clienteRepository.clientesNoAutorizados();
+        List<Cliente> list = this.clienteService.clientesNoAutorizados();
         separarIndividualesEmpresas(model, list);
         return "gestor/pendientes";
     }
 
-    @GetMapping("/autorizar")
-    public String doAutorizarCliente(@RequestParam("id") Integer idCliente, Model model) {
-        ClienteEntity cliente = this.clienteRepository.findById(idCliente).orElse(null);
+    @GetMapping("/autorizar/{id}")
+    public String doAutorizarCliente(@PathVariable("id") Integer idCliente, Model model, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/gestor/login";
+        }
+
+        Cliente cliente = this.clienteService.findById(idCliente);
         if (cliente == null) {
             return "redirect:/gestor/";
         }
-        CuentaInternaEntity cuentaInterna = new CuentaInternaEntity();
-        CuentaBancariaEntity cuentaBancaria = new CuentaBancariaEntity();
+        CuentaInterna cuentaInterna = new CuentaInterna();
+        CuentaBancaria cuentaBancaria = new CuentaBancaria();
 
-        List<MonedaEntity> monedas = this.monedaRepository.findAll();
+        List<Moneda> monedas = this.monedaService.findAll();
 
         cuentaInterna.setCuentaBancariaByCuentaBancaria(cuentaBancaria);
         cuentaInterna.setAutorizacionsById(null);
@@ -116,52 +121,60 @@ public class GestorController {
     }
 
     @PostMapping("/autorizar")
-    public String doAutorizar(@ModelAttribute("autorizacionCliente") CuentaInternaEntity cuentaInterna, HttpSession session) {
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+    public String doAutorizar(@ModelAttribute("autorizacionCliente") CuentaInterna cuentaInterna, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         if (usuario == null) {
             return "redirect:/gestor/login";
         }
 
-        EstadoCuentaEntity estadoCuenta = this.estadoCuentaRepository.findByEstado("ACTIVA");
+        EstadoCuenta estadoCuenta = this.estadoCuentaService.findByEstado("ACTIVA");
         cuentaInterna.setEstadoCuentaByEstadoCuenta(estadoCuenta);
 
         cuentaInterna.setCantidad(0.0);
 
-        EmpleadoEntity gestor = usuario.getEmpleadosById();
-        cuentaInterna.getClienteByPropietario().setEmpleadoByAutorizador(gestor);
+        Empleado gestor = usuario.getEmpleadosById();
+        //cuentaInterna.getClienteByPropietario().setEmpleadoByAutorizador(gestor);
 
-        AutorizacionEntity autorizacion = new AutorizacionEntity();
+        Autorizacion autorizacion = new Autorizacion();
         autorizacion.setEmpleadoByEmpleadoId(gestor);
         autorizacion.setCuentaInternaByCuentaInternaId(cuentaInterna);
         autorizacion.setFecha(new Date());
 
-        this.clienteRepository.save(cuentaInterna.getClienteByPropietario());
-        this.cuentaBancariaRepository.save(cuentaInterna.getCuentaBancariaByCuentaBancaria());
-        this.cuentaInternaRepository.save(cuentaInterna);
-        this.autorizacionRepository.save(autorizacion);
+        this.clienteService.guardarCliente(cuentaInterna.getClienteByPropietario());
+        this.cuentaBancariaService.guardarCuenta(cuentaInterna.getCuentaBancariaByCuentaBancaria());
+        this.cuentaInternaService.guardarCuenta(cuentaInterna);
+        this.autorizacionService.guardarAutorizacion(autorizacion);
 
         return "redirect:/gestor/pendientes";
     }
 
-    @GetMapping("/rechazar")
-    public String doRechazar(@RequestParam("id") Integer idCliente) {
-        clienteRepository.deleteById(idCliente);
+    @GetMapping("/rechazar/{id}")
+    public String doRechazar(@PathVariable("id") Integer idCliente, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/gestor/login";
+        }
+        clienteService.borrarCliente(idCliente);
         return "redirect:/gestor/pendientes";
     }
 
     @GetMapping("/clientes")
-    public String doListarClientes(Model model) {
-        List<ClienteEntity> list = this.clienteRepository.clientesAutorizados();
+    public String doListarClientes(Model model, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/gestor/login";
+        }
+        List<Cliente> list = this.clienteService.clientesAutorizados();
         separarIndividualesEmpresas(model, list);
         model.addAttribute("filtro", new FiltroClientes());
-        model.addAttribute("estados", this.estadoClienteRepository.findAll());
+        model.addAttribute("estados", this.estadoClienteService.findAll());
         return "gestor/clientes";
     }
 
-    private void separarIndividualesEmpresas(Model model, List<ClienteEntity> list) {
-        List<ClienteEntity> listPersonas = new ArrayList<>();
-        List<ClienteEntity> listEmpresas = new ArrayList<>();
-        for (ClienteEntity cliente : list) {
+    private void separarIndividualesEmpresas(Model model, List<Cliente> list) {
+        List<Cliente> listPersonas = new ArrayList<>();
+        List<Cliente> listEmpresas = new ArrayList<>();
+        for (Cliente cliente : list) {
             if (cliente.getPersonaByPersonaId() != null) {
                 listPersonas.add(cliente);
             } else {
@@ -175,31 +188,35 @@ public class GestorController {
     @PostMapping("/filtrarClientes")
     public String doFiltrarClientes(@ModelAttribute("filtro") FiltroClientes filtro, Model model) {
         if (filtro == null || (filtro.getTexto().isEmpty() && filtro.getEstadoCliente().isEmpty())) {
-            separarIndividualesEmpresas(model, this.clienteRepository.clientesAutorizados());
+            separarIndividualesEmpresas(model, this.clienteService.clientesAutorizados());
             filtro = new FiltroClientes();
         } else if (filtro.getEstadoCliente().isEmpty()) {
-            List<ClienteEntity> listPersonas = this.clienteRepository.buscarIndividualesPorNombre(filtro.getTexto());
-            List<ClienteEntity> listEmpresas = this.clienteRepository.buscarEmpresaPorNombre(filtro.getTexto());
+            List<Cliente> listPersonas = this.clienteService.buscarIndividualesPorNombre(filtro.getTexto());
+            List<Cliente> listEmpresas = this.clienteService.buscarEmpresaPorNombre(filtro.getTexto());
 
             model.addAttribute("personas", listPersonas);
             model.addAttribute("empresas", listEmpresas);
         } else if (filtro.getTexto().isEmpty()) {
-            separarIndividualesEmpresas(model, this.clienteRepository.buscarPorEstado(filtro.getEstadoCliente()));
+            separarIndividualesEmpresas(model, this.clienteService.buscarPorEstado(filtro.getEstadoCliente()));
         } else {
-            List<ClienteEntity> listPersonas = this.clienteRepository.buscarIndividualesPorNombreYEstado(filtro.getTexto(), filtro.getEstadoCliente());
-            List<ClienteEntity> listEmpresas = this.clienteRepository.buscarEmpresaPorNombreYEstado(filtro.getTexto(), filtro.getEstadoCliente());
+            List<Cliente> listPersonas = this.clienteService.buscarIndividualesPorNombreYEstado(filtro.getTexto(), filtro.getEstadoCliente());
+            List<Cliente> listEmpresas = this.clienteService.buscarEmpresaPorNombreYEstado(filtro.getTexto(), filtro.getEstadoCliente());
 
             model.addAttribute("personas", listPersonas);
             model.addAttribute("empresas", listEmpresas);
         }
         model.addAttribute("filtro", filtro);
-        model.addAttribute("estados", this.estadoClienteRepository.findAll());
+        model.addAttribute("estados", this.estadoClienteService.findAll());
         return "gestor/clientes";
     }
 
-    @GetMapping("/individual")
-    public String doMostrarDetallesIndividual(@RequestParam("id") Integer idCliente, Model model) {
-        ClienteEntity cliente = this.clienteRepository.findById(idCliente).orElse(null);
+    @GetMapping("/individual/{id}")
+    public String doMostrarDetallesIndividual(@PathVariable("id") Integer idCliente, Model model, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/gestor/login";
+        }
+        Cliente cliente = this.clienteService.findById(idCliente);
         if (cliente == null) {
             return "gestor/index";
         }
@@ -207,9 +224,13 @@ public class GestorController {
         return "gestor/individual";
     }
 
-    @GetMapping("/empresa")
-    public String doMostrarDetallesEmpresa(@RequestParam("id") Integer idCliente, Model model) {
-        ClienteEntity cliente = this.clienteRepository.findById(idCliente).orElse(null);
+    @GetMapping("/empresa/{id}")
+    public String doMostrarDetallesEmpresa(@PathVariable("id") Integer idCliente, Model model, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/gestor/login";
+        }
+        Cliente cliente = this.clienteService.findById(idCliente);
         if (cliente == null) {
             return "gestor/index";
         }
@@ -217,8 +238,12 @@ public class GestorController {
         return "gestor/empresa";
     }
 
-    @GetMapping("/operaciones")
-    public String doMostrarOperacionesCuenta(@RequestParam("id") Integer idCuenta, Model model) {
+    @GetMapping("/operaciones/{id}")
+    public String doMostrarOperacionesCuenta(@PathVariable("id") Integer idCuenta, Model model, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/gestor/login";
+        }
         return getTransaccionesYOrdenar(model, idCuenta, "instruccion");
     }
 
@@ -227,12 +252,12 @@ public class GestorController {
         if (filtro.getIban().isEmpty() && filtro.getFechaInstruccion().isEmpty() && filtro.getFechaEjecucion().isEmpty()) {
             return getTransaccionesYOrdenar(model, filtro.getIdCuenta(), filtro.getOrden());
         } else {
-            CuentaInternaEntity cuenta = this.cuentaInternaRepository.findById(filtro.getIdCuenta()).orElse(null);
+            CuentaInterna cuenta = this.cuentaInternaService.findById(filtro.getIdCuenta());
             if (cuenta == null) {
                 return "gestor/index";
             }
-            CuentaBancariaEntity cuentaBancaria = cuenta.getCuentaBancariaByCuentaBancaria();
-            List<TransaccionEntity> transacciones = new ArrayList<>();
+            CuentaBancaria cuentaBancaria = cuenta.getCuentaBancariaByCuentaBancaria();
+            List<Transaccion> transacciones = new ArrayList<>();
             transacciones.addAll(cuentaBancaria.getTransaccionsById_Entrantes());
             transacciones.addAll(cuentaBancaria.getTransaccionsById_Salientes());
 
@@ -256,38 +281,38 @@ public class GestorController {
 
         }
         model.addAttribute("filtro", filtro);
-        model.addAttribute("estados", this.estadoClienteRepository.findAll());
+        model.addAttribute("estados", this.estadoClienteService.findAll());
         return "gestor/operaciones";
     }
 
     private String getTransaccionesYOrdenar(Model model, int idCuenta, String orden) {
-        CuentaInternaEntity cuenta = this.cuentaInternaRepository.findById(idCuenta).orElse(null);
+        CuentaInterna cuenta = this.cuentaInternaService.findById(idCuenta);
         if (cuenta == null) {
             return "gestor/index";
         }
-        CuentaBancariaEntity cuentaBancaria = cuenta.getCuentaBancariaByCuentaBancaria();
-        List<TransaccionEntity> transaccionEntityList = new ArrayList<>();
-        transaccionEntityList.addAll(cuentaBancaria.getTransaccionsById_Entrantes());
-        transaccionEntityList.addAll(cuentaBancaria.getTransaccionsById_Salientes());
-        ordenarTransacciones(transaccionEntityList, orden);
+        CuentaBancaria cuentaBancaria = cuenta.getCuentaBancariaByCuentaBancaria();
+        List<Transaccion> transacciones = new ArrayList<>();
+        transacciones.addAll(cuentaBancaria.getTransaccionsById_Entrantes());
+        transacciones.addAll(cuentaBancaria.getTransaccionsById_Salientes());
+        ordenarTransacciones(transacciones, orden);
         model.addAttribute("cuenta", cuentaBancaria);
-        model.addAttribute("lista", transaccionEntityList);
+        model.addAttribute("lista", transacciones);
         model.addAttribute("filtro", new FiltroOperaciones(cuenta.getId()));
         return "gestor/operaciones";
     }
 
-    private void ordenarTransacciones(List<TransaccionEntity> transacciones, String orden) {
+    private void ordenarTransacciones(List<Transaccion> transacciones, String orden) {
         if (orden.equals("instruccion")) {
-            transacciones.sort(new Comparator<TransaccionEntity>() {
+            transacciones.sort(new Comparator<Transaccion>() {
                 @Override
-                public int compare(TransaccionEntity o1, TransaccionEntity o2) {
+                public int compare(Transaccion o1, Transaccion o2) {
                     return o1.getFechaInstruccion().compareTo(o2.getFechaInstruccion());
                 }
             });
         } else {
-            transacciones.sort(new Comparator<TransaccionEntity>() {
+            transacciones.sort(new Comparator<Transaccion>() {
                 @Override
-                public int compare(TransaccionEntity o1, TransaccionEntity o2) {
+                public int compare(Transaccion o1, Transaccion o2) {
                     return o1.getFechaEjecucion().compareTo(o2.getFechaEjecucion());
                 }
             });
@@ -295,63 +320,79 @@ public class GestorController {
     }
 
     @GetMapping("/inactivos")
-    public String doMostrarInactivos(Model model) {
-        List<ClienteEntity> inactivos = this.clienteRepository.buscarInactivos(new Date(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000));
+    public String doMostrarInactivos(Model model, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/gestor/login";
+        }
+        List<Cliente> inactivos = this.clienteService.buscarInactivos(new Date(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000));
         separarIndividualesEmpresas(model, inactivos);
         return "gestor/inactivos";
     }
 
-    @GetMapping("/desactivar")
-    public String doDesactivarCuentas(@RequestParam("id") Integer idCliente, @RequestParam("urlto") String urlTo) {
-        ClienteEntity cliente = this.clienteRepository.findById(idCliente).orElse(null);
-        EstadoCuentaEntity estadoBloqueado = this.estadoCuentaRepository.findByEstado("BLOQUEADA");
+    @GetMapping("/desactivar/{id}/{urlto}")
+    public String doDesactivarCuentas(@PathVariable("id") Integer idCliente, @PathVariable("urlto") String urlTo, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/gestor/login";
+        }
+        Cliente cliente = this.clienteService.findById(idCliente);
+        EstadoCuenta estadoBloqueado = this.estadoCuentaService.findByEstado("BLOQUEADA");
         if (cliente == null) {
             return "gestor/index";
         }
-        List<CuentaInternaEntity> cuentas = cliente.getCuentaInternasById();
-        for (CuentaInternaEntity cuenta : cuentas) {
+        List<CuentaInterna> cuentas = cliente.getCuentaInternasById();
+        for (CuentaInterna cuenta : cuentas) {
             cuenta.setEstadoCuentaByEstadoCuenta(estadoBloqueado);
-            this.cuentaInternaRepository.save(cuenta);
+            this.cuentaInternaService.guardarCuenta(cuenta);
         }
         return "redirect:/gestor/" + urlTo;
     }
 
     @GetMapping("/sospechosos")
-    public String doMostrarClientesSospechosos(Model model) {
-        List<ClienteEntity> sospechosos = this.clienteRepository.buscarSospechosos();
+    public String doMostrarClientesSospechosos(Model model, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/gestor/login";
+        }
+        List<Cliente> sospechosos = this.clienteService.buscarSospechosos();
         separarIndividualesEmpresas(model, sospechosos);
         return "gestor/sospechosos";
     }
 
     @GetMapping("/solicitudes")
-    public String doMostrarSolicitudes(Model model){
-        List<CuentaInternaEntity> cuentasSolicitantes = this.cuentaInternaRepository.findCuentaInternasSolicitantes();
+    public String doMostrarSolicitudes(Model model, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/gestor/login";
+        }
+        List<CuentaInterna> cuentasSolicitantes = this.cuentaInternaService.findCuentaInternasSolicitantes();
         model.addAttribute("cuentas", cuentasSolicitantes);
         return "gestor/solicitudes";
     }
 
     @GetMapping("/desbloquear")
-    public String doDesbloquearCuenta(@RequestParam("id") Integer idCuenta, HttpSession session){
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+    public String doDesbloquearCuenta(@RequestParam("id") Integer idCuenta, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         if (usuario == null) {
             return "redirect:/gestor/login";
         }
 
-        CuentaInternaEntity cuentaInterna = this.cuentaInternaRepository.findById(idCuenta).orElse(null);
-        if(cuentaInterna == null){
+        CuentaInterna cuentaInterna = this.cuentaInternaService.findById(idCuenta);
+        if (cuentaInterna == null) {
             return "redirect:/gestor/solicitudes";
         }
 
-        EstadoCuentaEntity estadoCuenta = this.estadoCuentaRepository.findByEstado("ACTIVA");
+        EstadoCuenta estadoCuenta = this.estadoCuentaService.findByEstado("ACTIVA");
 
         cuentaInterna.setEstadoCuentaByEstadoCuenta(estadoCuenta);
-        this.cuentaInternaRepository.save(cuentaInterna);
+        this.cuentaInternaService.guardarCuenta(cuentaInterna);
 
-        AutorizacionEntity autorizacion = new AutorizacionEntity();
+        Autorizacion autorizacion = new Autorizacion();
         autorizacion.setFecha(new Date());
         autorizacion.setEmpleadoByEmpleadoId(usuario.getEmpleadosById());
         autorizacion.setCuentaInternaByCuentaInternaId(cuentaInterna);
-        this.autorizacionRepository.save(autorizacion);
+        this.autorizacionService.guardarAutorizacion(autorizacion);
 
         return "redirect:/gestor/solicitudes";
     }

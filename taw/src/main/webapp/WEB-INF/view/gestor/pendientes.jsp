@@ -1,10 +1,10 @@
 <%@ page import="java.util.List" %>
-<%@ page import="es.taw.grupo25.entity.ClienteEntity" %>
+<%@ page import="es.taw.grupo25.dto.Cliente" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    List<ClienteEntity> personas = (List<ClienteEntity>) request.getAttribute("personas");
-    List<ClienteEntity> empresas = (List<ClienteEntity>) request.getAttribute("empresas");
+    List<Cliente> personas = (List<Cliente>) request.getAttribute("personas");
+    List<Cliente> empresas = (List<Cliente>) request.getAttribute("empresas");
 %>
 
 <html>
@@ -29,7 +29,7 @@
     </tr>
 
     <%
-        for (ClienteEntity persona : personas) {
+        for (Cliente persona : personas) {
     %>
 
     <tr>
@@ -49,8 +49,8 @@
         <td><%= persona.getDireccionByDireccion().getCalle() + " " + persona.getDireccionByDireccion().getNumero() + ", " +
                 persona.getDireccionByDireccion().getCiudad() + " (" + persona.getDireccionByDireccion().getPais() + ")" %>
         </td>
-        <td><a href="/gestor/autorizar?id=<%= persona.getId() %>"> Autorizar</a></td>
-        <td><a href="/gestor/rechazar?id=<%= persona.getId() %>"> Rechazar</a></td>
+        <td><a href="/gestor/autorizar/<%= persona.getId() %>"> Autorizar</a></td>
+        <td><a href="/gestor/rechazar/<%= persona.getId() %>"> Rechazar</a></td>
     </tr>
 
 
@@ -70,7 +70,7 @@
     </tr>
 
     <%
-        for (ClienteEntity empresa : empresas) {
+        for (Cliente empresa : empresas) {
     %>
 
     <tr>
@@ -81,8 +81,8 @@
         <td><%= empresa.getDireccionByDireccion().getCalle() + " " + empresa.getDireccionByDireccion().getNumero() + ", " +
                 empresa.getDireccionByDireccion().getCiudad() + " (" + empresa.getDireccionByDireccion().getPais() + ")" %>
         </td>
-        <td><a href="/gestor/autorizar?id=<%= empresa.getId() %>"> Autorizar</a></td>
-        <td><a href="/gestor/rechazar?id=<%= empresa.getId() %>"> Rechazar</a></td>
+        <td><a href="/gestor/autorizar/<%= empresa.getId() %>"> Autorizar</a></td>
+        <td><a href="/gestor/rechazar/<%= empresa.getId() %>"> Rechazar</a></td>
     </tr>
 
 

@@ -1,13 +1,13 @@
-<%@ page import="es.taw.grupo25.entity.CuentaBancariaEntity" %>
-<%@ page import="es.taw.grupo25.entity.TransaccionEntity" %>
 <%@ page import="java.util.List" %>
+<%@ page import="es.taw.grupo25.dto.CuentaBancaria" %>
+<%@ page import="es.taw.grupo25.dto.Transaccion" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
 <%
-    CuentaBancariaEntity cuentaBancaria = (CuentaBancariaEntity) request.getAttribute("cuenta");
-    List<TransaccionEntity> transacciones = (List<TransaccionEntity>) request.getAttribute("lista");
+    CuentaBancaria cuentaBancaria = (CuentaBancaria) request.getAttribute("cuenta");
+    List<Transaccion> transacciones = (List<Transaccion>) request.getAttribute("lista");
 %>
 
 <html>
@@ -48,7 +48,7 @@
     </tr>
 
     <%
-        for (TransaccionEntity transaccion : transacciones) {
+        for (Transaccion transaccion : transacciones) {
     %>
     <tr>
         <td><%=transaccion.getCuentaBancariaByCuentaOrigen().getIban()%>

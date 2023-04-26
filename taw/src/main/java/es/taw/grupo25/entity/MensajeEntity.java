@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Mensaje;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -87,5 +88,17 @@ public class MensajeEntity {
 
     public void setChatByChat(ChatEntity chatByChat) {
         this.chatByChat = chatByChat;
+    }
+
+    public Mensaje toDTO(){
+        Mensaje mensaje = new Mensaje();
+        mensaje.setFecha(this.fecha);
+        mensaje.setLeido(this.leido);
+        mensaje.setId(this.id);
+        mensaje.setChatByChat(this.chatByChat.toDTO());
+        mensaje.setTexto(this.texto);
+        mensaje.setPersonaByEmisor(this.personaByEmisor.toDTO());
+
+        return mensaje;
     }
 }

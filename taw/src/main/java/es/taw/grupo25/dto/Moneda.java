@@ -1,7 +1,8 @@
 package es.taw.grupo25.dto;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Moneda {
+public class Moneda implements Serializable {
     private Integer id;
     private String moneda;
     private Double cambioEuro;

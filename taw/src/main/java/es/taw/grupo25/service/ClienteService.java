@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,12 +39,12 @@ public class ClienteService {
         cliente.setId(clienteEntity.getId());
     }
 
-    private ClienteEntity getEntity(Cliente cliente){
+    private ClienteEntity getEntity(Cliente cliente) {
         ClienteEntity clienteEntity = new ClienteEntity();
 
         clienteEntity.setId(cliente.getId());
         clienteEntity.setFechaInicio(cliente.getFechaInicio());
-        clienteEntity.setChatsById(cliente.getChatsById());
+        //clienteEntity.setChatsById(cliente.getChatsById());
 
         List<TransaccionEntity> transacciones = new ArrayList<>();
         if(cliente.getTransaccionsById() != null){
@@ -77,9 +78,9 @@ public class ClienteService {
                 empresaRepository.findById(cliente.getEmpresaByEmpresaSocio().getId()).orElse(null);
         clienteEntity.setEmpresaByEmpresaSocio(empresaSocio);
 
-        EmpleadoEntity autorizador = cliente.getEmpleadoByAutorizador() == null ? null :
+        /*EmpleadoEntity autorizador = cliente.getEmpleadoByAutorizador() == null ? null :
                 empleadoRepository.findById(cliente.getEmpleadoByAutorizador().getId()).orElse(null);
-        clienteEntity.setEmpleadoByAutorizador(autorizador);
+        clienteEntity.setEmpleadoByAutorizador(autorizador);*/
 
         return clienteEntity;
     }
@@ -101,11 +102,61 @@ public class ClienteService {
         return dtos;
     }
 
-    public static List<Cliente> listaEntidadesADTOConEmpresa(List<ClienteEntity> clientes, Empresa empresa){
+    public static List<Cliente> listaEntidadesADTOConEmpresa(List<ClienteEntity> clientes, Empresa empresa) {
         List<Cliente> dtos = new ArrayList<>();
-        for(ClienteEntity entity : clientes){
-            dtos.add(entity.toDTOSocio(empresa));
+        for (ClienteEntity entity : clientes) {
+            dtos.add(entity.toDTO());
         }
         return dtos;
+    }
+
+    public List<Cliente> clientesNoAutorizados() {
+        List<ClienteEntity> clientes = this.clienteRepository.clientesNoAutorizados();
+        return listaEntidadesADTO(clientes);
+    }
+
+    public List<Cliente> clientesAutorizados() {
+        List<ClienteEntity> clientes = this.clienteRepository.clientesAutorizados();
+        return listaEntidadesADTO(clientes);
+    }
+
+    public Cliente findById(int id) {
+        ClienteEntity cliente = this.clienteRepository.findById(id).orElse(null);
+        if (cliente == null) {
+            return null;
+        }
+        return cliente.toDTO();
+    }
+
+    public void borrarCliente(Integer id) {
+        this.clienteRepository.deleteById(id);
+    }
+
+    public List<Cliente> buscarIndividualesPorNombre(String texto) {
+        return listaEntidadesADTO(this.clienteRepository.buscarIndividualesPorNombre(texto));
+    }
+
+    public List<Cliente> buscarEmpresaPorNombre(String texto) {
+        return listaEntidadesADTO(this.clienteRepository.buscarEmpresaPorNombre(texto));
+    }
+
+    public List<Cliente> buscarPorEstado(String estadoCliente) {
+        return listaEntidadesADTO(this.clienteRepository.buscarPorEstado(estadoCliente));
+    }
+
+    public List<Cliente> buscarIndividualesPorNombreYEstado(String texto, String estadoCliente) {
+        return listaEntidadesADTO(this.clienteRepository.buscarIndividualesPorNombreYEstado(texto, estadoCliente));
+    }
+
+    public List<Cliente> buscarEmpresaPorNombreYEstado(String texto, String estadoCliente) {
+        return listaEntidadesADTO(this.clienteRepository.buscarEmpresaPorNombreYEstado(texto, estadoCliente));
+    }
+
+    public List<Cliente> buscarInactivos(Date date) {
+        return listaEntidadesADTO(this.clienteRepository.buscarInactivos(date));
+    }
+
+    public List<Cliente> buscarSospechosos() {
+        return listaEntidadesADTO(this.clienteRepository.buscarSospechosos());
     }
 }

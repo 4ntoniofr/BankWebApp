@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Cliente;
 import es.taw.grupo25.dto.Persona;
 import jakarta.persistence.*;
 
@@ -130,7 +131,20 @@ public class PersonaEntity {
         persona.setPrimerApellido(this.primerApellido);
         persona.setSegundoApellido(this.segundoApellido);
         persona.setFechaNacimiento(this.fechaNacimiento);
-        persona.setClientesById(this.clientesById);
+        persona.setClientesById(this.clientesById.toDTO());
+        persona.setEmpleadosById(this.empleadosById);
+        return persona;
+    }
+
+    public Persona toDTO(Cliente cliente){
+        Persona persona = new Persona();
+        persona.setId(this.id);
+        persona.setDni(this.dni);
+        persona.setNombre(this.nombre);
+        persona.setPrimerApellido(this.primerApellido);
+        persona.setSegundoApellido(this.segundoApellido);
+        persona.setFechaNacimiento(this.fechaNacimiento);
+        persona.setClientesById(cliente);
         persona.setEmpleadosById(this.empleadosById);
         return persona;
     }

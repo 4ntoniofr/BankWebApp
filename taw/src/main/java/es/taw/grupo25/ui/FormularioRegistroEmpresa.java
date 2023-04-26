@@ -19,7 +19,6 @@ public class FormularioRegistroEmpresa {
         asociadoEmpresa = new FormularioRegistroAsociado();
 
         empresa.setClienteByClienteId(clienteEmpresa);
-        clienteEmpresa.setUsuarioByUsuarioId(usuarioEmpresa);
 
         asociadoEmpresa.getClienteAsociado().setEmpresaByEmpresaSocio(empresa);
 

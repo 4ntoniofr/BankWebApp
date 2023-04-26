@@ -88,14 +88,12 @@ public class CuentaBancariaEntity {
         this.transaccionsById_Salientes = transaccionsById_Salientes;
     }
 
-    public CuentaBancaria toDTO() {
+    public CuentaBancaria toDTO(){
         CuentaBancaria cuenta = new CuentaBancaria();
         cuenta.setId(this.id);
         cuenta.setIban(this.iban);
         cuenta.setCuentaExternasById(this.cuentaExternasById);
         cuenta.setCuentaInternasById(this.cuentaInternasById);
-        cuenta.setTransaccionsById_Entrantes(this.transaccionsById_Entrantes);
-        cuenta.setTransaccionsById_Salientes(this.transaccionsById_Salientes);
         return cuenta;
     }
 }

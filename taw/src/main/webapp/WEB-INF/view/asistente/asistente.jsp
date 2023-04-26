@@ -42,6 +42,10 @@
         <li>
             <a href="/asistente/chats"> Chats </a>
         </li>
+
+        <li>
+            <a href="/"> Seccion principal </a>
+        </li>
     </ul>
 
 </body>

@@ -31,6 +31,10 @@ public class EmpresaController {
     private EmpresaService empresaService;
     @Autowired
     private EstadoClienteService estadoClienteService;
+    @Autowired
+    private DireccionRepository direccionRep;
+    @Autowired
+    private EstadoClienteRepository estadoClienteRep;
 
     @GetMapping("/")
     public String showOptions(){
@@ -54,7 +58,6 @@ public class EmpresaController {
     @PostMapping("/registrar")
     public String registerEmpresa(@ModelAttribute("registroEmpresa") FormularioRegistroEmpresa registroEmpresa,
                                   HttpSession session){
-
         this.empresaService.registrarEmpresa(registroEmpresa);
         session.setAttribute("cliente", registroEmpresa.getClienteEmpresa());
 

@@ -1,11 +1,13 @@
 package es.taw.grupo25.dto;
 
+import es.taw.grupo25.entity.RolEmpleadoEntity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
-public class EstadoCliente implements Serializable {
+public class RolEmpleado implements Serializable {
     private Integer id;
-    private String estado;
+    private String rol;
 
     public Integer getId() {
         return id;
@@ -15,24 +17,25 @@ public class EstadoCliente implements Serializable {
         this.id = id;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getRol() {
+        return rol;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EstadoCliente that = (EstadoCliente) o;
-        return id.equals(that.id) && estado.equals(that.estado);
+        RolEmpleado that = (RolEmpleado) o;
+        return Objects.equals(id, that.id) && Objects.equals(rol, that.rol);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, estado);
+        return Objects.hash(id, rol);
     }
+
 }

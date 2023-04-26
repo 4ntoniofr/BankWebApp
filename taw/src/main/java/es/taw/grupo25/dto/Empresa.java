@@ -1,15 +1,19 @@
 package es.taw.grupo25.dto;
 
+import es.taw.grupo25.entity.ClienteEntity;
+import es.taw.grupo25.entity.EmpresaEntity;
+
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class Empresa {
+public class Empresa implements Serializable {
     private Integer id;
     private String nombre;
     private Date fechaCierre;
-    private List<Cliente> clientesById_Socios;
     private Cliente clienteByClienteId;
+    private List<Cliente> clientesById_Socios;
 
     public Integer getId() {
         return id;

@@ -5,9 +5,10 @@ import es.taw.grupo25.entity.PagoEntity;
 import es.taw.grupo25.entity.TransaccionEntity;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class CambioDivisa {
+public class CambioDivisa implements Serializable {
     private Integer id;
     private Transaccion transaccionByTransaccion;
     private Moneda monedaByMonedaCompra;

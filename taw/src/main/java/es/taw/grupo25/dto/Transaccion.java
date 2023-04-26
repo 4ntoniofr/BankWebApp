@@ -1,20 +1,25 @@
 package es.taw.grupo25.dto;
-import es.taw.grupo25.entity.ClienteEntity;
-import es.taw.grupo25.entity.PagoEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import es.taw.grupo25.entity.*;
+import es.taw.grupo25.service.CuentaBancariaService;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class Transaccion {
+public class Transaccion implements Serializable {
     private Integer id;
     private Timestamp fechaInstruccion;
     private Timestamp fechaEjecucion;
     private PagoEntity pagosById;
+
+    @JsonIgnoreProperties({"transaccionsById_Entrantes", "transaccionsById_Salientes"})
     private CuentaBancaria cuentaBancariaByCuentaOrigen;
+    @JsonIgnoreProperties({"transaccionsById_Entrantes", "transaccionsById_Salientes"})
     private CuentaBancaria cuentaBancariaByCuentaDestino;
     private ClienteEntity clienteByCliente;
 
-    private boolean isCambioDivisa;
+    private CambioDivisaEntity cambioDivisa;
 
     public Integer getId() {
         return id;
@@ -72,12 +77,12 @@ public class Transaccion {
         this.clienteByCliente = clienteByCliente;
     }
 
-    public boolean isCambioDivisa() {
-        return isCambioDivisa;
+    public CambioDivisaEntity getCambioDivisa() {
+        return cambioDivisa;
     }
 
-    public void setCambioDivisa(boolean cambioDivisa) {
-        isCambioDivisa = cambioDivisa;
+    public void setCambioDivisa(CambioDivisaEntity cambioDivisa) {
+        this.cambioDivisa = cambioDivisa;
     }
 
     @Override
@@ -92,4 +97,6 @@ public class Transaccion {
     public int hashCode() {
         return Objects.hash(id, fechaInstruccion, fechaEjecucion, pagosById, cuentaBancariaByCuentaOrigen, cuentaBancariaByCuentaDestino, clienteByCliente);
     }
+
+
 }
