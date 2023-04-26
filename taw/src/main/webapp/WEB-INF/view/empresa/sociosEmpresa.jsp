@@ -37,7 +37,7 @@
         <td><%= persona.getSegundoApellido() %></td>
         <td><%= persona.getFechaNacimiento() %></td>
         <td><%= socio.getFechaInicio() %></td>
-        <td><%= socio.getEmpleadoByAutorizador() != null %></td>
+        <td></td><% //socio.getEmpleadoByAutorizador() != null %>
         <td><%= socio.getRolClienteByRolClienteId().getRol() %></td>
         <td><%= socio.getEstadoClienteByEstadoCliente().getEstado() %></td>
         <td><a href="/empresa/operaciones?idCliente=<%= socio.getId() %>">Visualizar operaciones</a></td>

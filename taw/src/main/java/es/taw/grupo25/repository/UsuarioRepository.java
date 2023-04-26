@@ -8,4 +8,7 @@ import org.springframework.data.repository.query.Param;
 public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer> {
     @Query("select u from UsuarioEntity u where u.usuario = :user and u.password = :password")
     public UsuarioEntity autenticar (@Param("user") String user, @Param("password")String password);
+
+    @Query("select u from UsuarioEntity u where u.clientesById.id = :id")
+    public UsuarioEntity getUsuarioFromCliente(@Param("id") Integer id);
 }

@@ -88,7 +88,6 @@ public class EmpresaEntity {
         empresa.setNombre(this.nombre);
         empresa.setFechaCierre(this.fechaCierre);
         empresa.setClienteByClienteId(this.clienteByClienteId.toDTO());
-        empresa.setClientesById_Socios(ClienteService.listaEntidadesADTO(this.clientesById_Socios));
 
         return empresa;
     }
@@ -100,7 +99,6 @@ public class EmpresaEntity {
         empresa.setNombre(this.nombre);
         empresa.setFechaCierre(this.fechaCierre);
         empresa.setClienteByClienteId(cliente);
-        empresa.setClientesById_Socios(ClienteService.listaEntidadesADTOConEmpresa(this.clientesById_Socios, empresa));
 
         return empresa;
     }

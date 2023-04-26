@@ -1,8 +1,5 @@
 package es.taw.grupo25.dto;
 
-import es.taw.grupo25.entity.ChatEntity;
-import es.taw.grupo25.entity.EmpleadoEntity;
-import es.taw.grupo25.entity.EmpresaEntity;
 import es.taw.grupo25.entity.CuentaInternaEntity;
 
 import java.io.Serializable;
@@ -129,19 +126,13 @@ public class Cliente implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cliente cliente = (Cliente) o;
-        return id.equals(cliente.id) &&
-                fechaInicio.equals(cliente.fechaInicio) &&
-                estadoClienteByEstadoCliente.equals(cliente.estadoClienteByEstadoCliente) &&
-                direccionByDireccion.equals(cliente.direccionByDireccion) &&
-                usuarioByUsuarioId.equals(cliente.usuarioByUsuarioId) &&
-                Objects.equals(personaByPersonaId, cliente.personaByPersonaId) &&
-                rolClienteByRolClienteId.equals(cliente.rolClienteByRolClienteId);
+        return id.equals(cliente.id);
 
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fechaInicio, estadoClienteByEstadoCliente, direccionByDireccion, usuarioByUsuarioId, personaByPersonaId, rolClienteByRolClienteId);
+        return Objects.hash(id);
     }
 
 }
