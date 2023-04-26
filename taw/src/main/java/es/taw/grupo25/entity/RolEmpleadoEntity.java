@@ -60,6 +60,7 @@ public class RolEmpleadoEntity {
     public RolEmpleado toDTO(){
         RolEmpleado rolEmpleado = new RolEmpleado();
         rolEmpleado.setRol(this.rol);
+        rolEmpleado.setId(this.id);
         return rolEmpleado;
     }
 

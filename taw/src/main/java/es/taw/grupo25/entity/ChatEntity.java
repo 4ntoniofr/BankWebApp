@@ -1,6 +1,7 @@
 package es.taw.grupo25.entity;
 
 import es.taw.grupo25.dto.Chat;
+import es.taw.grupo25.dto.Cliente;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -85,8 +86,8 @@ public class ChatEntity {
         chat.setId(this.id);
         chat.setFechaCierre(this.fechaCierre);
         chat.setClienteByClienteId(this.clienteByClienteId.toDTO());
-        chat.setMensajesById(this.mensajesById.stream().map(MensajeEntity::toDTO).collect(Collectors.toList()));
         chat.setEmpleadoByEmpleadoId(this.empleadoByEmpleadoId.toDTO());
+        chat.setMensajesById(this.mensajesById.stream().map(msj -> msj.toDTO(chat)).collect(Collectors.toList()));
         return chat;
     }
 }

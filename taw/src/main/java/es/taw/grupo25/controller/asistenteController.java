@@ -1,7 +1,9 @@
 package es.taw.grupo25.controller;
 
-import es.taw.grupo25.entity.*;
-import es.taw.grupo25.repository.*;
+import es.taw.grupo25.dto.*;
+import es.taw.grupo25.service.ChatService;
+import es.taw.grupo25.service.MensajeService;
+import es.taw.grupo25.service.UsuarioService;
 import es.taw.grupo25.ui.FiltroChats;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,24 +17,21 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Jorge Camacho García
+ */
 @Controller()
 @RequestMapping("/asistente")
 public class asistenteController {
 
     @Autowired
-    protected ChatRepository chatRepository;
+    protected ChatService chatService;
 
     @Autowired
-    protected ClienteRepository clienteRepository;
+    protected MensajeService mensajeService;
 
     @Autowired
-    protected EmpleadoRepository empleadoRepository;
-
-    @Autowired
-    protected MensajeRepository mensajeRepository;
-
-    @Autowired
-    protected UsuarioRepository usuarioRepository;
+    protected UsuarioService usuarioService;
 
     @GetMapping("/")
     public String doPaginaAsistente(Model model) {
@@ -51,12 +50,12 @@ public class asistenteController {
 
     public String procesarFiltrado(FiltroChats filtro, Model model, HttpSession session) {
 
-        EmpleadoEntity empleadoQueSoy = (EmpleadoEntity) session.getAttribute("asistente");
+        Empleado empleadoQueSoy = (Empleado) session.getAttribute("asistente");
         if (empleadoQueSoy == null) {
             return "redirect:/asistente/iniciar-sesion";
         } else {
             model.addAttribute("empleado", empleadoQueSoy);
-            List<ChatEntity> chats = chatRepository.findChatsByEmpleadoId(empleadoQueSoy.getId());
+            List<Chat> chats = chatService.findChatsByEmpleadoId(empleadoQueSoy.getId());
 
             if (filtro == null || filtro.getNombre().isEmpty() && filtro.getUltimoMensajeAntesDe().isEmpty() && !filtro.isSoloAbiertos()) {
                 filtro = new FiltroChats();
@@ -92,48 +91,39 @@ public class asistenteController {
 
     @GetMapping("/chat")
     public String getChat(Model model, @RequestParam("id") Integer chatId) {
-        ChatEntity chat = chatRepository.findById(chatId).orElse(null);
+        Chat chat = chatService.findById(chatId);
         if (chat == null) {
-            // TODO: Página con un mensaje de error y con un enlace para redirigir a todos los chats
             return "redirect:/chats";
         }
         model.addAttribute("chat", chat);
 
-        List<MensajeEntity> mensajes = mensajeRepository.findMensajesByChatId(chatId);
+        List<Mensaje> mensajes = chat.getMensajesById();
         model.addAttribute("mensajes", mensajes);
 
-        MensajeEntity siguienteMensaje = new MensajeEntity();
+        Mensaje siguienteMensaje = new Mensaje();
         model.addAttribute("siguienteMensaje", siguienteMensaje);
 
-        ClienteEntity cliente = chat.getClienteByClienteId();
+        Cliente cliente = chat.getClienteByClienteId();
         model.addAttribute("cliente", cliente);
 
         model.addAttribute("rol", "a");
 
-
         return "/asistente/chat";
     }
 
+    //TODO: traspasarlo a cliente
     @PostMapping("/cerrar-chat")
     public String doCerrarChat(Model mode, @RequestParam("id") Integer chatId){
-        ChatEntity chat = chatRepository.findById(chatId).orElse(null);
-        if(chat != null){
-            chat.setFechaCierre(new Timestamp(System.currentTimeMillis()));
-            chatRepository.save(chat);
-        }
+        Chat chat = chatService.findById(chatId);
+        chatService.cerrarChat(chat);
 
         return "redirect:/asistente/chats";
     }
 
     @PostMapping("/enviar-mensaje")
-    public String doEnviarMensaje(@ModelAttribute("siguienteMensaje") MensajeEntity mensaje) {
-
-        java.sql.Timestamp sqlDate = new java.sql.Timestamp(System.currentTimeMillis());
-        mensaje.setFecha(sqlDate);
-        mensaje.setLeido(false);
-        this.mensajeRepository.save(mensaje);
-
-        return "redirect:/asistente/chat?id=" + mensaje.getChatByChat().getId();
+    public String doEnviarMensaje(@ModelAttribute("siguienteMensaje") Mensaje mensaje) {
+        mensajeService.enviarMensaje(mensaje);
+        return "redirect:/asistente/chat?id=" + mensaje.getIdChatNuevoMensaje();
     }
 
     @GetMapping("/iniciar-sesion")
@@ -144,11 +134,11 @@ public class asistenteController {
     @PostMapping("/iniciar-sesion")
     public String doIniciarSesion(@RequestParam("usuario") String user, @RequestParam("clave") String contrasena, Model model, HttpSession session) {
         String urlTo = "/asistente/login";
-        UsuarioEntity usuario = this.usuarioRepository.autenticar(user, contrasena);
+        Usuario usuario = this.usuarioService.doAutenticarUsuario(user, contrasena);
         if (usuario == null) {
             model.addAttribute("error", "Credenciales incorrectas");
         } else {
-            EmpleadoEntity empleadoFromUsuario = usuario.getEmpleadosById();
+            Empleado empleadoFromUsuario = usuario.getEmpleadosById();
             if (empleadoFromUsuario == null) {
                 model.addAttribute("error", "No eres empleado");
             } else if (!empleadoFromUsuario.getRolEmpleadoByRolEmpleadoId().getId().equals(2)) {

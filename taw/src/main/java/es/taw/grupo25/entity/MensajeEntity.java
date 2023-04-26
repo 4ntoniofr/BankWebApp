@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Chat;
 import es.taw.grupo25.dto.Mensaje;
 import jakarta.persistence.*;
 
@@ -90,12 +91,12 @@ public class MensajeEntity {
         this.chatByChat = chatByChat;
     }
 
-    public Mensaje toDTO(){
+    public Mensaje toDTO(Chat chat){
         Mensaje mensaje = new Mensaje();
         mensaje.setFecha(this.fecha);
         mensaje.setLeido(this.leido);
         mensaje.setId(this.id);
-        mensaje.setChatByChat(this.chatByChat.toDTO());
+        mensaje.setChatByChat(chat);
         mensaje.setTexto(this.texto);
         mensaje.setPersonaByEmisor(this.personaByEmisor.toDTO());
 

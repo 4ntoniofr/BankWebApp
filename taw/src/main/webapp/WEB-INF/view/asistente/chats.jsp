@@ -1,7 +1,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.taw.grupo25.entity.EmpleadoEntity" %>
 <%@ page import="es.taw.grupo25.entity.ChatEntity" %>
+<%@ page import="es.taw.grupo25.dto.Empleado" %>
+<%@ page import="es.taw.grupo25.dto.Chat" %>
 <html>
 <head>
     <title>Chats disponibles</title>
@@ -10,9 +11,9 @@
 
 <%
     // Obtenemos las variables que necesitamos
-    List<ChatEntity> chats = (List<ChatEntity>) request.getAttribute("chats");
+    List<Chat> chats = (List<Chat>) request.getAttribute("chats");
 
-    EmpleadoEntity empleadoAsistente = (EmpleadoEntity) request.getAttribute("empleado");
+    Empleado empleadoAsistente = (Empleado) request.getAttribute("empleado");
 
     String nombreDelEmpleado = empleadoAsistente.getPersonaByPersonaId().getNombre();
 %>
@@ -69,7 +70,7 @@
 <h2>Estos son los chats disponibles con los clientes</h2>
 
 <%
-    for (ChatEntity chat : chats) {
+    for (Chat chat : chats) {
 
 %>
 
