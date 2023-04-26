@@ -48,7 +48,7 @@ public class CuentaInternaService {
         cuentaInternaEntity.setClienteByPropietario(clienteEntity);
 
 
-        MonedaEntity moneda = monedaRepository.findById(cuentaInterna.getMonedaByMoneda()).orElse(null);
+        MonedaEntity moneda = monedaRepository.findById(cuentaInterna.getMonedaByMoneda().getId()).orElse(null);
         cuentaInternaEntity.setMonedaByMoneda(moneda);
 
         CuentaBancariaEntity cuentaBancariaEntity = cuentaBancariaRepository.findByIban(cuentaInterna.getCuentaBancariaByCuentaBancaria().getIban());
