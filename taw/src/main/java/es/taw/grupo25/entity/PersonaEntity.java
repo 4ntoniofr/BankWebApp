@@ -123,7 +123,7 @@ public class PersonaEntity {
     }
 
 
-    public Persona toDTO(){
+    public Persona toDTO() {
         Persona persona = new Persona();
         persona.setId(this.id);
         persona.setDni(this.dni);
@@ -131,12 +131,12 @@ public class PersonaEntity {
         persona.setPrimerApellido(this.primerApellido);
         persona.setSegundoApellido(this.segundoApellido);
         persona.setFechaNacimiento(this.fechaNacimiento);
-        persona.setClientesById(this.clientesById.toDTO());
+        persona.setClientesById(this.clientesById == null ? null : this.clientesById.toDTO());
         persona.setEmpleadosById(this.empleadosById);
         return persona;
     }
 
-    public Persona toDTO(Cliente cliente){
+    public Persona toDTO(Cliente cliente) {
         Persona persona = new Persona();
         persona.setId(this.id);
         persona.setDni(this.dni);

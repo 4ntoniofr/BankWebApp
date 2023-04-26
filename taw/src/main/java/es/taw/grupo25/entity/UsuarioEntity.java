@@ -95,6 +95,7 @@ public class UsuarioEntity {
         usuario.setPassword(this.password);
         if(clientesById!=null)usuario.setClientesById(this.clientesById.toDTO(usuario));
         usuario.setFechaRegistro(this.fechaRegistro);
+        usuario.setEmpleadosById(this.empleadosById.toDTO(usuario));
         return usuario;
     }
 }

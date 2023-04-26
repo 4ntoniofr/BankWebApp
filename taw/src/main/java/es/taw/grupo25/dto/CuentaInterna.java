@@ -13,7 +13,7 @@ public class CuentaInterna implements Serializable {
     private CuentaBancaria cuentaBancariaByCuentaBancaria;
     private Cliente clienteByPropietario;
     private EstadoCuenta estadoCuentaByEstadoCuenta;
-    private int monedaByMoneda;
+    private Moneda monedaByMoneda;
 
     private List<Autorizacion> autorizacionsById;
 
@@ -66,11 +66,11 @@ public class CuentaInterna implements Serializable {
         this.estadoCuentaByEstadoCuenta = estadoCuentaByEstadoCuenta;
     }
 
-    public int getMonedaByMoneda() {
+    public Moneda getMonedaByMoneda() {
         return monedaByMoneda;
     }
 
-    public void setMonedaByMoneda(int monedaByMoneda) {
+    public void setMonedaByMoneda(Moneda monedaByMoneda) {
         this.monedaByMoneda = monedaByMoneda;
     }
 
