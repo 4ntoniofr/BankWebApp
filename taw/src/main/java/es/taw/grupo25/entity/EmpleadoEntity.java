@@ -105,7 +105,6 @@ public class EmpleadoEntity {
         Empleado empleado = new Empleado();
         empleado.setRolEmpleadoByRolEmpleadoId(this.rolEmpleadoByRolEmpleadoId.toDTO());
         empleado.setPersonaByPersonaId(this.personaByPersonaId.toDTO());
-        empleado.setUsuarioByUsuarioId(this.usuarioByUsuarioId.toDTO());
         empleado.setAutorizacionsEntitieById(this.autorizacionsById, empleado);
         if(clientesById!=null)empleado.setClientesEntitiesById(this.clientesById, empleado.getUsuarioByUsuarioId(), empleado);
         return empleado;

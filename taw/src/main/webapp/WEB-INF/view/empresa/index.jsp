@@ -1,10 +1,9 @@
-<%@ page import="es.taw.grupo25.entity.EmpresaEntity" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.taw.grupo25.entity.ClienteEntity" %>
+<%@ page import="es.taw.grupo25.dto.Cliente" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    ClienteEntity cliente = (ClienteEntity) session.getAttribute("cliente");
+    Cliente cliente = (Cliente) session.getAttribute("cliente");
     String error = (String) request.getAttribute("error");
 %>
 

@@ -1,6 +1,5 @@
 package es.taw.grupo25.entity;
 
-import es.taw.grupo25.dto.Empleado;
 import es.taw.grupo25.dto.Usuario;
 import jakarta.persistence.*;
 
@@ -99,5 +98,4 @@ public class UsuarioEntity {
         usuario.setEmpleadosById(this.empleadosById.toDTO(usuario));
         return usuario;
     }
-
 }

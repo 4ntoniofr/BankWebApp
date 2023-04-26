@@ -5,6 +5,7 @@ import es.taw.grupo25.entity.EmpresaEntity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class Empresa implements Serializable {
@@ -12,6 +13,7 @@ public class Empresa implements Serializable {
     private String nombre;
     private Date fechaCierre;
     private Cliente clienteByClienteId;
+    private List<Cliente> clientesById_Socios;
 
     public Integer getId() {
         return id;
@@ -37,6 +39,14 @@ public class Empresa implements Serializable {
         this.fechaCierre = fechaCierre;
     }
 
+    public List<Cliente> getClientesById_Socios() {
+        return clientesById_Socios;
+    }
+
+    public void setClientesById_Socios(List<Cliente> clientesById_Socios) {
+        this.clientesById_Socios = clientesById_Socios;
+    }
+
     public Cliente getClienteByClienteId() {
         return clienteByClienteId;
     }
@@ -50,11 +60,11 @@ public class Empresa implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Empresa empresa = (Empresa) o;
-        return Objects.equals(id, empresa.id) && Objects.equals(nombre, empresa.nombre) && Objects.equals(fechaCierre, empresa.fechaCierre);
+        return Objects.equals(id, empresa.id) && Objects.equals(nombre, empresa.nombre) && Objects.equals(fechaCierre, empresa.fechaCierre) && Objects.equals(clientesById_Socios, empresa.clientesById_Socios) && Objects.equals(clienteByClienteId, empresa.clienteByClienteId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, fechaCierre);
+        return Objects.hash(id, nombre, fechaCierre, clientesById_Socios, clienteByClienteId);
     }
 }

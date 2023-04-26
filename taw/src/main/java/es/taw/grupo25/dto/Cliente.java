@@ -1,6 +1,8 @@
 package es.taw.grupo25.dto;
 
-
+import es.taw.grupo25.entity.ChatEntity;
+import es.taw.grupo25.entity.EmpleadoEntity;
+import es.taw.grupo25.entity.EmpresaEntity;
 import es.taw.grupo25.entity.CuentaInternaEntity;
 
 import java.io.Serializable;
@@ -17,12 +19,13 @@ public class Cliente implements Serializable {
     private Usuario usuarioByUsuarioId;
     private Persona personaByPersonaId;
     private RolCliente rolClienteByRolClienteId;
+    private Empresa empresaByEmpresaSocio;
     private Empresa empresasById;
+    private List<Transaccion> transaccionsById;
 
     private List<CuentaInterna> cuentaInternasById;
 
     //private Empleado empleadoByAutorizador;
-
 
     public Integer getId() {
         return id;
@@ -81,13 +84,28 @@ public class Cliente implements Serializable {
         this.rolClienteByRolClienteId = rolClienteByRolClienteId;
     }
 
-
-    public Empresa getEmpresasById() {
-        return this.empresasById;
+    public Empresa getEmpresaByEmpresaSocio(){
+        return empresaByEmpresaSocio;
     }
 
-    public void setEmpresasById(Empresa empresasById) {
+    public void setEmpresaByEmpresaSocio(Empresa empresaByEmpresaSocio){
+        this.empresaByEmpresaSocio = empresaByEmpresaSocio;
+    }
+
+    public Empresa getEmpresasById(){
+        return empresasById;
+    }
+
+    public void setEmpresasById(Empresa empresasById){
         this.empresasById = empresasById;
+    }
+
+    public List<Transaccion> getTransaccionsById() {
+        return transaccionsById;
+    }
+
+    public void setTransaccionsById(List<Transaccion> transaccionsById) {
+        this.transaccionsById = transaccionsById;
     }
 
     public List<CuentaInterna> getCuentaInternasById() {

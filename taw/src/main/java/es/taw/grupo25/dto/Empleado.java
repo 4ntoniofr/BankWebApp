@@ -34,7 +34,7 @@ public class Empleado implements Serializable {
 
     public void setAutorizacionsEntitieById(List<AutorizacionEntity> autorizacionsById, Empleado empleado) {
         List<Autorizacion> autorizacions = new ArrayList<>();
-        for (AutorizacionEntity autorizacion:autorizacionsById) {
+        for (AutorizacionEntity autorizacion : autorizacionsById) {
             autorizacions.add(autorizacion.toDTO(empleado));
         }
 
@@ -49,9 +49,9 @@ public class Empleado implements Serializable {
         this.clientesById = clientesById;
     }
 
-    public void setClientesEntitiesById(List<ClienteEntity> clienteEntities, Usuario usuario, Empleado empleado){
+    public void setClientesEntitiesById(List<ClienteEntity> clienteEntities, Usuario usuario, Empleado empleado) {
         List<Cliente> clientes = new ArrayList<>();
-        for (ClienteEntity cliente: clienteEntities) {
+        for (ClienteEntity cliente : clienteEntities) {
             clientes.add(cliente.toDTO());
         }
         this.clientesById = clientes;
@@ -82,6 +82,7 @@ public class Empleado implements Serializable {
     }
 
     @Override
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

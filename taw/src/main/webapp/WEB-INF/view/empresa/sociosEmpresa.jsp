@@ -1,12 +1,12 @@
 <%@ page import="java.util.List" %>
-<%@ page import="es.taw.grupo25.entity.ClienteEntity" %>
-<%@ page import="es.taw.grupo25.entity.EmpresaEntity" %>
-<%@ page import="es.taw.grupo25.entity.PersonaEntity" %>
+<%@ page import="es.taw.grupo25.dto.Cliente" %>
+<%@ page import="es.taw.grupo25.dto.Empresa" %>
+<%@ page import="es.taw.grupo25.dto.Persona" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    List<ClienteEntity> socios = (List<ClienteEntity>) request.getAttribute("socios");
-    EmpresaEntity empresa = (EmpresaEntity) request.getAttribute("empresa");
+    List<Cliente> socios = (List<Cliente>) request.getAttribute("socios");
+    Empresa empresa = (Empresa) request.getAttribute("empresa");
 %>
 
 <html>
@@ -27,8 +27,8 @@
         <th></th>
     </tr>
     <%
-        for (ClienteEntity socio: socios) {
-            PersonaEntity persona = socio.getPersonaByPersonaId();
+        for (Cliente socio: socios) {
+            Persona persona = socio.getPersonaByPersonaId();
     %>
     <tr>
         <td><%= persona.getDni() %></td>

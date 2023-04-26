@@ -1,8 +1,10 @@
 package es.taw.grupo25.entity;
 
 import es.taw.grupo25.dto.Cliente;
+import es.taw.grupo25.dto.Empresa;
 import es.taw.grupo25.dto.Empleado;
 import es.taw.grupo25.dto.Usuario;
+import es.taw.grupo25.service.TransaccionService;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -172,12 +174,13 @@ public class ClienteEntity {
         cliente.setFechaInicio(this.fechaInicio);
         cliente.setEstadoClienteByEstadoCliente(this.estadoClienteByEstadoCliente.toDTO());
         cliente.setDireccionByDireccion(this.direccionByDireccion.toDTO());
-        cliente.setUsuarioByUsuarioId(this.usuarioByUsuarioId.toDTO());
+        if(this.personaByPersonaId != null) cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO(cliente));
         cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId.toDTO());
-        //cliente.setEmpleadoByAutorizador(this.empleadoByAutorizador.toDTO());
-        cliente.setCuentaInternasEntitiesById(this.cuentaInternasById, cliente);
-        if(empresasById!=null)cliente.setEmpresasById(this.empresasById.toDTO(cliente));
-        cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO(cliente));
+        if(this.empresaByEmpresaSocio != null) cliente.setEmpresaByEmpresaSocio(this.empresaByEmpresaSocio.toDTO());
+        if(this.empresasById != null) cliente.setEmpresasById(this.empresasById.toDTO(cliente));
+        //if(this.empleadoByAutorizador != null) cliente.setEmpleadoByAutorizador(this.empleadoByAutorizador.toDTO());
+        cliente.setTransaccionsById(TransaccionService.listaEntidadesADTO(this.transaccionsById));
+        //cliente.setCuentaInternasEntitiesById(this.cuentaInternasById, cliente);
         return cliente;
     }
 
@@ -187,11 +190,12 @@ public class ClienteEntity {
         cliente.setFechaInicio(this.fechaInicio);
         cliente.setEstadoClienteByEstadoCliente(this.estadoClienteByEstadoCliente.toDTO());
         cliente.setDireccionByDireccion(this.direccionByDireccion.toDTO());
-        cliente.setUsuarioByUsuarioId(usuario);
+        if(this.personaByPersonaId != null) cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO(cliente));
         cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId.toDTO());
-        cliente.setCuentaInternasEntitiesById(this.cuentaInternasById, cliente);
-        if(this.empresasById!=null)cliente.setEmpresasById(this.empresasById.toDTO(cliente));
-        cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO(cliente));
+        if(this.empresaByEmpresaSocio != null) cliente.setEmpresaByEmpresaSocio(this.empresaByEmpresaSocio.toDTO());
+        if(this.empresasById != null) cliente.setEmpresasById(this.empresasById.toDTO(cliente));
+        //if(this.empleadoByAutorizador != null) cliente.setEmpleadoByAutorizador(this.empleadoByAutorizador.toDTO());
+        cliente.setTransaccionsById(TransaccionService.listaEntidadesADTO(this.transaccionsById));
         return cliente;
     }
 }
