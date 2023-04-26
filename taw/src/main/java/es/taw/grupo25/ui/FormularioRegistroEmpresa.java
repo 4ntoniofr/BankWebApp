@@ -1,16 +1,21 @@
 package es.taw.grupo25.ui;
 
-import es.taw.grupo25.entity.ClienteEntity;
-import es.taw.grupo25.entity.EmpresaEntity;
-import es.taw.grupo25.entity.UsuarioEntity;
+import es.taw.grupo25.dto.Cliente;
+import es.taw.grupo25.dto.Empresa;
+import es.taw.grupo25.dto.Usuario;
 
 import java.util.Date;
 
 public class FormularioRegistroEmpresa {
+    Empresa empresa;
+    Cliente clienteEmpresa;
+    Usuario usuarioEmpresa;
+    FormularioRegistroAsociado asociadoEmpresa;
+
     public FormularioRegistroEmpresa(){
-        empresa = new EmpresaEntity();
-        clienteEmpresa = new ClienteEntity();
-        usuarioEmpresa = new UsuarioEntity();
+        empresa = new Empresa();
+        clienteEmpresa = new Cliente();
+        usuarioEmpresa = new Usuario();
         asociadoEmpresa = new FormularioRegistroAsociado();
 
         empresa.setClienteByClienteId(clienteEmpresa);
@@ -21,32 +26,28 @@ public class FormularioRegistroEmpresa {
         clienteEmpresa.setFechaInicio(new Date());
         usuarioEmpresa.setFechaRegistro(new Date());
     }
-    EmpresaEntity empresa;
-    ClienteEntity clienteEmpresa;
-    UsuarioEntity usuarioEmpresa;
-    FormularioRegistroAsociado asociadoEmpresa;
 
-    public EmpresaEntity getEmpresa() {
+    public Empresa getEmpresa() {
         return empresa;
     }
 
-    public void setEmpresa(EmpresaEntity empresa) {
+    public void setEmpresa(Empresa empresa) {
         this.empresa = empresa;
     }
 
-    public ClienteEntity getClienteEmpresa() {
+    public Cliente getClienteEmpresa() {
         return clienteEmpresa;
     }
 
-    public void setClienteEmpresa(ClienteEntity clienteEmpresa) {
+    public void setClienteEmpresa(Cliente clienteEmpresa) {
         this.clienteEmpresa = clienteEmpresa;
     }
 
-    public UsuarioEntity getUsuarioEmpresa() {
+    public Usuario getUsuarioEmpresa() {
         return usuarioEmpresa;
     }
 
-    public void setUsuarioEmpresa(UsuarioEntity usuarioEmpresa) {
+    public void setUsuarioEmpresa(Usuario usuarioEmpresa) {
         this.usuarioEmpresa = usuarioEmpresa;
     }
 

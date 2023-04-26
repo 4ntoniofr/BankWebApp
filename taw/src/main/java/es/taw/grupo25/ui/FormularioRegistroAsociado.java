@@ -1,14 +1,21 @@
 package es.taw.grupo25.ui;
 
+import es.taw.grupo25.dto.Cliente;
+import es.taw.grupo25.dto.Persona;
+import es.taw.grupo25.dto.Usuario;
 import es.taw.grupo25.entity.*;
 
 import java.util.Date;
 
 public class FormularioRegistroAsociado {
+    Cliente clienteAsociado;
+    Usuario usuarioAsociado;
+    Persona personaAsociado;
+
     public FormularioRegistroAsociado(){
-        clienteAsociado = new ClienteEntity();
-        usuarioAsociado = new UsuarioEntity();
-        personaAsociado = new PersonaEntity();
+        clienteAsociado = new Cliente();
+        usuarioAsociado = new Usuario();
+        personaAsociado = new Persona();
 
         clienteAsociado.setUsuarioByUsuarioId(usuarioAsociado);
         clienteAsociado.setPersonaByPersonaId(personaAsociado);
@@ -16,31 +23,28 @@ public class FormularioRegistroAsociado {
         clienteAsociado.setFechaInicio(new Date());
         usuarioAsociado.setFechaRegistro(new Date());
     }
-    ClienteEntity clienteAsociado;
-    UsuarioEntity usuarioAsociado;
-    PersonaEntity personaAsociado;
 
-    public ClienteEntity getClienteAsociado() {
+    public Cliente getClienteAsociado() {
         return clienteAsociado;
     }
 
-    public void setClienteAsociado(ClienteEntity clienteAsociado) {
+    public void setClienteAsociado(Cliente clienteAsociado) {
         this.clienteAsociado = clienteAsociado;
     }
 
-    public UsuarioEntity getUsuarioAsociado() {
+    public Usuario getUsuarioAsociado() {
         return usuarioAsociado;
     }
 
-    public void setUsuarioAsociado(UsuarioEntity usuarioAsociado) {
+    public void setUsuarioAsociado(Usuario usuarioAsociado) {
         this.usuarioAsociado = usuarioAsociado;
     }
 
-    public PersonaEntity getPersonaAsociado() {
+    public Persona getPersonaAsociado() {
         return personaAsociado;
     }
 
-    public void setPersonaAsociado(PersonaEntity personaAsociado) {
+    public void setPersonaAsociado(Persona personaAsociado) {
         this.personaAsociado = personaAsociado;
     }
 }

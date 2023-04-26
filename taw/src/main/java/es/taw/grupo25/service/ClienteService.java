@@ -1,10 +1,15 @@
 package es.taw.grupo25.service;
 
 import es.taw.grupo25.dto.Cliente;
+import es.taw.grupo25.dto.Empresa;
+import es.taw.grupo25.dto.Transaccion;
 import es.taw.grupo25.entity.*;
 import es.taw.grupo25.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ClienteService {
@@ -20,9 +25,17 @@ public class ClienteService {
     protected PersonaRepository personaRepository;
     @Autowired
     protected DireccionRepository direccionRepository;
+    @Autowired
+    protected TransaccionRepository transaccionRepository;
+    @Autowired
+    protected EmpresaRepository empresaRepository;
+    @Autowired
+    protected EmpleadoRepository empleadoRepository;
 
     public void guardarCliente(Cliente cliente){
-        clienteRepository.save(getEntity(cliente));
+        ClienteEntity clienteEntity = getEntity(cliente);
+        clienteRepository.save(clienteEntity);
+        cliente.setId(clienteEntity.getId());
     }
 
     private ClienteEntity getEntity(Cliente cliente){
@@ -31,7 +44,14 @@ public class ClienteService {
         clienteEntity.setId(cliente.getId());
         clienteEntity.setFechaInicio(cliente.getFechaInicio());
         clienteEntity.setChatsById(cliente.getChatsById());
-        clienteEntity.setTransaccionsById(cliente.getTransaccionsById());
+
+        List<TransaccionEntity> transacciones = new ArrayList<>();
+        if(cliente.getTransaccionsById() != null){
+            for(Transaccion t : cliente.getTransaccionsById()){
+                transacciones.add(this.transaccionRepository.findById(t.getId()).orElse(null));
+            }
+        }
+        clienteEntity.setTransaccionsById(transacciones);
 
         DireccionEntity direccionEntity = direccionRepository.findById(cliente.getDireccionByDireccion().getId()).orElse(null);
         clienteEntity.setDireccionByDireccion(direccionEntity);
@@ -42,13 +62,50 @@ public class ClienteService {
         UsuarioEntity usuarioEntity = usuarioRepository.findById(cliente.getUsuarioByUsuarioId().getId()).orElse(null);
         clienteEntity.setUsuarioByUsuarioId(usuarioEntity);
 
-        PersonaEntity personaEntity = personaRepository.findById(cliente.getPersonaByPersonaId().getId()).orElse(null);
+        PersonaEntity personaEntity = cliente.getPersonaByPersonaId() == null ? null :
+                personaRepository.findById(cliente.getPersonaByPersonaId().getId()).orElse(null);
         clienteEntity.setPersonaByPersonaId(personaEntity);
 
         RolClienteEntity rolClienteEntity = rolClienteRepository.findByRol(cliente.getRolClienteByRolClienteId().getRol());
         clienteEntity.setRolClienteByRolClienteId(rolClienteEntity);
 
+        EmpresaEntity empresa = cliente.getEmpresasById() == null ? null :
+                empresaRepository.findById(cliente.getEmpresasById().getId()).orElse(null);
+        clienteEntity.setEmpresasById(empresa);
+
+        EmpresaEntity empresaSocio = cliente.getEmpresaByEmpresaSocio() == null ? null :
+                empresaRepository.findById(cliente.getEmpresaByEmpresaSocio().getId()).orElse(null);
+        clienteEntity.setEmpresaByEmpresaSocio(empresaSocio);
+
+        EmpleadoEntity autorizador = cliente.getEmpleadoByAutorizador() == null ? null :
+                empleadoRepository.findById(cliente.getEmpleadoByAutorizador().getId()).orElse(null);
+        clienteEntity.setEmpleadoByAutorizador(autorizador);
 
         return clienteEntity;
+    }
+
+    public List<Cliente> buscarSociosConPersonaPorEmpresa(Empresa empresa){
+        return listaEntidadesADTO(this.clienteRepository.buscarSociosConPersonaPorEmpresa(empresa.getId()));
+    }
+
+    public Cliente findById(Integer id){
+        ClienteEntity cliente = this.clienteRepository.findById(id).orElse(null);
+        return cliente == null ? cliente.toDTO() : null;
+    }
+
+    public static List<Cliente> listaEntidadesADTO(List<ClienteEntity> clientes){
+        List<Cliente> dtos = new ArrayList<>();
+        for(ClienteEntity entity : clientes){
+            dtos.add(entity.toDTO());
+        }
+        return dtos;
+    }
+
+    public static List<Cliente> listaEntidadesADTOConEmpresa(List<ClienteEntity> clientes, Empresa empresa){
+        List<Cliente> dtos = new ArrayList<>();
+        for(ClienteEntity entity : clientes){
+            dtos.add(entity.toDTOSocio(empresa));
+        }
+        return dtos;
     }
 }

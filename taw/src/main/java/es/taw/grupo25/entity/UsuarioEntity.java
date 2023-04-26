@@ -1,5 +1,6 @@
 package es.taw.grupo25.entity;
 
+import es.taw.grupo25.dto.Cliente;
 import es.taw.grupo25.dto.Usuario;
 import jakarta.persistence.*;
 
@@ -98,4 +99,13 @@ public class UsuarioEntity {
         return usuario;
     }
 
+    public Usuario toDTO(Cliente cliente){
+        Usuario usuario = new Usuario();
+        usuario.setId(this.id);
+        usuario.setUsuario(this.usuario);
+        usuario.setPassword(this.password);
+        usuario.setClientesById(cliente);
+        usuario.setFechaRegistro(this.fechaRegistro);
+        return usuario;
+    }
 }

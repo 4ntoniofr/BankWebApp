@@ -1,6 +1,8 @@
 package es.taw.grupo25.dto;
 
-import es.taw.grupo25.entity.*;
+import es.taw.grupo25.entity.ChatEntity;
+import es.taw.grupo25.entity.EmpleadoEntity;
+import es.taw.grupo25.entity.EmpresaEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -15,7 +17,10 @@ public class Cliente {
     private Usuario usuarioByUsuarioId;
     private Persona personaByPersonaId;
     private RolCliente rolClienteByRolClienteId;
-    private List<TransaccionEntity> transaccionsById;
+    private Empresa empresaByEmpresaSocio;
+    private Empresa empresasById;
+    private Empleado empleadoByAutorizador;
+    private List<Transaccion> transaccionsById;
 
     public Integer getId() {
         return id;
@@ -81,11 +86,35 @@ public class Cliente {
         this.rolClienteByRolClienteId = rolClienteByRolClienteId;
     }
 
-    public List<TransaccionEntity> getTransaccionsById() {
+    public Empresa getEmpresaByEmpresaSocio(){
+        return empresaByEmpresaSocio;
+    }
+
+    public void setEmpresaByEmpresaSocio(Empresa empresaByEmpresaSocio){
+        this.empresaByEmpresaSocio = empresaByEmpresaSocio;
+    }
+
+    public Empresa getEmpresasById(){
+        return empresasById;
+    }
+
+    public void setEmpresasById(Empresa empresasById){
+        this.empresasById = empresasById;
+    }
+
+    public Empleado getEmpleadoByAutorizador(){
+        return empleadoByAutorizador;
+    }
+
+    public void setEmpleadoByAutorizador(Empleado empleadoByAutorizador){
+        this.empleadoByAutorizador = empleadoByAutorizador;
+    }
+
+    public List<Transaccion> getTransaccionsById() {
         return transaccionsById;
     }
 
-    public void setTransaccionsById(List<TransaccionEntity> transaccionsById) {
+    public void setTransaccionsById(List<Transaccion> transaccionsById) {
         this.transaccionsById = transaccionsById;
     }
 

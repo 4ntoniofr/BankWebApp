@@ -46,7 +46,7 @@ public class TransaccionService {
         return listaEntidadesADTO(transaccionEntities);
     }
 
-    private List<Transaccion> listaEntidadesADTO(List<TransaccionEntity> transacciones){
+    public static List<Transaccion> listaEntidadesADTO(List<TransaccionEntity> transacciones){
         ArrayList dtos =new ArrayList<CuentaInterna>();
         transacciones.forEach((final TransaccionEntity transaccion) -> dtos.add(transaccion.toDTO()));
         return dtos;

@@ -38,6 +38,9 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity,Integer> 
     @Query("select c from ClienteEntity c where exists (select ci from CuentaInternaEntity ci join ci.cuentaBancariaByCuentaBancaria cb join cb.transaccionsById_Salientes t where ci.estadoCuentaByEstadoCuenta.estado LIKE 'ACTIVA' and ci.clienteByPropietario = c and t.cuentaBancariaByCuentaDestino.cuentaExternasById.sospechosa = 1)")
     public List<ClienteEntity> buscarSospechosos();
 
-    @Query("select c from ClienteEntity c  left join fetch c.personaByPersonaId where c.empresaByEmpresaSocio = :empresa")
-    public List<ClienteEntity> buscarSociosConPersonaPorEmpresa(@Param("empresa") EmpresaEntity empresa);
+    @Query("select c from ClienteEntity c  left join fetch c.personaByPersonaId where c.empresaByEmpresaSocio.id = :id")
+    public List<ClienteEntity> buscarSociosConPersonaPorEmpresa(@Param("id") Integer id);
+
+    @Query("select c from ClienteEntity c where c.empresaByEmpresaSocio.id = :id")
+    public List<ClienteEntity> buscarSociosPorEmpresa(@Param("id") Integer id);
 }
