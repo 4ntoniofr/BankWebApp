@@ -7,14 +7,13 @@ import es.taw.grupo25.dto.RolCliente;
 import es.taw.grupo25.entity.ClienteEntity;
 import es.taw.grupo25.entity.EmpresaEntity;
 import es.taw.grupo25.entity.EstadoClienteEntity;
-import es.taw.grupo25.entity.RolClienteEntity;
 import es.taw.grupo25.repository.*;
 import es.taw.grupo25.ui.FormularioRegistroAsociado;
 import es.taw.grupo25.ui.FormularioRegistroEmpresa;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,14 +50,6 @@ public class EmpresaService {
         entity.setNombre(empresa.getNombre());
         entity.setFechaCierre(empresa.getFechaCierre());
 
-        List<ClienteEntity> socios = new ArrayList<>();
-        if(empresa.getClientesById_Socios() != null){
-            for(Cliente cliente : empresa.getClientesById_Socios()){
-                socios.add(clienteRepository.findById(cliente.getId()).orElse(null));
-            }
-        }
-        entity.setClientesById_Socios(socios);
-
         ClienteEntity cliente = this.clienteRepository.findById(empresa.getClienteByClienteId().getId()).orElse(null);
         entity.setClienteByClienteId(cliente);
 
@@ -80,17 +71,25 @@ public class EmpresaService {
         registrarAutorizado(registroEmpresa.getAsociadoEmpresa(), registroEmpresa.getEmpresa());
     }
 
-    public void registrarAutorizado(FormularioRegistroAsociado registroAsociado, Empresa empresa){
+    public void registrarAutorizado(FormularioRegistroAsociado registroAsociado, Empresa empresa, HttpSession... session){
         RolCliente rolCliente = this.rolClienteService.findByRol("AUTORIZADO");
         EstadoCliente estadoAutorizado = this.estadoClienteService.findByEstado("ACTIVO");
 
         registroAsociado.getClienteAsociado().setRolClienteByRolClienteId(rolCliente);
         registroAsociado.getClienteAsociado().setEstadoClienteByEstadoCliente(estadoAutorizado);
         registroAsociado.getClienteAsociado().setEmpresaByEmpresaSocio(empresa);
+        registroAsociado.getUsuarioAsociado().setClientesById(registroAsociado.getClienteAsociado());
 
         this.personaService.guardarPersona(registroAsociado.getPersonaAsociado());
         this.usuarioService.guardarUsuario(registroAsociado.getUsuarioAsociado());
         this.direccionService.saveDireccion(registroAsociado.getClienteAsociado().getDireccionByDireccion());
         this.clienteService.guardarCliente(registroAsociado.getClienteAsociado());
+
+        if(session.length > 0) session[0].setAttribute("usuario", registroAsociado.getUsuarioAsociado());
+    }
+
+    public List<Cliente> getListaSocios(Empresa empresa){
+        List<Cliente> socios = this.clienteService.buscarSociosPorEmpresa(empresa);
+        return socios;
     }
 }
