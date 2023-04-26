@@ -191,6 +191,10 @@ public class EmpresaController {
             }else{
                 bloqueado.setEstadoClienteByEstadoCliente(this.estadoClienteService.findByEstado("BLOQUEADO"));
                 this.clienteService.guardarCliente(bloqueado);
+                if(bloqueado.equals(solicitante.getClientesById())){
+                    solicitante.setClientesById(bloqueado);
+                    session.setAttribute("usuario", solicitante);
+                }
             }
         }
 

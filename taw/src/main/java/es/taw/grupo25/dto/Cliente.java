@@ -1,8 +1,5 @@
 package es.taw.grupo25.dto;
 
-import es.taw.grupo25.entity.ChatEntity;
-import es.taw.grupo25.entity.EmpleadoEntity;
-import es.taw.grupo25.entity.EmpresaEntity;
 import es.taw.grupo25.entity.CuentaInternaEntity;
 
 import java.io.Serializable;
