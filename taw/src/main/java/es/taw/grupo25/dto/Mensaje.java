@@ -13,9 +13,16 @@ public class Mensaje {
 
     private Boolean leido;
 
+
     private Persona personaByEmisor;
 
     private Chat chatByChat;
+
+    // NECESARIO PARA EL FORMULARIO DE SIGUIENTE MENSAJE, DE LO CONTRARIO NO SE PUEDE OBTENER NADA
+
+    String idPersonaEmisorNuevoMensaje;
+    String idChatNuevoMensaje;
+
 
     @Override
     public boolean equals(Object o) {
@@ -76,5 +83,21 @@ public class Mensaje {
 
     public void setChatByChat(Chat chatByChat) {
         this.chatByChat = chatByChat;
+    }
+
+    public String getIdPersonaEmisorNuevoMensaje() {
+        return idPersonaEmisorNuevoMensaje;
+    }
+
+    public void setIdPersonaEmisorNuevoMensaje(String idPersonaEmisorNuevoMensaje) {
+        this.idPersonaEmisorNuevoMensaje = idPersonaEmisorNuevoMensaje;
+    }
+
+    public String getIdChatNuevoMensaje() {
+        return idChatNuevoMensaje;
+    }
+
+    public void setIdChatNuevoMensaje(String idChatNuevoMensaje) {
+        this.idChatNuevoMensaje = idChatNuevoMensaje;
     }
 }

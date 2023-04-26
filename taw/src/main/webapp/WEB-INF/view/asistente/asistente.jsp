@@ -1,4 +1,4 @@
-<%@ page import="es.taw.grupo25.entity.EmpleadoEntity" %>
+<%@ page import="es.taw.grupo25.dto.Empleado" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -7,7 +7,7 @@
 </head>
 
 <%
-    EmpleadoEntity asistente = (EmpleadoEntity) session.getAttribute("asistente");
+    Empleado asistente = (Empleado) session.getAttribute("asistente");
 %>
 
 <body>

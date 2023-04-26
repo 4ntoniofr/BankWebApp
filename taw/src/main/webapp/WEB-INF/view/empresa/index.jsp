@@ -1,9 +1,8 @@
-<%@ page import="java.util.List" %>
-<%@ page import="es.taw.grupo25.dto.Cliente" %>
+<%@ page import="es.taw.grupo25.dto.Usuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    Cliente cliente = (Cliente) session.getAttribute("cliente");
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
     String error = (String) request.getAttribute("error");
 %>
 
@@ -11,10 +10,10 @@
 <h1>Pagina principal de empresas</h1>
 
 <%
-    if(cliente != null){
+    if(usuario != null){
 %>
 
-<h2>Bienvenido, <%= cliente.getUsuarioByUsuarioId().getUsuario() %></h2>
+<h2>Bienvenido, <%= usuario.getUsuario() %></h2>
 
 <%
     }
@@ -32,7 +31,7 @@
 
 <ul>
     <%
-        if(cliente == null){
+        if(usuario == null){
     %>
 
     <li><a href="/empresa/login">Login</a></li>
@@ -45,7 +44,7 @@
     <li><a href="/empresa/logout">Logout</a></li>
 
     <%
-            if(cliente.getEmpresasById() == null){
+            if(usuario.getClientesById().getEmpresasById() == null){
                 //OPCIONES ASOCIADO
     %>
 
@@ -53,7 +52,7 @@
     <li><a href="/empresa/sociosEmpresa">Mostrar socios/autorizados de la empresa</a></li>
 
     <%
-        if(cliente.getEstadoClienteByEstadoCliente().getEstado().equals("BLOQUEADO")){
+        if(usuario.getClientesById().getEstadoClienteByEstadoCliente().getEstado().equals("BLOQUEADO")){
     %>
 
     <li><a href="/empresa/solicitudDesbloqueo">Solicitar desbloqueo</a></li>

@@ -13,6 +13,7 @@ public class UsuarioService {
 
     public void guardarUsuario(Usuario usuario){
         UsuarioEntity usuarioEntity = new UsuarioEntity();
+        if(usuario.getId() != null) usuarioEntity.setId(usuario.getId());
         usuarioEntity.setUsuario(usuario.getUsuario());
         usuarioEntity.setPassword(usuario.getPassword());
         usuarioEntity.setFechaRegistro(usuario.getFechaRegistro());

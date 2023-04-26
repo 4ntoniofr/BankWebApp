@@ -469,8 +469,8 @@ public class clienteController {
 
         model.addAttribute("chat", chat);
 
-        List<MensajeEntity> mensajes = mensajeService.findMensajesByChatId(chat.getId());
-        model.addAttribute("mensajes", mensajes);
+        //List<MensajeEntity> mensajes = mensajeService.findMensajesByChatId(chat.getId());
+        //model.addAttribute("mensajes", mensajes);
 
         MensajeEntity siguienteMensaje = new MensajeEntity();
         model.addAttribute("siguienteMensaje", siguienteMensaje);
@@ -492,7 +492,7 @@ public class clienteController {
         java.sql.Timestamp sqlDate = new java.sql.Timestamp(System.currentTimeMillis());
         mensaje.setFecha(sqlDate);
         mensaje.setLeido(false);
-        this.mensajeService.save(mensaje);
+        // this.mensajeService.save(mensaje);
 
         return "redirect:/cliente/chat";
     }

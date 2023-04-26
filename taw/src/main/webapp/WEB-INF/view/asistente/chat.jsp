@@ -1,7 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.taw.grupo25.entity.*" %>
-<%@ page import="es.taw.grupo25.dto.Cliente" %>
+<%@ page import="es.taw.grupo25.dto.*" %>
 <html>
 <head>
     <title>Chat privado</title>
@@ -10,28 +9,30 @@
 
 <%
 
-    ChatEntity chat = (ChatEntity) request.getAttribute("chat");
-    PersonaEntity asistentePersona = null;
-    PersonaEntity clientePersona = null;
+    Chat chat = (Chat) request.getAttribute("chat");
+    Persona asistentePersona = null;
+    Persona clientePersona = null;
 
-    List<MensajeEntity> mensajes = (List<MensajeEntity>) request.getAttribute("mensajes");
+    List<Mensaje> mensajes = (List<Mensaje>) request.getAttribute("mensajes");
 
     String rol = (String) request.getAttribute("rol");
-    int idPersonaEmisor = 0;
-    if(rol.equals("c")){
-        ClienteEntity cliente = (ClienteEntity) request.getAttribute("cliente");
-        clientePersona = cliente.getPersonaByPersonaId();
 
-        EmpleadoEntity asistente = (EmpleadoEntity) request.getAttribute("asistente");
+    Cliente cliente = (Cliente) request.getAttribute("cliente");
+    clientePersona = cliente.getPersonaByPersonaId();
+
+    int idPersonaEmisor = 0;
+
+    // Establecer el rol de la conversación
+    if(rol.equals("c")){
+        Empleado asistente = (Empleado) request.getAttribute("asistente");
         asistentePersona = asistente.getPersonaByPersonaId();
+
         idPersonaEmisor = clientePersona.getId();
     }else if(rol.equals("a")){
-        EmpleadoEntity asistente = (EmpleadoEntity) session.getAttribute("asistente");
+        Empleado asistente = (Empleado) session.getAttribute("asistente");
         asistentePersona = asistente.getPersonaByPersonaId();
-        idPersonaEmisor = asistentePersona.getId();
 
-        ClienteEntity cliente = (ClienteEntity) request.getAttribute("cliente");
-        clientePersona = cliente.getPersonaByPersonaId();
+        idPersonaEmisor = asistentePersona.getId();
     }
 
     int idChat = chat.getId();
@@ -46,7 +47,7 @@
 
     <div id="chatbox">
         <%
-            for (MensajeEntity mensaje : mensajes) {
+            for (Mensaje mensaje : mensajes) {
                 // EL MENSAJE ES DEL ASISTENTE
                 if(mensaje.getPersonaByEmisor().equals(asistentePersona)){
                     // ERES ASISTENTE
@@ -96,8 +97,8 @@
     %>
     <div class="siguiente-mensaje" >
         <form:form action="/${rol eq 'a' ? 'asistente' : 'cliente'}/enviar-mensaje" method="post" modelAttribute="siguienteMensaje">
-            <form:hidden path="personaByEmisor" value="<%=idPersonaEmisor%>"/>
-            <form:hidden path="chatByChat" value="<%=idChat%>"/>
+            <form:hidden path="idPersonaEmisorNuevoMensaje" value="<%=idPersonaEmisor%>"/>
+            <form:hidden path="idChatNuevoMensaje" value="<%=idChat%>"/>
             <form:input path="texto" maxlength="500" cssStyle="width: 100%" />
             <button style="float: right;"> Enviar</button>
         </form:form>

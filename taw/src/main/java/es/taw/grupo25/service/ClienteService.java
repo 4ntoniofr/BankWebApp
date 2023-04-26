@@ -60,7 +60,12 @@ public class ClienteService {
         EstadoClienteEntity estadoClienteEntity = estadoClienteRepository.findByEstado(cliente.getEstadoClienteByEstadoCliente().getEstado());
         clienteEntity.setEstadoClienteByEstadoCliente(estadoClienteEntity);
 
-        UsuarioEntity usuarioEntity = usuarioRepository.findById(cliente.getUsuarioByUsuarioId().getId()).orElse(null);
+        UsuarioEntity usuarioEntity;
+        if(cliente.getUsuarioByUsuarioId() == null){
+            usuarioEntity = this.usuarioRepository.getUsuarioFromCliente(cliente.getId());
+        }else{
+            usuarioEntity = this.usuarioRepository.findById(cliente.getUsuarioByUsuarioId().getId()).orElse(null);
+        }
         clienteEntity.setUsuarioByUsuarioId(usuarioEntity);
 
         PersonaEntity personaEntity = cliente.getPersonaByPersonaId() == null ? null :
@@ -91,7 +96,7 @@ public class ClienteService {
 
     public Cliente findById(Integer id){
         ClienteEntity cliente = this.clienteRepository.findById(id).orElse(null);
-        return cliente == null ? cliente.toDTO() : null;
+        return cliente == null ?  null : cliente.toDTO();
     }
 
     public static List<Cliente> listaEntidadesADTO(List<ClienteEntity> clientes){
@@ -158,5 +163,9 @@ public class ClienteService {
 
     public List<Cliente> buscarSospechosos() {
         return listaEntidadesADTO(this.clienteRepository.buscarSospechosos());
+    }
+
+    public List<Cliente> buscarSociosPorEmpresa(Empresa empresa){
+        return listaEntidadesADTO(this.clienteRepository.buscarSociosPorEmpresa(empresa.getId()));
     }
 }
