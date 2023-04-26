@@ -79,9 +79,9 @@ public class clienteController {
         if(usuario==null){
             urlto="redirect:/login";
         }else{
-            //if(usuario.getClientesById().getEmpleadoByAutorizador()==null){
-            //    model.addAttribute("error", "Debe esperar a que un gestor autorize este usuario.");
-            //}
+            if(!usuario.getClientesById().isTieneAutorizador()){
+                model.addAttribute("error", "Debe esperar a que un gestor autorize este usuario.");
+            }
         }
         return urlto;
     }
@@ -93,12 +93,12 @@ public class clienteController {
         if(usuario == null){
             urlto = "redirect:/login";
         }else{
-            //if(isAutorizado(usuario)){
+            if(usuario.getClientesById().isTieneAutorizador()){
                 Persona persona = personaService.findById(usuario.getClientesById().getPersonaByPersonaId().getId());
                 model.addAttribute("persona", persona);
-            //}else{
-              //  urlto = "redirect:/cliente";
-           // }
+            }else{
+                urlto = "redirect:/cliente";
+            }
         }
         return urlto;
     }
@@ -116,7 +116,7 @@ public class clienteController {
         if(usuario == null){
             urlto = "redirect:/login";
         }else{
-            if(isAutorizado(usuario)){
+            if(usuario.getClientesById().isTieneAutorizador()){
                 CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
                 if(cuenta != null){
                     if(cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId()==usuario.getId()){
@@ -172,7 +172,7 @@ public class clienteController {
         if(usuario==null){
             urlTo="redirect:/login";
         }else{
-            if(isAutorizado(usuario)){
+            if(usuario.getClientesById().isTieneAutorizador()){
                 CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
                 if(cuenta != null){
                     if(cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId()){
@@ -209,9 +209,9 @@ public class clienteController {
                     transaccion.setCuentaBancariaByCuentaOrigen(cuenta_cambio.getCuentaBancariaByCuentaBancaria());
                     transaccion.setCuentaBancariaByCuentaDestino(cuenta_cambio.getCuentaBancariaByCuentaBancaria());
                     CambioDivisa cambioDivisa = new CambioDivisa();
-                    Moneda moneda_compra = cuenta_cambio.getMonedaByMoneda();
+                    Moneda moneda_compra = monedaService.findById(cuenta_cambio.getMonedaByMoneda());
                     cambioDivisa.setMonedaByMonedaCompra(moneda_compra);
-                    Moneda moneda_venta = cuenta.getMonedaByMoneda();
+                    Moneda moneda_venta = monedaService.findById(cuenta.getMonedaByMoneda());
                     cambioDivisa.setMonedaByMonedaVenta(moneda_venta);
                     cambioDivisa.setTransaccionByTransaccion(transaccion);
                     cuenta_cambio.setMonedaByMoneda(cuenta.getMonedaByMoneda());
@@ -237,7 +237,7 @@ public class clienteController {
         if(usuario==null){
             urlTo="redirect:/login";
         }else{
-            if(isAutorizado(usuario)){
+            if(usuario.getClientesById().isTieneAutorizador()){
                 CuentaBancaria cuenta = cuentaBancariaService.findById(idCuenta);
                 if(cuenta!=null){
                     if(cuenta.getCuentaInternasById().getClienteByPropietario().getUsuarioByUsuarioId().getId()==usuario.getId()){
@@ -320,7 +320,7 @@ public class clienteController {
         if(usuario==null){
             urlTo="redirect:/login";
         }else{
-            if(isAutorizado(usuario)){
+            if(usuario.getClientesById().isTieneAutorizador()){
                 CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
                 if(cuenta!=null){
                     if(cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId()==usuario.getId()){
@@ -391,7 +391,7 @@ public class clienteController {
         if(usuario == null){
             urlto = "redirect:/login";
         }else{
-            if(isAutorizado(usuario)){
+            if(usuario.getClientesById().isTieneAutorizador()){
                 List<CuentaInterna> cuentas = cuentaInternaService.findByClienteId(usuario.getClientesById().getId());
                 List<Moneda> monedas = monedaService.findAll();
                 model.addAttribute("cuentas", cuentas);
@@ -410,7 +410,7 @@ public class clienteController {
         if(usuario == null) {
             urlto = "redirect:/login";
         }else{
-            if(isAutorizado(usuario)){
+            if(usuario.getClientesById().isTieneAutorizador()){
                 model.addAttribute("cuenta", new CuentaInterna());
                 model.addAttribute("monedas", monedaService.findAll());
                 model.addAttribute("paises", paises);
@@ -448,11 +448,6 @@ public class clienteController {
 
     private String getCoutryCode(String country){
         return "XX";
-    }
-
-    private boolean isAutorizado(Usuario usuario){
-        //return usuario.getClientesById().getEmpleadoByAutorizador()!=null;
-        return true;
     }
 
     @GetMapping("/logout")

@@ -14,7 +14,6 @@
         List<CuentaInterna> cuentas = (List<CuentaInterna>) request.getAttribute("cuentas");
         List<Moneda> monedas = (List<Moneda>) request.getAttribute("monedas");
         if(!cuentas.isEmpty()){
-
             %>
 
         <table border="1">

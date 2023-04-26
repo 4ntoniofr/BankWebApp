@@ -25,7 +25,7 @@ public class Cliente implements Serializable {
 
     private List<CuentaInterna> cuentaInternasById;
 
-    //private Empleado empleadoByAutorizador;
+    private boolean tieneAutorizador;
 
     public Integer getId() {
         return id;
@@ -110,6 +110,14 @@ public class Cliente implements Serializable {
 
     public List<CuentaInterna> getCuentaInternasById() {
         return cuentaInternasById;
+    }
+
+    public boolean isTieneAutorizador() {
+        return tieneAutorizador;
+    }
+
+    public void setTieneAutorizador(boolean tieneAutorizador) {
+        this.tieneAutorizador = tieneAutorizador;
     }
 
     public void setCuentaInternasById(List<CuentaInterna> cuentaInternasById) {

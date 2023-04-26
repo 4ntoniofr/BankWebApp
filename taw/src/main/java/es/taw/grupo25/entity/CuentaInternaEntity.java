@@ -122,7 +122,7 @@ public class CuentaInternaEntity {
         cuentaInterna.setCuentaBancariaByCuentaBancaria(this.cuentaBancariaByCuentaBancaria.toDTO());
         cuentaInterna.setClienteByPropietario(this.clienteByPropietario.toDTO());
         cuentaInterna.setEstadoCuentaByEstadoCuenta(this.estadoCuentaByEstadoCuenta.toDTO());
-        cuentaInterna.setMonedaByMoneda(this.monedaByMoneda.toDTO());
+        cuentaInterna.setMonedaByMoneda(this.monedaByMoneda.getId());
 
         return cuentaInterna;
     }
@@ -136,7 +136,7 @@ public class CuentaInternaEntity {
         cuentaInterna.setCuentaBancariaByCuentaBancaria(this.cuentaBancariaByCuentaBancaria.toDTO());
         cuentaInterna.setClienteByPropietario(cliente);
         cuentaInterna.setEstadoCuentaByEstadoCuenta(this.estadoCuentaByEstadoCuenta.toDTO());
-        cuentaInterna.setMonedaByMoneda(this.monedaByMoneda.toDTO());
+        cuentaInterna.setMonedaByMoneda(this.monedaByMoneda.getId());
 
         return cuentaInterna;
     }
