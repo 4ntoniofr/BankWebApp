@@ -52,7 +52,7 @@ public class Empleado implements Serializable {
     public void setClientesEntitiesById(List<ClienteEntity> clienteEntities, Usuario usuario, Empleado empleado) {
         List<Cliente> clientes = new ArrayList<>();
         for (ClienteEntity cliente : clienteEntities) {
-            clientes.add(cliente.toDTO());
+            clientes.add(cliente.toDTO(usuario, empleado));
         }
         this.clientesById = clientes;
     }

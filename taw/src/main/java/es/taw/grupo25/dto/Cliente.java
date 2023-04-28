@@ -22,7 +22,7 @@ public class Cliente implements Serializable {
 
     private List<CuentaInterna> cuentaInternasById;
 
-    private boolean tieneAutorizador;
+    private Empleado autorizador;
 
     public Integer getId() {
         return id;
@@ -81,19 +81,19 @@ public class Cliente implements Serializable {
         this.rolClienteByRolClienteId = rolClienteByRolClienteId;
     }
 
-    public Empresa getEmpresaByEmpresaSocio(){
+    public Empresa getEmpresaByEmpresaSocio() {
         return empresaByEmpresaSocio;
     }
 
-    public void setEmpresaByEmpresaSocio(Empresa empresaByEmpresaSocio){
+    public void setEmpresaByEmpresaSocio(Empresa empresaByEmpresaSocio) {
         this.empresaByEmpresaSocio = empresaByEmpresaSocio;
     }
 
-    public Empresa getEmpresasById(){
+    public Empresa getEmpresasById() {
         return empresasById;
     }
 
-    public void setEmpresasById(Empresa empresasById){
+    public void setEmpresasById(Empresa empresasById) {
         this.empresasById = empresasById;
     }
 
@@ -109,12 +109,12 @@ public class Cliente implements Serializable {
         return cuentaInternasById;
     }
 
-    public boolean isTieneAutorizador() {
-        return tieneAutorizador;
+    public Empleado getAutorizador() {
+        return autorizador;
     }
 
-    public void setTieneAutorizador(boolean tieneAutorizador) {
-        this.tieneAutorizador = tieneAutorizador;
+    public void setAutorizador(Empleado autorizador) {
+        this.autorizador = autorizador;
     }
 
     public void setCuentaInternasById(List<CuentaInterna> cuentaInternasById) {

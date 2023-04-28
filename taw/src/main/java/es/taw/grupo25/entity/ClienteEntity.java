@@ -168,35 +168,51 @@ public class ClienteEntity {
         this.transaccionsById = transaccionsById;
     }
 
-    public Cliente toDTO(){
+    public Cliente toDTO() {
         Cliente cliente = new Cliente();
         cliente.setId(this.id);
         cliente.setFechaInicio(this.fechaInicio);
         cliente.setEstadoClienteByEstadoCliente(this.estadoClienteByEstadoCliente.toDTO());
         cliente.setDireccionByDireccion(this.direccionByDireccion.toDTO());
-        if(this.personaByPersonaId != null) cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO(cliente));
+        if (this.personaByPersonaId != null) cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO(cliente));
         cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId.toDTO());
-        if(this.empresaByEmpresaSocio != null) cliente.setEmpresaByEmpresaSocio(this.empresaByEmpresaSocio.toDTO());
-        if(this.empresasById != null) cliente.setEmpresasById(this.empresasById.toDTO(cliente));
-        //if(this.empleadoByAutorizador != null) cliente.setEmpleadoByAutorizador(this.empleadoByAutorizador.toDTO());
+        if (this.empresaByEmpresaSocio != null) cliente.setEmpresaByEmpresaSocio(this.empresaByEmpresaSocio.toDTO());
+        if (this.empresasById != null) cliente.setEmpresasById(this.empresasById.toDTO(cliente));
+        if (this.empleadoByAutorizador != null) cliente.setAutorizador(this.empleadoByAutorizador.toDTO());
         cliente.setTransaccionsById(TransaccionService.listaEntidadesADTO(this.transaccionsById));
         //cliente.setCuentaInternasEntitiesById(this.cuentaInternasById, cliente);
         cliente.setUsuarioByUsuarioId(this.usuarioByUsuarioId.toDTO());
         return cliente;
     }
 
-    public Cliente toDTO(Usuario usuario){
+    public Cliente toDTO(Usuario usuario) {
         Cliente cliente = new Cliente();
         cliente.setId(this.id);
         cliente.setFechaInicio(this.fechaInicio);
         cliente.setEstadoClienteByEstadoCliente(this.estadoClienteByEstadoCliente.toDTO());
         cliente.setDireccionByDireccion(this.direccionByDireccion.toDTO());
-        if(this.personaByPersonaId != null) cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO(cliente));
+        if (this.personaByPersonaId != null) cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO(cliente));
         cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId.toDTO());
-        if(this.empresaByEmpresaSocio != null) cliente.setEmpresaByEmpresaSocio(this.empresaByEmpresaSocio.toDTO());
-        if(this.empresasById != null) cliente.setEmpresasById(this.empresasById.toDTO(cliente));
+        if (this.empresaByEmpresaSocio != null) cliente.setEmpresaByEmpresaSocio(this.empresaByEmpresaSocio.toDTO());
+        if (this.empresasById != null) cliente.setEmpresasById(this.empresasById.toDTO(cliente));
         cliente.setUsuarioByUsuarioId(usuario);
-        cliente.setTieneAutorizador(true);
+        if (this.empleadoByAutorizador != null) cliente.setAutorizador(this.empleadoByAutorizador.toDTO());
+        cliente.setTransaccionsById(TransaccionService.listaEntidadesADTO(this.transaccionsById));
+        return cliente;
+    }
+
+    public Cliente toDTO(Usuario usuario, Empleado empleado) {
+        Cliente cliente = new Cliente();
+        cliente.setId(this.id);
+        cliente.setFechaInicio(this.fechaInicio);
+        cliente.setEstadoClienteByEstadoCliente(this.estadoClienteByEstadoCliente.toDTO());
+        cliente.setDireccionByDireccion(this.direccionByDireccion.toDTO());
+        if (this.personaByPersonaId != null) cliente.setPersonaByPersonaId(this.personaByPersonaId.toDTO(cliente));
+        cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId.toDTO());
+        if (this.empresaByEmpresaSocio != null) cliente.setEmpresaByEmpresaSocio(this.empresaByEmpresaSocio.toDTO());
+        if (this.empresasById != null) cliente.setEmpresasById(this.empresasById.toDTO(cliente));
+        cliente.setUsuarioByUsuarioId(usuario);
+        if (empleado != null) cliente.setAutorizador(empleado);
         cliente.setTransaccionsById(TransaccionService.listaEntidadesADTO(this.transaccionsById));
         return cliente;
     }

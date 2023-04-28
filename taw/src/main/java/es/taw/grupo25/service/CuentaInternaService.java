@@ -34,6 +34,29 @@ public class CuentaInternaService {
         return cuenta==null?null:cuenta.toDTO();
     }
 
+    public void guardarCuentaNueva(CuentaInterna cuentaInterna){
+        CuentaInternaEntity cuentaInternaEntity = new CuentaInternaEntity();
+
+        cuentaInternaEntity.setPais(cuentaInterna.getPais());
+        cuentaInternaEntity.setCantidad(cuentaInterna.getCantidad());
+
+        EstadoCuentaEntity estadoCuenta = estadoCuentaRepository.findById(cuentaInterna.getEstadoCuentaByEstadoCuenta().getId()).orElse(null);
+        cuentaInternaEntity.setEstadoCuentaByEstadoCuenta(estadoCuenta);
+
+        ClienteEntity clienteEntity = clienteRepository.findById(cuentaInterna.getClienteByPropietario().getId()).orElse(null);
+        cuentaInternaEntity.setClienteByPropietario(clienteEntity);
+
+
+        MonedaEntity moneda = monedaRepository.findById(cuentaInterna.getMonedaByMoneda()).orElse(null);
+        cuentaInternaEntity.setMonedaByMoneda(moneda);
+
+        CuentaBancariaEntity cuentaBancariaEntity = cuentaBancariaRepository.findByIban(cuentaInterna.getCuentaBancariaByCuentaBancaria().getIban());
+        cuentaInternaEntity.setCuentaBancariaByCuentaBancaria(cuentaBancariaEntity);
+
+        cuentaInternaRepository.save(cuentaInternaEntity);
+        cuentaInterna.setId(cuentaInternaEntity.getId());
+    }
+
     public void guardarCuenta(CuentaInterna cuentaInterna){
         CuentaInternaEntity cuentaInternaEntity = new CuentaInternaEntity();
 

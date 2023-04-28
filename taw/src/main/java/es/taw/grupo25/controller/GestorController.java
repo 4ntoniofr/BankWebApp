@@ -106,14 +106,10 @@ public class GestorController {
         }
         CuentaInterna cuentaInterna = new CuentaInterna();
         CuentaBancaria cuentaBancaria = new CuentaBancaria();
+        cuentaInterna.setClienteByPropietario(cliente);
+        cuentaInterna.setCuentaBancariaByCuentaBancaria(cuentaBancaria);
 
         List<Moneda> monedas = this.monedaService.findAll();
-
-        cuentaInterna.setCuentaBancariaByCuentaBancaria(cuentaBancaria);
-        cuentaInterna.setAutorizacionsById(null);
-
-        cuentaInterna.setClienteByPropietario(cliente);
-
         model.addAttribute("cuenta", cuentaInterna);
         model.addAttribute("monedas", monedas);
 
@@ -121,29 +117,26 @@ public class GestorController {
     }
 
     @PostMapping("/autorizar")
-    public String doAutorizar(@ModelAttribute("autorizacionCliente") CuentaInterna cuentaInterna, HttpSession session) {
+    public String doAutorizar(@ModelAttribute("cuenta") CuentaInterna cuentaInterna, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         if (usuario == null) {
             return "redirect:/gestor/login";
         }
 
+        Cliente cliente = this.clienteService.findById(cuentaInterna.getClienteByPropietario().getId());
+        cuentaInterna.setClienteByPropietario(cliente);
+        cuentaInterna.setCantidad(0.0);
+
         EstadoCuenta estadoCuenta = this.estadoCuentaService.findByEstado("ACTIVA");
         cuentaInterna.setEstadoCuentaByEstadoCuenta(estadoCuenta);
 
-        cuentaInterna.setCantidad(0.0);
+        this.cuentaBancariaService.guardarCuenta(cuentaInterna.getCuentaBancariaByCuentaBancaria());
+        this.cuentaInternaService.guardarCuentaNueva(cuentaInterna);
 
         Empleado gestor = usuario.getEmpleadosById();
-        //cuentaInterna.getClienteByPropietario().setEmpleadoByAutorizador(gestor);
+        this.clienteService.autorizarCliente(cliente.getId(), gestor.getId());
 
-        Autorizacion autorizacion = new Autorizacion();
-        autorizacion.setEmpleadoByEmpleadoId(gestor);
-        autorizacion.setCuentaInternaByCuentaInternaId(cuentaInterna);
-        autorizacion.setFecha(new Date());
 
-        this.clienteService.guardarCliente(cuentaInterna.getClienteByPropietario());
-        this.cuentaBancariaService.guardarCuenta(cuentaInterna.getCuentaBancariaByCuentaBancaria());
-        this.cuentaInternaService.guardarCuenta(cuentaInterna);
-        this.autorizacionService.guardarAutorizacion(autorizacion);
 
         return "redirect:/gestor/pendientes";
     }

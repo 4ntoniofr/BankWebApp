@@ -9,8 +9,8 @@
 <body>
 <form:form action="/gestor/autorizar" method="post" modelAttribute="cuenta">
     <form:hidden path="id"/>
-    <form:hidden path="cuentaBancariaByCuentaBancaria"/>
-    <form:hidden path="clienteByPropietario"/>
+    <form:hidden path="cuentaBancariaByCuentaBancaria.id"/>
+    <form:hidden path="clienteByPropietario.id"/>
 
     IBAN: <form:input path="cuentaBancariaByCuentaBancaria.iban"/><br>
     Moneda:
