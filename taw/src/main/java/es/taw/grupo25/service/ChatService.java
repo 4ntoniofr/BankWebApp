@@ -15,13 +15,13 @@ public class ChatService {
     @Autowired
     ChatRepository chatRepository;
 
-    //TODO: cambiar a entidad reformateada y cambiar importe
     public List<Chat> findChatsByEmpleadoId(Integer id){
         return (chatRepository.findChatsByEmpleadoId(id)).stream().map(ChatEntity::toDTO).collect(Collectors.toList());
     }
 
-    public ChatEntity findChatAbiertoByClienteId(Integer id){
-        return chatRepository.findChatAbiertoByClienteId(id);
+    public Chat findChatAbiertoByClienteId(Integer id){
+        ChatEntity chatAbierto = chatRepository.findChatAbiertoByClienteId(id);
+        return chatAbierto==null?null:chatAbierto.toDTO();
     }
 
     public Chat findById(Integer id){

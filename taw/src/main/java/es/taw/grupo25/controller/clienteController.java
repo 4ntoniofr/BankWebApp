@@ -465,21 +465,26 @@ public class clienteController {
     public String chatConAsistencia(HttpSession session, Model model){
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        ChatEntity chat = chatService.findChatAbiertoByClienteId(usuario.getId());
+        Chat chat = chatService.findChatAbiertoByClienteId(usuario.getId());
 
-        model.addAttribute("chat", chat);
+        if(chat != null){
+            // Esto significa que el cliente ya tiene un chat abierto
+            model.addAttribute("chat", chat);
 
-        //List<MensajeEntity> mensajes = mensajeService.findMensajesByChatId(chat.getId());
-        //model.addAttribute("mensajes", mensajes);
+            List<Mensaje> mensajes = chat.getMensajesById();
+            model.addAttribute("mensajes", mensajes);
 
-        MensajeEntity siguienteMensaje = new MensajeEntity();
-        model.addAttribute("siguienteMensaje", siguienteMensaje);
+            Mensaje siguienteMensaje = new Mensaje();
+            model.addAttribute("siguienteMensaje", siguienteMensaje);
 
-        ClienteEntity cliente = chat.getClienteByClienteId();
-        model.addAttribute("cliente", cliente);
+            Cliente cliente = chat.getClienteByClienteId();
+            model.addAttribute("cliente", cliente);
 
-        EmpleadoEntity asistente = chat.getEmpleadoByEmpleadoId();
-        model.addAttribute("asistente", asistente);
+            Empleado asistente = chat.getEmpleadoByEmpleadoId();
+            model.addAttribute("asistente", asistente);
+        }else{
+            // No tiene un chat abierto, se crea uno con un asistente aleatorio
+        }
 
         model.addAttribute("rol", "c");
 
@@ -487,13 +492,8 @@ public class clienteController {
     }
 
     @PostMapping("/enviar-mensaje")
-    public String doEnviarMensaje(@ModelAttribute("siguienteMensaje") MensajeEntity mensaje) {
-
-        java.sql.Timestamp sqlDate = new java.sql.Timestamp(System.currentTimeMillis());
-        mensaje.setFecha(sqlDate);
-        mensaje.setLeido(false);
-        // this.mensajeService.save(mensaje);
-
+    public String doEnviarMensaje(@ModelAttribute("siguienteMensaje") Mensaje mensaje) {
+        mensajeService.enviarMensaje(mensaje);
         return "redirect:/cliente/chat";
     }
 

@@ -4,6 +4,14 @@
 <html>
 <head>
     <title>Chat privado</title>
+
+    <script>
+        window.onload = function() {
+            // DE ESTA FORMA EL SCROLL ESTA SIEMPRE ABAJO
+            var chat = document.getElementById("chat");
+            chat.scrollTop = chat.scrollHeight;
+        }
+    </script>
 </head>
 <body>
 
@@ -42,7 +50,7 @@
     <h1> Chat con <%=clientePersona.getNombre()%></h1>
 </div>
 
-<div id="chat" style="width: 80%;  margin: auto; padding: 10px;">
+<div id="chat" style="width: 80%;  margin: auto; padding: 10px; height: 80%; overflow: auto">
 
 
     <div id="chatbox">
@@ -90,12 +98,14 @@
         %>
 
     </div>
+</div>
+
 
     <%
         if(chat.getFechaCierre() == null) {
 
     %>
-    <div class="siguiente-mensaje" >
+    <div class="siguiente-mensaje" style="width: 80%;  margin: auto; padding: 20px;" >
         <form:form action="/${rol eq 'a' ? 'asistente' : 'cliente'}/enviar-mensaje" method="post" modelAttribute="siguienteMensaje">
             <form:hidden path="idPersonaEmisorNuevoMensaje" value="<%=idPersonaEmisor%>"/>
             <form:hidden path="idChatNuevoMensaje" value="<%=idChat%>"/>
@@ -130,7 +140,6 @@
         }
     %>
 
-</div>
 
 
 
