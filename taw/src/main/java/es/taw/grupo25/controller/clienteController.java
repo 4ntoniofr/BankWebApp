@@ -459,31 +459,47 @@ public class clienteController {
 
     // Parte de Jorge
 
-    //TODO: cambiar a chat reformateado y eliminar importacion
-    @GetMapping("/chat")
-    public String chatConAsistencia(HttpSession session, Model model) {
+    @GetMapping("/chats")
+    public String listadoDeChats(Model model, HttpSession session){
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        Chat chat = chatService.findChatAbiertoByClienteId(usuario.getId());
-
-        if (chat != null) {
-            // Esto significa que el cliente ya tiene un chat abierto
-            model.addAttribute("chat", chat);
-
-            List<Mensaje> mensajes = chat.getMensajesById();
-            model.addAttribute("mensajes", mensajes);
-
-            Mensaje siguienteMensaje = new Mensaje();
-            model.addAttribute("siguienteMensaje", siguienteMensaje);
-
-            Cliente cliente = chat.getClienteByClienteId();
-            model.addAttribute("cliente", cliente);
-
-            Empleado asistente = chat.getEmpleadoByEmpleadoId();
-            model.addAttribute("asistente", asistente);
-        } else {
-            // No tiene un chat abierto, se crea uno con un asistente aleatorio
+        if (usuario == null || usuario.getClientesById() == null) {
+            return "redirect:/login";
         }
+
+        Cliente clienteQueSoy = usuario.getClientesById();
+
+        List<Chat> chatsAbiertos = chatService.findChatsAbiertosByClienteId(clienteQueSoy.getId());
+        model.addAttribute("chatsAbiertos", chatsAbiertos);
+
+        List<Chat> chatsCerrados = chatService.findChatsCerradosByClienteId(clienteQueSoy.getId());
+        model.addAttribute("chatsCerrados", chatsCerrados);
+
+
+        return "/cliente/chats";
+    }
+
+    @GetMapping("/chat")
+    public String chatConAsistencia(Model model, @RequestParam("id") Integer chatId, HttpSession session) {
+        Chat chat = chatService.findById(chatId);
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        if (usuario == null || chat == null || usuario.getClientesById() == null || chat.getClienteByClienteId().getId() != usuario.getClientesById().getId()) {
+            return "redirect:/login";
+        }
+        Cliente clienteQueSoy = usuario.getClientesById();
+        model.addAttribute("cliente", clienteQueSoy);
+
+        model.addAttribute("chat", chat);
+
+        List<Mensaje> mensajes = chat.getMensajesById();
+        model.addAttribute("mensajes", mensajes);
+
+        Mensaje siguienteMensaje = new Mensaje();
+        model.addAttribute("siguienteMensaje", siguienteMensaje);
+
+        Empleado asistente = chat.getEmpleadoByEmpleadoId();
+        model.addAttribute("asistente", asistente);
 
         model.addAttribute("rol", "c");
 
@@ -493,7 +509,15 @@ public class clienteController {
     @PostMapping("/enviar-mensaje")
     public String doEnviarMensaje(@ModelAttribute("siguienteMensaje") Mensaje mensaje) {
         mensajeService.enviarMensaje(mensaje);
-        return "redirect:/cliente/chat";
+        return "redirect:/cliente/chat?id=" + mensaje.getIdChatNuevoMensaje();
+    }
+
+    @PostMapping("/cerrar-chat")
+    public String doCerrarChat(Model mode, @RequestParam("id") Integer chatId) {
+        Chat chat = chatService.findById(chatId);
+        chatService.cerrarChat(chat);
+
+        return "redirect:/cliente/chats";
     }
 
 }

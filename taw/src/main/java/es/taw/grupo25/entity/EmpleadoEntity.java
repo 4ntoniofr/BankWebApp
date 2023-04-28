@@ -103,6 +103,7 @@ public class EmpleadoEntity {
 
     public Empleado toDTO() {
         Empleado empleado = new Empleado();
+        empleado.setId(this.id);
         empleado.setRolEmpleadoByRolEmpleadoId(this.rolEmpleadoByRolEmpleadoId.toDTO());
         empleado.setPersonaByPersonaId(this.personaByPersonaId.toDTO());
         empleado.setAutorizacionsEntitieById(this.autorizacionsById, empleado);

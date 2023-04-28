@@ -13,7 +13,8 @@ public interface ChatRepository extends JpaRepository<ChatEntity, Integer> {
     public List<ChatEntity> findChatsByEmpleadoId(@Param("id") Integer id);
 
     @Query("select c from ChatEntity c where c.clienteByClienteId.id = :id and c.fechaCierre = null")
-    public ChatEntity findChatAbiertoByClienteId(@Param("id") Integer id);
+    public List<ChatEntity> findChatsAbiertosByClienteId(@Param("id") Integer id);
 
-
+    @Query("select c from ChatEntity c where c.clienteByClienteId.id = :id and c.fechaCierre != null")
+    List<ChatEntity> findChatsCerradosByClienteId(Integer id);
 }

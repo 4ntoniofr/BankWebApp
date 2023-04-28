@@ -19,9 +19,12 @@ public class ChatService {
         return (chatRepository.findChatsByEmpleadoId(id)).stream().map(ChatEntity::toDTO).collect(Collectors.toList());
     }
 
-    public Chat findChatAbiertoByClienteId(Integer id){
-        ChatEntity chatAbierto = chatRepository.findChatAbiertoByClienteId(id);
-        return chatAbierto==null?null:chatAbierto.toDTO();
+    public List<Chat> findChatsAbiertosByClienteId(Integer id){
+        List<ChatEntity> chats = chatRepository.findChatsAbiertosByClienteId(id);
+        if(chats != null)
+            return chats.stream().map(ChatEntity::toDTO).collect(Collectors.toList());
+        else
+            return null;
     }
 
     public Chat findById(Integer id){
@@ -36,5 +39,13 @@ public class ChatService {
             chatEntity.setFechaCierre(new Timestamp(System.currentTimeMillis()));
             chatRepository.save(chatEntity);
         }
+    }
+
+    public List<Chat> findChatsCerradosByClienteId(Integer id) {
+        List<ChatEntity> chats = chatRepository.findChatsCerradosByClienteId(id);
+        if(chats != null)
+            return chats.stream().map(ChatEntity::toDTO).collect(Collectors.toList());
+        else
+            return null;
     }
 }

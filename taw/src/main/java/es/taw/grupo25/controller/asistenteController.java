@@ -74,9 +74,9 @@ public class asistenteController {
                 }
 
                 // Orden
-                if(filtro.getOrderBy().equals("1")){
-                    chats.sort(Comparator.comparing(chat -> chat.getMensajesById().isEmpty()? Timestamp.valueOf(LocalDateTime.MIN) : chat.getMensajesById().get(chat.getMensajesById().size() - 1).getFecha()));
-                }else if(filtro.getOrderBy().equals("2")){
+                if (filtro.getOrderBy().equals("1")) {
+                    chats.sort(Comparator.comparing(chat -> chat.getMensajesById().isEmpty() ? Timestamp.valueOf(LocalDateTime.MIN) : chat.getMensajesById().get(chat.getMensajesById().size() - 1).getFecha()));
+                } else if (filtro.getOrderBy().equals("2")) {
                     chats.sort(Comparator.comparing(chat -> chat.getClienteByClienteId().getPersonaByPersonaId().getNombre()));
                 }
             }
@@ -90,10 +90,12 @@ public class asistenteController {
 
 
     @GetMapping("/chat")
-    public String getChat(Model model, @RequestParam("id") Integer chatId) {
+    public String getChat(Model model, @RequestParam("id") Integer chatId, HttpSession session) {
         Chat chat = chatService.findById(chatId);
-        if (chat == null) {
-            return "redirect:/chats";
+        Empleado empleadoQueSoy = (Empleado) session.getAttribute("asistente");
+
+        if (chat == null || empleadoQueSoy == null || chat.getEmpleadoByEmpleadoId().getId() != empleadoQueSoy.getId()) {
+            return "redirect:/asistente/chats";
         }
         model.addAttribute("chat", chat);
 
@@ -111,14 +113,14 @@ public class asistenteController {
         return "/asistente/chat";
     }
 
-    //TODO: traspasarlo a cliente
+    /* SE PODRÍA IMPLEMENTAR ESTA FUNCIÓN PARA QUE EL ASISTENTE PUEDA CERRAR TAMBIÉN EL CHAT, PERO NO SE ESPECIFICA ESTO
     @PostMapping("/cerrar-chat")
     public String doCerrarChat(Model mode, @RequestParam("id") Integer chatId){
         Chat chat = chatService.findById(chatId);
         chatService.cerrarChat(chat);
 
         return "redirect:/asistente/chats";
-    }
+    }*/
 
     @PostMapping("/enviar-mensaje")
     public String doEnviarMensaje(@ModelAttribute("siguienteMensaje") Mensaje mensaje) {

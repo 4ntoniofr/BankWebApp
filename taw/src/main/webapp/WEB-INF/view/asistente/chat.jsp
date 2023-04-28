@@ -47,12 +47,10 @@
 %>
 
 <div id="receptor">
-    <h1> Chat con <%=clientePersona.getNombre()%></h1>
+    <h1> Chat con <%=rol.equals("a")?clientePersona.getNombre():asistentePersona.getNombre()%></h1>
 </div>
 
-<div id="chat" style="width: 80%;  margin: auto; padding: 10px; height: 80%; overflow: auto">
-
-
+<div id="chat" style="width: 80%;  margin: auto; padding: 10px; height: 75%; overflow: auto">
     <div id="chatbox">
         <%
             for (Mensaje mensaje : mensajes) {
@@ -78,11 +76,9 @@
                     // ERES ASISTENTE
                     if(rol.equals("a")){
         %>
-
                         <p style="text-align: left; background-color: lightgrey; padding: 5px; border: 1px solid black">
                             <%=clientePersona.getNombre()%> [<%=mensaje.getFecha()%>]: <br/> <%=mensaje.getTexto()%>
                         </p>
-
         <%
                     // ERES CLIENTE
                     } else {
@@ -90,7 +86,6 @@
                         <p style="text-align: right; background-color: darkseagreen; padding: 5px; border: 1px solid black">
                             <%=clientePersona.getNombre()%> [<%=mensaje.getFecha()%>]: <br/> <%=mensaje.getTexto()%>
                         </p>
-
         <%
                         }
                 }
@@ -116,29 +111,30 @@
 
     <%
             // En caso de que el asistente quiera cerrar la conversación
-            if(rol.equals("a")) {
+            if(rol.equals("c")) {
     %>
-            <form action="/asistente/cerrar-chat?id=<%=chat.getId()%>" method="post">
+            <form action="/cliente/cerrar-chat?id=<%=chat.getId()%>" method="post">
                 <button> Cerrar la consulta </button>
             </form>
 
-            <a href="/asistente/chats">
-                Volver a los chats
-            </a>
     <%
-            }else {
+        }
     %>
-            <a href="/cliente">
-                Volver a seccion cliente
-            </a>
+
+
     <%
-            }
         } else {
     %>
         <h1> Este chat ya ha sido cerrado</h1>
     <%
         }
     %>
+
+
+    <a href="/<%=rol.equals("c")?"cliente":"asistente"%>/chats">
+        Volver a los chats
+    </a>
+
 
 
 

@@ -9,8 +9,6 @@ import es.taw.grupo25.repository.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * @author Jorge Camacho García
  */
@@ -25,20 +23,6 @@ public class MensajeService {
 
     @Autowired
     ChatRepository chatRepository;
-
-    //TODO: Cambiar el tipo de entidad y cambiar importes
-
-    public List<Mensaje> findMensajesByChatId(Integer chatId){
-        List<MensajeEntity> mensajesEntities = mensajeRepository.findMensajesByChatId(chatId);
-        // return mensajesEntities.stream().map(MensajeEntity::toDTO) ;
-        return null;
-    }
-
-    /*
-    public void save(MensajeEntity mensaje){
-        mensajeRepository.save(mensaje);
-    }
-    */
 
     public void enviarMensaje(Mensaje mensaje){
         MensajeEntity mensajeEntity = new MensajeEntity();
