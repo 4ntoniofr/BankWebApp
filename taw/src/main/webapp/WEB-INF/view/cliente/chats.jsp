@@ -18,7 +18,7 @@
 
 <h2> Abrir un nuevo chat </h2>
 
-<form>
+<form action="/cliente/nuevoChat" method="post">
     <button> Generar nuevo chat </button>
 </form>
 

@@ -513,11 +513,31 @@ public class clienteController {
     }
 
     @PostMapping("/cerrar-chat")
-    public String doCerrarChat(Model mode, @RequestParam("id") Integer chatId) {
+    public String doCerrarChat(@RequestParam("id") Integer chatId) {
         Chat chat = chatService.findById(chatId);
         chatService.cerrarChat(chat);
 
         return "redirect:/cliente/chats";
+    }
+
+    @PostMapping("/nuevoChat")
+    public String generarNuevoChat(Model model, HttpSession session){
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        if (usuario == null || usuario.getClientesById() == null) {
+            return "redirect:/login";
+        }
+
+        Cliente clienteQueSoy = usuario.getClientesById();
+        Chat nuevoChat = chatService.generarNuevoChatConAsistenteAleatorio(clienteQueSoy);
+
+        if(nuevoChat != null){
+            return "redirect:/cliente/chat?id=" + nuevoChat.getId();
+        }else{
+            return "redirect:/cliente/chats";
+        }
+
+
     }
 
 }
