@@ -91,8 +91,8 @@ public class ClienteService {
                 empresaRepository.findById(cliente.getEmpresaByEmpresaSocio().getId()).orElse(null);
         clienteEntity.setEmpresaByEmpresaSocio(empresaSocio);
 
-        EmpleadoEntity autorizador = cliente.getAutorizador() == null ? null :
-                empleadoRepository.findById(cliente.getAutorizador().getId()).orElse(null);
+        EmpleadoEntity autorizador = !cliente.getAutorizador() ? null :
+                clienteRepository.getAutorizadorFromCliente(cliente.getId());
         clienteEntity.setEmpleadoByAutorizador(autorizador);
 
         return clienteEntity;

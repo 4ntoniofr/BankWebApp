@@ -178,7 +178,7 @@ public class ClienteEntity {
         cliente.setRolClienteByRolClienteId(this.rolClienteByRolClienteId.toDTO());
         if (this.empresaByEmpresaSocio != null) cliente.setEmpresaByEmpresaSocio(this.empresaByEmpresaSocio.toDTO());
         if (this.empresasById != null) cliente.setEmpresasById(this.empresasById.toDTO(cliente));
-        if (this.empleadoByAutorizador != null) cliente.setAutorizador(this.empleadoByAutorizador.toDTO());
+        cliente.setAutorizador(this.empleadoByAutorizador != null);
         cliente.setTransaccionsById(TransaccionService.listaEntidadesADTO(this.transaccionsById));
         //cliente.setCuentaInternasEntitiesById(this.cuentaInternasById, cliente);
         cliente.setUsuarioByUsuarioId(this.usuarioByUsuarioId.toDTO());
@@ -196,7 +196,7 @@ public class ClienteEntity {
         if (this.empresaByEmpresaSocio != null) cliente.setEmpresaByEmpresaSocio(this.empresaByEmpresaSocio.toDTO());
         if (this.empresasById != null) cliente.setEmpresasById(this.empresasById.toDTO(cliente));
         cliente.setUsuarioByUsuarioId(usuario);
-        if (this.empleadoByAutorizador != null) cliente.setAutorizador(this.empleadoByAutorizador.toDTO());
+        cliente.setAutorizador(this.empleadoByAutorizador != null);
         cliente.setTransaccionsById(TransaccionService.listaEntidadesADTO(this.transaccionsById));
         return cliente;
     }
@@ -212,7 +212,7 @@ public class ClienteEntity {
         if (this.empresaByEmpresaSocio != null) cliente.setEmpresaByEmpresaSocio(this.empresaByEmpresaSocio.toDTO());
         if (this.empresasById != null) cliente.setEmpresasById(this.empresasById.toDTO(cliente));
         cliente.setUsuarioByUsuarioId(usuario);
-        if (empleado != null) cliente.setAutorizador(empleado);
+        cliente.setAutorizador(empleado != null);
         cliente.setTransaccionsById(TransaccionService.listaEntidadesADTO(this.transaccionsById));
         return cliente;
     }

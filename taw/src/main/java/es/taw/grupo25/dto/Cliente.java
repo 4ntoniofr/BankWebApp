@@ -22,7 +22,7 @@ public class Cliente implements Serializable {
 
     private List<CuentaInterna> cuentaInternasById;
 
-    private Empleado autorizador;
+    private boolean autorizador;
 
     public Integer getId() {
         return id;
@@ -109,11 +109,11 @@ public class Cliente implements Serializable {
         return cuentaInternasById;
     }
 
-    public Empleado getAutorizador() {
+    public boolean getAutorizador() {
         return autorizador;
     }
 
-    public void setAutorizador(Empleado autorizador) {
+    public void setAutorizador(boolean autorizador) {
         this.autorizador = autorizador;
     }
 

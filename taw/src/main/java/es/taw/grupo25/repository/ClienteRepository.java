@@ -1,6 +1,7 @@
 package es.taw.grupo25.repository;
 
 import es.taw.grupo25.entity.ClienteEntity;
+import es.taw.grupo25.entity.EmpleadoEntity;
 import es.taw.grupo25.entity.EmpresaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -43,4 +44,7 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity,Integer> 
 
     @Query("select c from ClienteEntity c where c.empresaByEmpresaSocio.id = :id")
     public List<ClienteEntity> buscarSociosPorEmpresa(@Param("id") Integer id);
+
+    @Query("select c.empleadoByAutorizador from ClienteEntity c where c.id = :id")
+    public EmpleadoEntity getAutorizadorFromCliente(@Param("id") Integer id);
 }

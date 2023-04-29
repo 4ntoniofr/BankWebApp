@@ -79,7 +79,7 @@ public class clienteController {
         if (usuario == null) {
             urlto = "redirect:/login";
         } else {
-            if (usuario.getClientesById().getAutorizador() == null) {
+            if (!usuario.getClientesById().getAutorizador()) {
                 model.addAttribute("error", "Debe esperar a que un gestor autorize este usuario.");
             }
         }
@@ -93,7 +93,7 @@ public class clienteController {
         if (usuario == null) {
             urlto = "redirect:/login";
         } else {
-            if (usuario.getClientesById().getAutorizador() != null) {
+            if (usuario.getClientesById().getAutorizador()) {
                 Persona persona = personaService.findById(usuario.getClientesById().getPersonaByPersonaId().getId());
                 model.addAttribute("persona", persona);
             } else {
@@ -116,7 +116,7 @@ public class clienteController {
         if (usuario == null) {
             urlto = "redirect:/login";
         } else {
-            if (usuario.getClientesById().getAutorizador() != null) {
+            if (usuario.getClientesById().getAutorizador()) {
                 CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
                 if (cuenta != null) {
                     if (cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId()) {
@@ -172,7 +172,7 @@ public class clienteController {
         if (usuario == null) {
             urlTo = "redirect:/login";
         } else {
-            if (usuario.getClientesById().getAutorizador() != null) {
+            if (usuario.getClientesById().getAutorizador()) {
                 CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
                 if (cuenta != null) {
                     if (cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId()) {
@@ -237,7 +237,7 @@ public class clienteController {
         if (usuario == null) {
             urlTo = "redirect:/login";
         } else {
-            if (usuario.getClientesById().getAutorizador() != null) {
+            if (usuario.getClientesById().getAutorizador()) {
                 CuentaBancaria cuenta = cuentaBancariaService.findById(idCuenta);
                 if (cuenta != null) {
                     if (cuenta.getCuentaInternasById().getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId()) {
@@ -320,7 +320,7 @@ public class clienteController {
         if (usuario == null) {
             urlTo = "redirect:/login";
         } else {
-            if (usuario.getClientesById().getAutorizador() != null) {
+            if (usuario.getClientesById().getAutorizador()) {
                 CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
                 if (cuenta != null) {
                     if (cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId()) {
@@ -391,7 +391,7 @@ public class clienteController {
         if (usuario == null) {
             urlto = "redirect:/login";
         } else {
-            if (usuario.getClientesById().getAutorizador() != null) {
+            if (usuario.getClientesById().getAutorizador()) {
                 List<CuentaInterna> cuentas = cuentaInternaService.findByClienteId(usuario.getClientesById().getId());
                 List<Moneda> monedas = monedaService.findAll();
                 model.addAttribute("cuentas", cuentas);
@@ -410,7 +410,7 @@ public class clienteController {
         if (usuario == null) {
             urlto = "redirect:/login";
         } else {
-            if (usuario.getClientesById().getAutorizador() != null) {
+            if (usuario.getClientesById().getAutorizador()) {
                 model.addAttribute("cuenta", new CuentaInterna());
                 model.addAttribute("monedas", monedaService.findAll());
                 model.addAttribute("paises", paises);
