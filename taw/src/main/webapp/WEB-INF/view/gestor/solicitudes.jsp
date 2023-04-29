@@ -4,6 +4,7 @@
 
 <%
     List<CuentaInterna> cuentas = (List<CuentaInterna>) request.getAttribute("cuentas");
+    List<String> monedas = (List<String>) request.getAttribute("monedas");
 %>
 
 <html>
@@ -12,6 +13,7 @@
 </head>
 <body>
 <h1>Cuentas solicitantes de desbloqueo</h1>
+<a href="/gestor/">Volver a la pagina principal</a>
 <table border="1">
     <tr>
         <th>IBAN</th>
@@ -21,11 +23,14 @@
         <th></th>
         <th></th>
     </tr>
-    <% for (CuentaInterna cuenta : cuentas) { %>
+    <%
+        for (int i = 0; i < cuentas.size(); i++) {
+            CuentaInterna cuenta = cuentas.get(i);
+    %>
     <tr>
         <td><%=cuenta.getCuentaBancariaByCuentaBancaria().getIban()%>
         </td>
-        <td><%=cuenta.getMonedaByMoneda().getMoneda()%>
+        <td><%=monedas.get(i)%>
         </td>
         <td><%=cuenta.getPais()%>
         </td>

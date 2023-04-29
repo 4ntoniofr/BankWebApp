@@ -45,6 +45,9 @@ public class GestorController {
     @Autowired
     private MonedaService monedaService;
 
+    @Autowired
+    private TransaccionService transaccionService;
+
     @GetMapping("/")
     public String doMostrarOpciones() {
         return "gestor/index";
@@ -83,11 +86,15 @@ public class GestorController {
     @GetMapping("/logout")
     public String doLogout(HttpSession session) {
         session.invalidate();
-        return "redirect:/gestor/";
+        return "redirect:/";
     }
 
     @GetMapping("/pendientes")
-    public String doMostrarPendientes(Model model) {
+    public String doMostrarPendientes(Model model, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/gestor/login";
+        }
         List<Cliente> list = this.clienteService.clientesNoAutorizados();
         separarIndividualesEmpresas(model, list);
         return "gestor/pendientes";
@@ -135,7 +142,6 @@ public class GestorController {
 
         Empleado gestor = usuario.getEmpleadosById();
         this.clienteService.autorizarCliente(cliente.getId(), gestor.getId());
-
 
 
         return "redirect:/gestor/pendientes";
@@ -214,6 +220,9 @@ public class GestorController {
             return "gestor/index";
         }
         model.addAttribute("cliente", cliente);
+        List<CuentaInterna> cuentaInternas = this.cuentaInternaService.getCuentaInternasByIdCliente(cliente.getId());
+        model.addAttribute("cuentas", cuentaInternas);
+        model.addAttribute("monedas", getListaMonedas(cuentaInternas));
         return "gestor/individual";
     }
 
@@ -228,6 +237,9 @@ public class GestorController {
             return "gestor/index";
         }
         model.addAttribute("cliente", cliente);
+        List<CuentaInterna> cuentaInternas = this.cuentaInternaService.getCuentaInternasByIdCliente(cliente.getId());
+        model.addAttribute("cuentas", cuentaInternas);
+        model.addAttribute("monedas", getListaMonedas(cuentaInternas));
         return "gestor/empresa";
     }
 
@@ -250,9 +262,7 @@ public class GestorController {
                 return "gestor/index";
             }
             CuentaBancaria cuentaBancaria = cuenta.getCuentaBancariaByCuentaBancaria();
-            List<Transaccion> transacciones = new ArrayList<>();
-            transacciones.addAll(cuentaBancaria.getTransaccionsById_Entrantes());
-            transacciones.addAll(cuentaBancaria.getTransaccionsById_Salientes());
+            List<Transaccion> transacciones = this.transaccionService.findAllByIdCuenta(cuentaBancaria.getId());
 
             if (!filtro.getIban().isEmpty()) {
                 transacciones = transacciones.stream().filter(obj -> obj.getCuentaBancariaByCuentaDestino().getIban().contains(filtro.getIban()) || obj.getCuentaBancariaByCuentaOrigen().getIban().contains(filtro.getIban())).collect(Collectors.toList());
@@ -284,9 +294,8 @@ public class GestorController {
             return "gestor/index";
         }
         CuentaBancaria cuentaBancaria = cuenta.getCuentaBancariaByCuentaBancaria();
-        List<Transaccion> transacciones = new ArrayList<>();
-        transacciones.addAll(cuentaBancaria.getTransaccionsById_Entrantes());
-        transacciones.addAll(cuentaBancaria.getTransaccionsById_Salientes());
+        List<Transaccion> transacciones = this.transaccionService.findAllByIdCuenta(cuentaBancaria.getId());
+
         ordenarTransacciones(transacciones, orden);
         model.addAttribute("cuenta", cuentaBancaria);
         model.addAttribute("lista", transacciones);
@@ -329,12 +338,10 @@ public class GestorController {
         if (usuario == null) {
             return "redirect:/gestor/login";
         }
-        Cliente cliente = this.clienteService.findById(idCliente);
+
         EstadoCuenta estadoBloqueado = this.estadoCuentaService.findByEstado("BLOQUEADA");
-        if (cliente == null) {
-            return "gestor/index";
-        }
-        List<CuentaInterna> cuentas = cliente.getCuentaInternasById();
+
+        List<CuentaInterna> cuentas = cuentaInternaService.getCuentaInternasByIdCliente(idCliente);
         for (CuentaInterna cuenta : cuentas) {
             cuenta.setEstadoCuentaByEstadoCuenta(estadoBloqueado);
             this.cuentaInternaService.guardarCuenta(cuenta);
@@ -361,11 +368,21 @@ public class GestorController {
         }
         List<CuentaInterna> cuentasSolicitantes = this.cuentaInternaService.findCuentaInternasSolicitantes();
         model.addAttribute("cuentas", cuentasSolicitantes);
+        List<String> monedas = getListaMonedas(cuentasSolicitantes);
+        model.addAttribute("monedas", monedas);
         return "gestor/solicitudes";
     }
 
-    @GetMapping("/desbloquear")
-    public String doDesbloquearCuenta(@RequestParam("id") Integer idCuenta, HttpSession session) {
+    private List<String> getListaMonedas(List<CuentaInterna> cuentaInternas) {
+        List<String> monedas = new ArrayList<>();
+        for (CuentaInterna cuentaInterna : cuentaInternas) {
+            monedas.add(this.monedaService.findById(cuentaInterna.getMonedaByMoneda()).getMoneda());
+        }
+        return monedas;
+    }
+
+    @GetMapping("/desbloquear/{id}")
+    public String doDesbloquearCuenta(@PathVariable("id") Integer idCuenta, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         if (usuario == null) {
             return "redirect:/gestor/login";

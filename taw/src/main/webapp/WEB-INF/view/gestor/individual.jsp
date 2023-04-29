@@ -6,7 +6,8 @@
 
 <%
     Cliente cliente = (Cliente) request.getAttribute("cliente");
-    List<CuentaInterna> cuentas = cliente.getCuentaInternasById();
+    List<CuentaInterna> cuentas = (List<CuentaInterna>) request.getAttribute("cuentas");
+    List<String> monedas = (List<String>) request.getAttribute("monedas");
 %>
 
 <html>
@@ -16,6 +17,8 @@
 <body>
 <h1>Datos de <%=cliente.getPersonaByPersonaId().getNombre()%>
 </h1>
+<a href="/gestor/clientes">Volver a la lista de clientes del sistema</a>
+
 
 <div style="border: 2px solid black">
     <h2>Datos personales</h2>
@@ -23,7 +26,7 @@
         <li>Nombre: <%=cliente.getPersonaByPersonaId().getNombre()%>
         </li>
         <li>
-            Apellidos: <%=cliente.getPersonaByPersonaId().getPrimerApellido() + " " + cliente.getPersonaByPersonaId().getSegundoApellido()%>
+            Apellidos: <%=cliente.getPersonaByPersonaId().getPrimerApellido() + " " + (cliente.getPersonaByPersonaId().getSegundoApellido() == null ? "" : cliente.getPersonaByPersonaId().getSegundoApellido())%>
         </li>
         <li>Fecha de nacimiento: <%= cliente.getPersonaByPersonaId().getFechaNacimiento().toString() %>
         </li>
@@ -52,14 +55,20 @@
             </tr>
 
             <%
-                for (CuentaInterna cuenta : cuentas) {
+                for (int i = 0; i < cuentas.size(); i++) {
+                    CuentaInterna cuenta = cuentas.get(i);
             %>
             <tr>
-                <td><%=cuenta.getCuentaBancariaByCuentaBancaria().getIban()%></td>
-                <td><%=cuenta.getMonedaByMoneda().getMoneda()%></td>
-                <td><%=cuenta.getPais()%></td>
-                <td><%=cuenta.getCantidad()%></td>
-                <td><%=cuenta.getEstadoCuentaByEstadoCuenta().getEstado()%></td>
+                <td><%=cuenta.getCuentaBancariaByCuentaBancaria().getIban()%>
+                </td>
+                <td><%=monedas.get(i)%>
+                </td>
+                <td><%=cuenta.getPais()%>
+                </td>
+                <td><%=cuenta.getCantidad()%>
+                </td>
+                <td><%=cuenta.getEstadoCuentaByEstadoCuenta().getEstado()%>
+                </td>
                 <td><a href="/gestor/operaciones/<%=cuenta.getId()%>">Operaciones</a></td>
             </tr>
             <%

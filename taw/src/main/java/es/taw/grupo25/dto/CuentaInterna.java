@@ -15,8 +15,6 @@ public class CuentaInterna implements Serializable {
     private EstadoCuenta estadoCuentaByEstadoCuenta;
     private Integer monedaByMoneda;
 
-    private List<Autorizacion> autorizacionsById;
-
 
     public Integer getId() {
         return id;
@@ -74,13 +72,6 @@ public class CuentaInterna implements Serializable {
         this.monedaByMoneda = monedaByMoneda;
     }
 
-    public List<Autorizacion> getAutorizacionsById() {
-        return autorizacionsById;
-    }
-
-    public void setAutorizacionsById(List<Autorizacion> autorizacionsById) {
-        this.autorizacionsById = autorizacionsById;
-    }
 
     @Override
     public boolean equals(Object o) {

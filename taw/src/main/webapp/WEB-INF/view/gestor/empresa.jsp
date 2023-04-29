@@ -5,7 +5,8 @@
 
 <%
     Cliente cliente = (Cliente) request.getAttribute("cliente");
-    List<CuentaInterna> cuentas = cliente.getCuentaInternasById();
+    List<CuentaInterna> cuentas = (List<CuentaInterna>) request.getAttribute("cuentas");
+    List<String> monedas = (List<String>) request.getAttribute("monedas");
 %>
 
 <html>
@@ -15,6 +16,7 @@
 <body>
 <h1>Datos de <%=cliente.getEmpresasById().getNombre()%>
 </h1>
+<a href="/gestor/clientes">Volver a la lista de clientes del sistema</a>
 
 <div style="border: 2px solid black">
     <h2>Datos de la empresa</h2>
@@ -44,14 +46,20 @@
             </tr>
 
             <%
-                for (CuentaInterna cuenta : cuentas) {
+                for (int i = 0; i < cuentas.size(); i++) {
+                    CuentaInterna cuenta = cuentas.get(i);
             %>
             <tr>
-                <td><%=cuenta.getCuentaBancariaByCuentaBancaria().getIban()%></td>
-                <td><%=cuenta.getMonedaByMoneda().getMoneda()%></td>
-                <td><%=cuenta.getPais()%></td>
-                <td><%=cuenta.getCantidad()%></td>
-                <td><%=cuenta.getEstadoCuentaByEstadoCuenta().getEstado()%></td>
+                <td><%=cuenta.getCuentaBancariaByCuentaBancaria().getIban()%>
+                </td>
+                <td><%=monedas.get(i)%>
+                </td>
+                <td><%=cuenta.getPais()%>
+                </td>
+                <td><%=cuenta.getCantidad()%>
+                </td>
+                <td><%=cuenta.getEstadoCuentaByEstadoCuenta().getEstado()%>
+                </td>
                 <td><a href="/gestor/operaciones/<%=cuenta.getId()%>">Operaciones</a></td>
             </tr>
             <%
