@@ -58,6 +58,8 @@
                     <form:option value="0" label="--------------------------"/>
                     <form:option value="1" label="Ultimo mensaje mas reciente"/>
                     <form:option value="2" label="Orden alfabetico de nombre"/>
+                    <form:option value="3" label="Orden de apertura creciente (primero antiguos)"/>
+                    <form:option value="4" label="Orden de apertura decreciente (primero nuevos)"/>
                 </form:select>
             </td>
         </tr>

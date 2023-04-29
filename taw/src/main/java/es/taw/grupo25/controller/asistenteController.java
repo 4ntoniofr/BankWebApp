@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,7 +58,7 @@ public class asistenteController {
             model.addAttribute("empleado", empleadoQueSoy);
             List<Chat> chats = chatService.findChatsByEmpleadoId(empleadoQueSoy.getId());
 
-            if (filtro == null || filtro.getNombre().isEmpty() && filtro.getUltimoMensajeAntesDe().isEmpty() && !filtro.isSoloAbiertos()) {
+            if (filtro == null) {
                 filtro = new FiltroChats();
             } else {
                 // Filtros
@@ -75,9 +76,15 @@ public class asistenteController {
 
                 // Orden
                 if (filtro.getOrderBy().equals("1")) {
-                    chats.sort(Comparator.comparing(chat -> chat.getMensajesById().isEmpty() ? Timestamp.valueOf(LocalDateTime.MIN) : chat.getMensajesById().get(chat.getMensajesById().size() - 1).getFecha()));
+                    chats.sort(Comparator.comparing(chat -> chat.getMensajesById().isEmpty() ? Timestamp.valueOf(LocalDateTime.MAX) : chat.getMensajesById().get(chat.getMensajesById().size() - 1).getFecha()));
+                    Collections.reverse(chats);
                 } else if (filtro.getOrderBy().equals("2")) {
                     chats.sort(Comparator.comparing(chat -> chat.getClienteByClienteId().getPersonaByPersonaId().getNombre()));
+                } else if (filtro.getOrderBy().equals("3")) {
+                    chats.sort(Comparator.comparing(Chat::getId));
+                } else if (filtro.getOrderBy().equals("4")) {
+                    chats.sort(Comparator.comparing(Chat::getId));
+                    Collections.reverse(chats);
                 }
             }
 
