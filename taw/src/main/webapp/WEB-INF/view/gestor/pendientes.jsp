@@ -14,6 +14,7 @@
 <body>
 
 <h1>Listado de clientes pendientes por autorizar</h1>
+<a href="/gestor/">Volver a la pagina principal</a>
 <h2>Clientes Individuales</h2>
 <table border="1">
     <tr>
@@ -38,7 +39,7 @@
         <td><%= persona.getPersonaByPersonaId().getNombre() %>
         </td>
         <td><%= persona.getPersonaByPersonaId().getPrimerApellido() + " " +
-                persona.getPersonaByPersonaId().getSegundoApellido()%>
+                (persona.getPersonaByPersonaId().getSegundoApellido() == null ? "" : persona.getPersonaByPersonaId().getSegundoApellido())%>
         </td>
         <td><%= persona.getPersonaByPersonaId().getFechaNacimiento().toString() %>
         </td>

@@ -1,4 +1,4 @@
-    <%@ page import="java.util.List" %>
+<%@ page import="java.util.List" %>
 <%@ page import="es.taw.grupo25.dto.Cliente" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -15,15 +15,15 @@
 </head>
 <body>
 <h1>Lista de clientes del sistema</h1>
-
+<a href="/gestor/">Volver a la pagina principal</a>
 <h2>Buscar por:</h2>
 
 <form:form action="/gestor/filtrarClientes" method="post" modelAttribute="filtro">
     Contiene: <form:input path="texto"/>
     Estado:
     <form:select path="estadoCliente">
-        <form:option value="" label="No filter" />
-        <form:options items="${estados}" itemLabel="estado" itemValue="estado" />
+        <form:option value="" label="No filter"/>
+        <form:options items="${estados}" itemLabel="estado" itemValue="estado"/>
     </form:select>
     <form:button>Filtrar</form:button>
 </form:form>
@@ -51,7 +51,7 @@
         <td><%= persona.getPersonaByPersonaId().getNombre() %>
         </td>
         <td><%= persona.getPersonaByPersonaId().getPrimerApellido() + " " +
-                persona.getPersonaByPersonaId().getSegundoApellido()%>
+                (persona.getPersonaByPersonaId().getSegundoApellido() == null ? "" : persona.getPersonaByPersonaId().getSegundoApellido())%>
         </td>
         <td><%= persona.getPersonaByPersonaId().getFechaNacimiento().toString() %>
         </td>

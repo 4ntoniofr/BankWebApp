@@ -106,7 +106,6 @@ public class EmpleadoEntity {
         empleado.setId(this.id);
         empleado.setRolEmpleadoByRolEmpleadoId(this.rolEmpleadoByRolEmpleadoId.toDTO());
         empleado.setPersonaByPersonaId(this.personaByPersonaId.toDTO());
-        empleado.setAutorizacionsEntitieById(this.autorizacionsById, empleado);
         if(clientesById!=null)empleado.setClientesEntitiesById(this.clientesById, empleado.getUsuarioByUsuarioId(), empleado);
         return empleado;
     }
@@ -117,7 +116,6 @@ public class EmpleadoEntity {
         empleado.setRolEmpleadoByRolEmpleadoId(this.rolEmpleadoByRolEmpleadoId.toDTO());
         empleado.setPersonaByPersonaId(this.personaByPersonaId.toDTO());
         empleado.setUsuarioByUsuarioId(usuario);
-        empleado.setAutorizacionsEntitieById(this.autorizacionsById, empleado);
         if(clientesById!=null)empleado.setClientesEntitiesById(this.clientesById, empleado.getUsuarioByUsuarioId(), empleado);
         return empleado;
     }

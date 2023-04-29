@@ -13,7 +13,7 @@
 </head>
 <body>
 <h1>Lista de clientes inactivos</h1>
-
+<a href="/gestor/">Volver a la pagina principal</a>
 <h2>Clientes Individuales</h2>
 <table border="1">
     <tr>
@@ -37,7 +37,7 @@
         <td><%= persona.getPersonaByPersonaId().getNombre() %>
         </td>
         <td><%= persona.getPersonaByPersonaId().getPrimerApellido() + " " +
-                persona.getPersonaByPersonaId().getSegundoApellido()%>
+                (persona.getPersonaByPersonaId().getSegundoApellido() == null ? "" : persona.getPersonaByPersonaId().getSegundoApellido())%>
         </td>
         <td><%= persona.getPersonaByPersonaId().getFechaNacimiento().toString() %>
         </td>
@@ -48,7 +48,7 @@
         <td><%= persona.getDireccionByDireccion().getCalle() + " " + persona.getDireccionByDireccion().getNumero() + ", " +
                 persona.getDireccionByDireccion().getCiudad() + " (" + persona.getDireccionByDireccion().getPais() + ")" %>
         </td>
-        <td><a href="/gestor/desactivar/<%= persona.getId() %>&urlto=inactivos">Desactivar cuentas</a></td>
+        <td><a href="/gestor/desactivar/<%= persona.getId() %>/inactivos">Desactivar cuentas</a></td>
     </tr>
 
 

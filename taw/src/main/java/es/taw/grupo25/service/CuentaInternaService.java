@@ -89,4 +89,8 @@ public class CuentaInternaService {
     public List<CuentaInterna> findCuentaInternasSolicitantes() {
         return listaEntidadesADTO(this.cuentaInternaRepository.findCuentaInternasSolicitantes());
     }
+
+    public List<CuentaInterna> getCuentaInternasByIdCliente(Integer idCliente) {
+        return  listaEntidadesADTO(this.cuentaInternaRepository.findCuentasInternasForClient(idCliente));
+    }
 }

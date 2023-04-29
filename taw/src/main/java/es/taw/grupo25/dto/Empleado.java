@@ -10,7 +10,6 @@ import java.util.Objects;
 
 public class Empleado implements Serializable {
     private Integer id;
-    private List<Autorizacion> autorizacionsById;
     private List<Cliente> clientesById;
     private Usuario usuarioByUsuarioId;
     private Persona personaByPersonaId;
@@ -24,22 +23,6 @@ public class Empleado implements Serializable {
         this.id = id;
     }
 
-    public List<Autorizacion> getAutorizacionsById() {
-        return autorizacionsById;
-    }
-
-    public void setAutorizacionsById(List<Autorizacion> autorizacionsById) {
-        this.autorizacionsById = autorizacionsById;
-    }
-
-    public void setAutorizacionsEntitieById(List<AutorizacionEntity> autorizacionsById, Empleado empleado) {
-        List<Autorizacion> autorizacions = new ArrayList<>();
-        for (AutorizacionEntity autorizacion : autorizacionsById) {
-            autorizacions.add(autorizacion.toDTO(empleado));
-        }
-
-        this.autorizacionsById = autorizacions;
-    }
 
     public List<Cliente> getClientesById() {
         return clientesById;

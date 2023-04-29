@@ -17,7 +17,7 @@
 <body>
 <h1>Operaciones bancarias de <%=cuentaBancaria.getIban()%>
 </h1>
-
+<a href="/gestor/clientes">Volver a la lista de clientes del sistema</a>
 
 <form:form action="/gestor/operaciones" method="post" modelAttribute="filtro">
     <h2>Filtro</h2>
