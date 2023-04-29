@@ -2,6 +2,7 @@ package es.taw.grupo25.service;
 
 import es.taw.grupo25.dto.CuentaInterna;
 import es.taw.grupo25.dto.Transaccion;
+import es.taw.grupo25.entity.ClienteEntity;
 import es.taw.grupo25.entity.CuentaBancariaEntity;
 import es.taw.grupo25.entity.TransaccionEntity;
 import es.taw.grupo25.repository.ClienteRepository;
@@ -43,6 +44,12 @@ public class TransaccionService {
 
     public List<Transaccion> findAllByIdCuenta(Integer id){
         List<TransaccionEntity> transaccionEntities = transaccionRepository.findAllTransactionsById(id);
+        return listaEntidadesADTO(transaccionEntities);
+    }
+
+    public List<Transaccion> findAllByIdCuentaAndCliente(Integer idCuenta, Integer idCliente){
+        ClienteEntity cliente = this.clienteRepository.findById(idCliente).orElse(null);
+        List<TransaccionEntity> transaccionEntities = this.transaccionRepository.findAllByIdCuentaAndCliente(idCuenta, cliente);
         return listaEntidadesADTO(transaccionEntities);
     }
 

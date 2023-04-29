@@ -1,12 +1,7 @@
 package es.taw.grupo25.controller;
 
-import es.taw.grupo25.dto.Cliente;
-import es.taw.grupo25.dto.Empresa;
-import es.taw.grupo25.dto.Usuario;
-import es.taw.grupo25.service.ClienteService;
-import es.taw.grupo25.service.EmpresaService;
-import es.taw.grupo25.service.EstadoClienteService;
-import es.taw.grupo25.service.UsuarioService;
+import es.taw.grupo25.dto.*;
+import es.taw.grupo25.service.*;
 import es.taw.grupo25.ui.FormularioRegistroAsociado;
 import es.taw.grupo25.ui.FormularioRegistroEmpresa;
 import jakarta.servlet.http.HttpSession;
@@ -15,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -28,6 +24,8 @@ public class EmpresaController {
     private EmpresaService empresaService;
     @Autowired
     private EstadoClienteService estadoClienteService;
+    @Autowired
+    private TransaccionService transaccionService;
 
     @GetMapping("/")
     public String showOptions(){
@@ -215,6 +213,44 @@ public class EmpresaController {
             usuario.getClientesById().setEstadoClienteByEstadoCliente(this.estadoClienteService.findByEstado("SOLICITADO"));
             this.clienteService.guardarCliente(usuario.getClientesById());
             session.setAttribute("usuario", usuario);
+        }
+
+        return urlTo;
+    }
+
+    @GetMapping("/operaciones")
+    public String doMostrarTransferencias(@RequestParam("idCliente") Integer idCliente,
+                                          Model model, HttpSession session){
+        String urlTo = "empresa/transferencias";
+        Usuario solicitante = (Usuario) session.getAttribute("usuario");
+
+        if(solicitante == null || solicitante.getClientesById() == null ||
+                solicitante.getClientesById().getEmpresasById() != null ||
+                solicitante.getClientesById().getRolClienteByRolClienteId().getRol().equals("INDIVIDUAL")){
+            urlTo = "empresa/index";
+            model.addAttribute("error", "Accion no permitida");
+        }else{
+            Cliente solicitado = this.clienteService.findById(idCliente);
+            if(solicitado == null){
+                urlTo = "empresa/index";
+                model.addAttribute("error", "Cliente seleccionado no existente");
+            }else if(!solicitado.getEmpresaByEmpresaSocio().equals(solicitante.getClientesById().getEmpresaByEmpresaSocio())){
+                urlTo = "empresa/index";
+                model.addAttribute("error", "Cliente seleccionado perteneciente a otra empresa");
+            }else{
+                List<CuentaInterna> cuentasEmpresa = solicitante.getClientesById()
+                        .getEmpresaByEmpresaSocio()
+                        .getClienteByClienteId()
+                        .getCuentaInternasById();
+                List<Transaccion> transacciones = new ArrayList<>();
+                if(cuentasEmpresa != null){
+                    for(CuentaInterna ci : cuentasEmpresa){
+                        transacciones.addAll(this.transaccionService.findAllByIdCuentaAndCliente(ci.getId(), solicitado.getId()));
+                    }
+                }
+                model.addAttribute("transacciones", transacciones);
+                model.addAttribute("cliente", solicitado);
+            }
         }
 
         return urlTo;
