@@ -29,6 +29,13 @@
 </form:form>
 
 <h2>Clientes Individuales</h2>
+<%
+    if (personas.isEmpty()) {
+%>
+<b>No hay clientes individuales activos en el sistema</b>
+<%
+} else {
+%>
 <table border="1">
     <tr>
         <th>DNI</th>
@@ -67,11 +74,19 @@
 
 
     <%
+            }
         }
     %>
 
 </table>
 <h2>Empresas</h2>
+<%
+    if (empresas.isEmpty()) {
+%>
+<b>No hay empresas activas en el sistema</b>
+<%
+} else {
+%>
 <table border="1">
     <tr>
         <th>Nombre</th>
@@ -97,6 +112,7 @@
 
 
     <%
+            }
         }
     %>
 

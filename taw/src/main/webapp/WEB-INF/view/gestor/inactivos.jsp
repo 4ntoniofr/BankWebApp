@@ -15,6 +15,13 @@
 <h1>Lista de clientes inactivos</h1>
 <a href="/gestor/">Volver a la pagina principal</a>
 <h2>Clientes Individuales</h2>
+<%
+    if (personas.isEmpty()) {
+%>
+<b>No hay clientes individuales inactivos</b>
+<%
+} else {
+%>
 <table border="1">
     <tr>
         <th>DNI</th>
@@ -53,11 +60,19 @@
 
 
     <%
+            }
         }
     %>
 
 </table>
 <h2>Empresas</h2>
+<%
+    if (empresas.isEmpty()) {
+%>
+<b>No hay empresas inactivas en el sistema</b>
+<%
+} else {
+%>
 <table border="1">
     <tr>
         <th>Nombre</th>
@@ -83,6 +98,7 @@
 
 
     <%
+            }
         }
     %>
 

@@ -14,6 +14,14 @@
 <body>
 <h1>Cuentas solicitantes de desbloqueo</h1>
 <a href="/gestor/">Volver a la pagina principal</a>
+<%
+    if (cuentas.isEmpty()) {
+%>
+<br><b>No hay cuentas que hayan solicitado el desbloqueo</b>
+<%
+} else {
+%>
+<a href="/gestor/">Volver a la pagina principal</a>
 <table border="1">
     <tr>
         <th>IBAN</th>
@@ -39,6 +47,9 @@
         <td><a href="/gestor/operaciones/<%=cuenta.getId()%>">Operaciones</a></td>
         <td><a href="/gestor/desbloquear/<%=cuenta.getId()%>">Desbloquear</a></td>
     </tr>
-    <% } %>
+    <%
+            }
+        }
+    %>
 </table>
 </body>

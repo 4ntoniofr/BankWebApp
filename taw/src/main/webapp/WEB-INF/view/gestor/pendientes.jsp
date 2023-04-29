@@ -16,6 +16,13 @@
 <h1>Listado de clientes pendientes por autorizar</h1>
 <a href="/gestor/">Volver a la pagina principal</a>
 <h2>Clientes Individuales</h2>
+<%
+    if (personas.isEmpty()) {
+%>
+<b>No hay clientes individuales pendientes por autorizar</b>
+<%
+} else {
+%>
 <table border="1">
     <tr>
         <th>DNI</th>
@@ -28,7 +35,6 @@
         <th></th>
         <th></th>
     </tr>
-
     <%
         for (Cliente persona : personas) {
     %>
@@ -56,11 +62,19 @@
 
 
     <%
+            }
         }
     %>
 
 </table>
 <h2>Empresas</h2>
+<%
+    if (empresas.isEmpty()) {
+%>
+<b>No hay empresas pendientes por autorizar</b>
+<%
+} else {
+%>
 <table border="1">
     <tr>
         <th>Nombre</th>
@@ -88,6 +102,7 @@
 
 
     <%
+            }
         }
     %>
 
