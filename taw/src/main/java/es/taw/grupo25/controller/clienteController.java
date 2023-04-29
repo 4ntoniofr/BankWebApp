@@ -6,6 +6,7 @@ import es.taw.grupo25.entity.ClienteEntity;
 import es.taw.grupo25.entity.EmpleadoEntity;
 import es.taw.grupo25.entity.MensajeEntity;
 import es.taw.grupo25.service.*;
+import es.taw.grupo25.ui.FiltroChatsAsistente;
 import es.taw.grupo25.ui.FiltroOperaciones;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -461,6 +459,12 @@ public class clienteController {
 
     @GetMapping("/chats")
     public String listadoDeChats(Model model, HttpSession session){
+        FiltroChatsAsistente filtro = new FiltroChatsAsistente();
+        filtro.setOrden(1); // Primero los chats más recientes
+        return this.procesarFiltradoCliente(model, session, filtro);
+    }
+
+    private String procesarFiltradoCliente(Model model, HttpSession session, FiltroChatsAsistente filtro){
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
         if (usuario == null || usuario.getClientesById() == null) {
@@ -470,14 +474,37 @@ public class clienteController {
         Cliente clienteQueSoy = usuario.getClientesById();
 
         List<Chat> chatsAbiertos = chatService.findChatsAbiertosByClienteId(clienteQueSoy.getId());
-        model.addAttribute("chatsAbiertos", chatsAbiertos);
 
         List<Chat> chatsCerrados = chatService.findChatsCerradosByClienteId(clienteQueSoy.getId());
-        model.addAttribute("chatsCerrados", chatsCerrados);
 
+        if(filtro != null){
+            chatsAbiertos.sort(Comparator.comparing(Chat::getId));
+            chatsCerrados.sort(Comparator.comparing(Chat::getId));
+
+            if(filtro.getOrden() == 1){
+                Collections.reverse(chatsAbiertos);
+                Collections.reverse(chatsCerrados);
+            }
+        }else{
+            filtro = new FiltroChatsAsistente();
+            filtro.setOrden(1);
+        }
+
+        model.addAttribute("chatsAbiertos", chatsAbiertos);
+        model.addAttribute("chatsCerrados", chatsCerrados);
+        model.addAttribute("filtro", filtro);
 
         return "/cliente/chats";
     }
+
+    @PostMapping("/chats")
+    public String listadoDeChatsFiltrado(Model model, HttpSession session, @ModelAttribute("filtro") FiltroChatsAsistente filtro){
+        return this.procesarFiltradoCliente(model, session, filtro);
+    }
+
+
+
+
 
     @GetMapping("/chat")
     public String chatConAsistencia(Model model, @RequestParam("id") Integer chatId, HttpSession session) {

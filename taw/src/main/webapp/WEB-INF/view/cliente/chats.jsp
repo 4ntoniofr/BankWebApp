@@ -22,6 +22,16 @@
     <button> Generar nuevo chat </button>
 </form>
 
+<h3> Ordenar todos los chats: </h3>
+<form:form action="/cliente/chats" method="post" modelAttribute="filtro">
+    <form:select path="orden">
+        <form:option value="0" label="Orden de apertura creciente (primero antiguos)"/>
+        <form:option value="1" label="Orden de apertura decreciente (primero nuevos)"/>
+    </form:select>
+
+    <form:button> Aplicar orden </form:button>
+</form:form>
+
 <h2> Chats abiertos </h2>
 <p> Recuerda que si has solucionado tu problema puedes cerrar el chat. </p>
 <br/>
