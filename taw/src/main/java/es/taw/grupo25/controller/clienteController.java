@@ -92,8 +92,8 @@ public class clienteController {
             urlto = "redirect:/login";
         } else {
             if (usuario.getClientesById().getAutorizador()) {
-                Persona persona = personaService.findById(usuario.getClientesById().getPersonaByPersonaId().getId());
-                model.addAttribute("persona", persona);
+                Cliente cliente = clienteService.findById(usuario.getClientesById().getId());
+                model.addAttribute("cliente", cliente);
             } else {
                 urlto = "redirect:/cliente";
             }
@@ -102,8 +102,9 @@ public class clienteController {
     }
 
     @PostMapping("/guardar")
-    public String guardarCliente(@ModelAttribute("persona") Persona persona) {
-        this.personaService.guardarPersona(persona);
+    public String guardarCliente(@ModelAttribute("cliente") Cliente cliente) {
+        direccionService.saveDireccion(cliente.getDireccionByDireccion());
+        personaService.guardarPersona(cliente.getPersonaByPersonaId());
         return "redirect:/cliente";
     }
 
@@ -158,9 +159,26 @@ public class clienteController {
                     pagos = pagos.stream().filter(obj -> obj.getTransaccionByTransaccion().getFechaEjecucion().toLocalDateTime().toLocalDate().equals(fecha)).collect(Collectors.toList());
                 }
             }
+            ordenarTransacciones(pagos, filtro.getOrden(), filtro.getAscdesc());
+            CuentaBancaria cuenta = cuentaBancariaService.findById(filtro.getIdCuenta());
+            model.addAttribute("iban", cuenta.getIban());
             model.addAttribute("pagos", pagos);
         }
         return urlTo;
+    }
+
+    private void ordenarTransacciones(List<Pago> pagos, String orden, String ascdesc) {
+        if(orden.equals("instruccion") && ascdesc.equals("ascendente")){
+            System.out.println("asc");
+            pagos.sort((o1, o2) -> o1.getTransaccionByTransaccion().getFechaInstruccion().compareTo(o2.getTransaccionByTransaccion().getFechaInstruccion()));
+        }else if(orden.equals("instruccion") && ascdesc.equals("descendente")){
+            System.out.println("desc");
+            pagos.sort((o1, o2) -> o2.getTransaccionByTransaccion().getFechaInstruccion().compareTo(o1.getTransaccionByTransaccion().getFechaInstruccion()));
+        }else if(orden.equals("ejecucion") && ascdesc.equals("ascendente")){
+            pagos.sort((o1, o2) -> o1.getTransaccionByTransaccion().getFechaEjecucion().compareTo(o2.getTransaccionByTransaccion().getFechaEjecucion()));
+        }else{
+            pagos.sort((o1, o2) -> o2.getTransaccionByTransaccion().getFechaEjecucion().compareTo(o1.getTransaccionByTransaccion().getFechaEjecucion()));
+        }
     }
 
     @GetMapping("/divisas")
@@ -451,7 +469,7 @@ public class clienteController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/cliente";
+        return "redirect:/";
     }
 
 

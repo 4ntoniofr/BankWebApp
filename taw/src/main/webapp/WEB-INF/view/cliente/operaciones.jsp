@@ -19,11 +19,22 @@
 
     <form:form action="operaciones" method="post" modelAttribute="filtro">
         <form:hidden path="idCuenta"></form:hidden>
-        Buscar por</br>
+        Buscar por:</br>
         Fecha Instruccion: <form:input type="date" path="fechaInstruccion"></form:input>
         Fecha Ejecucion: <form:input type="date" path="fechaEjecucion"></form:input>
         IBAN Destino <form:input path="iban"></form:input></br>
-        <form:button>Filtrar</form:button>
+        Ordenar por:</br>
+        Columna: <form:select path="orden">
+            <form:option value="instruccion" label="Fecha de instruccion"/>
+            <form:option value="ejecucion" label="Fecha de ejecucion"/>
+        </form:select>
+        En orden:
+        <form:select path="ascdesc">
+            <form:option value="ascendente" label="Ascendente"/>
+            <form:option value="descendente" label="Descendente"/>
+        </form:select>
+        </br>
+        <form:button>Filtrar y Ordenar</form:button>
     </form:form>
 
 <%

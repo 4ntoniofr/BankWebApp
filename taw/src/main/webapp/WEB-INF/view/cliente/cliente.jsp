@@ -27,6 +27,6 @@
     <%
         }
     %>
-        </br><a href="/cliente/logout">LogOut</a>
+        </br><a href="/cliente/logout">LogOut y salir</a>
     </body>
 </html>

@@ -8,10 +8,12 @@ public class FiltroOperaciones {
     private String fechaEjecucion;
     private String iban;
     private String orden;
+    private String ascdesc;
 
     public FiltroOperaciones(int idCuenta) {
         this.idCuenta = idCuenta;
         this.orden = "";
+        this.ascdesc = "";
     }
 
     public String getFechaInstruccion() {
@@ -53,4 +55,13 @@ public class FiltroOperaciones {
     public void setOrden(String orden) {
         this.orden = orden;
     }
+
+    public String getAscdesc() {
+        return ascdesc;
+    }
+
+    public void setAscdesc(String ascdesc) {
+        this.ascdesc = ascdesc;
+    }
+
 }
