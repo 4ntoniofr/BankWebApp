@@ -19,13 +19,15 @@
 </h1>
 <a href="/gestor/clientes">Volver a la lista de clientes del sistema</a>
 
-<form:form action="/gestor/operaciones" method="post" modelAttribute="filtro">
+<form:form action="/gestor/operakciones" method="post" modelAttribute="filtro">
     <h2>Filtro</h2>
     <form:hidden path="idCuenta"/>
     <div>
         <label style="margin-right: 30px"> IBAN: <form:input path="iban"/> </label>
-        <label style="margin-right: 30px"> Fecha Instruccion: <form:input type="date" path="fechaInstruccion"></form:input></label>
-        <label style="margin-right: 30px"> Fecha Ejecucion: <form:input type="date" path="fechaEjecucion"></form:input></label>
+        <label style="margin-right: 30px"> Fecha Instruccion: <form:input type="date"
+                                                                          path="fechaInstruccion"></form:input></label>
+        <label style="margin-right: 30px"> Fecha Ejecucion: <form:input type="date"
+                                                                        path="fechaEjecucion"></form:input></label>
         <label style="margin-right: 30px">Ordenar por:
             <form:select path="orden">
                 <form:option value="instruccion" label="Fecha de instruccion"/>
@@ -36,6 +38,14 @@
     <hr>
     <form:button>Filtrar y ordenar</form:button>
 </form:form>
+
+<%
+    if (transacciones.isEmpty()) {
+%>
+<b>No se ha realizado ninguna transaccion bancaria</b>
+<%
+} else {
+%>
 
 <table border="1">
     <tr>
@@ -55,16 +65,17 @@
         </td>
         <td><%=transaccion.getCuentaBancariaByCuentaDestino().getIban()%>
         </td>
-        <td><%=transaccion.getPagosById().getCantidad()%>
+        <td><%=transaccion.getPagosById() == null ? "Sin pago" : transaccion.getPagosById().getCantidad()%>
         </td>
         <td><%=transaccion.getFechaInstruccion().toString()%>
         </td>
         <td><%=transaccion.getFechaEjecucion().toString()%>
         </td>
-        <td><%=transaccion.getPagosById().getCambioDivisaByCambioDivisa() != null ? "SI" : "NO"%>
+        <td><%=transaccion.getCambioDivisa() == null ? "Sin cambio de divisa" : transaccion.getCambioDivisa().getMonedaByMonedaVenta().getMoneda() + " => " + transaccion.getCambioDivisa().getMonedaByMonedaCompra().getMoneda()%>
         </td>
     </tr>
     <%
+            }
         }
     %>
 </table>

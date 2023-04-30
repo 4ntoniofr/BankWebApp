@@ -36,7 +36,8 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity,Integer> 
     @Query("select distinct c from ClienteEntity c where exists(select ci from CuentaInternaEntity ci where ci.clienteByPropietario = c and ci.estadoCuentaByEstadoCuenta.estado like 'ACTIVA') and not exists (select ci from CuentaInternaEntity ci join ci.cuentaBancariaByCuentaBancaria cb left join cb.transaccionsById_Entrantes t where ci.estadoCuentaByEstadoCuenta.estado LIKE 'ACTIVA' and ci.clienteByPropietario = c and t.fechaEjecucion >= :fechaLimite) and not exists (select ci from CuentaInternaEntity ci join ci.cuentaBancariaByCuentaBancaria cb left join cb.transaccionsById_Salientes t where ci.estadoCuentaByEstadoCuenta.estado LIKE 'ACTIVA' and ci.clienteByPropietario = c and t.fechaEjecucion >= :fechaLimite)")
     public List<ClienteEntity> buscarInactivos(@Param("fechaLimite") Date fecha);
 
-    @Query("select c from ClienteEntity c where exists (select ci from CuentaInternaEntity ci join ci.cuentaBancariaByCuentaBancaria cb join cb.transaccionsById_Salientes t where ci.estadoCuentaByEstadoCuenta.estado LIKE 'ACTIVA' and ci.clienteByPropietario = c and t.cuentaBancariaByCuentaDestino.cuentaExternasById.sospechosa = 1)")
+    //@Query("select c from ClienteEntity c where exists (select ci from CuentaInternaEntity ci join ci.cuentaBancariaByCuentaBancaria.transaccionsById_Salientes t where ci.estadoCuentaByEstadoCuenta.estado LIKE 'ACTIVA' and ci.clienteByPropietario = c and t.cuentaBancariaByCuentaDestino.cuentaExternasById.sospechosa = 1)")
+    @Query("select c from ClienteEntity c where exists (select t from TransaccionEntity t where t.cuentaBancariaByCuentaOrigen.cuentaInternasById.clienteByPropietario = c and t.cuentaBancariaByCuentaDestino.cuentaExternasById.sospechosa = 1)")
     public List<ClienteEntity> buscarSospechosos();
 
     @Query("select c from ClienteEntity c  left join fetch c.personaByPersonaId where c.empresaByEmpresaSocio.id = :id")
