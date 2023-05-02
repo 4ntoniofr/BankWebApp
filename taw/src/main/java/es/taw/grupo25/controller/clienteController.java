@@ -123,6 +123,7 @@ public class clienteController {
                         List<Pago> pagos = pagoService.findByCuentaId(cuenta.getCuentaBancariaByCuentaBancaria().getId());
                         model.addAttribute("filtro", filtro);
                         model.addAttribute("pagos", pagos);
+                        model.addAttribute("idCuenta", idCuenta);
                         model.addAttribute("iban", cuenta.getCuentaBancariaByCuentaBancaria().getIban());
                         urlto = "cliente/operaciones";
                     }
@@ -144,11 +145,14 @@ public class clienteController {
             urlTo = "redirect:/login";
         } else {
             urlTo = "cliente/operaciones";
-            if (filtro == null || filtro.getFechaEjecucion().isEmpty() && filtro.getFechaInstruccion().isEmpty() && filtro.getIban().isEmpty()) {
+            if (filtro == null || filtro.getFechaEjecucion().isEmpty() && filtro.getFechaInstruccion().isEmpty() && filtro.getIban().isEmpty() && filtro.getIbanOrigen().isEmpty()) {
 
             } else {
                 if (!filtro.getIban().isEmpty()) {
                     pagos = pagos.stream().filter(obj -> obj.getTransaccionByTransaccion().getCuentaBancariaByCuentaDestino().getIban().contains(filtro.getIban())).collect(Collectors.toList());
+                }
+                if(!filtro.getIbanOrigen().isEmpty()){
+                    pagos = pagos.stream().filter(pago -> pago.getTransaccionByTransaccion().getCuentaBancariaByCuentaOrigen().getIban().contains(filtro.getIbanOrigen())).collect(Collectors.toList());
                 }
                 if (!filtro.getFechaInstruccion().isEmpty()) {
                     LocalDate fecha = LocalDate.parse(filtro.getFechaInstruccion());
@@ -179,6 +183,11 @@ public class clienteController {
         }else{
             pagos.sort((o1, o2) -> o2.getTransaccionByTransaccion().getFechaEjecucion().compareTo(o1.getTransaccionByTransaccion().getFechaEjecucion()));
         }
+    }
+
+    @PostMapping("borrarFiltro")
+    public String borraFiltro(@ModelAttribute("filtro") FiltroOperaciones filtro){
+        return "redirect:/cliente/operaciones?idCuenta="+filtro.getIdCuenta();
     }
 
     @GetMapping("/divisas")
@@ -297,6 +306,8 @@ public class clienteController {
                 cuentaBancariaService.guardarCuenta(cuenta);
                 transaccionService.guardarTransaccion(pago.getTransaccionByTransaccion());
                 pagoService.guardarPago(pago);
+            }else{
+                urlTo = "cliente/transferencia";
             }
         }
         return urlTo;

@@ -6,6 +6,7 @@ public class FiltroOperaciones {
     private int idCuenta;
     private String fechaInstruccion;
     private String fechaEjecucion;
+    private String ibanOrigen;
     private String iban;
     private String orden;
     private String ascdesc;
@@ -64,4 +65,11 @@ public class FiltroOperaciones {
         this.ascdesc = ascdesc;
     }
 
+    public String getIbanOrigen() {
+        return ibanOrigen;
+    }
+
+    public void setIbanOrigen(String ibanOrigen) {
+        this.ibanOrigen = ibanOrigen;
+    }
 }

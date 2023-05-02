@@ -10,6 +10,7 @@
 
     <body>
         <h1>Mis cuentas</h1>
+
     <%
         List<CuentaInterna> cuentas = (List<CuentaInterna>) request.getAttribute("cuentas");
         List<Moneda> monedas = (List<Moneda>) request.getAttribute("monedas");
@@ -63,5 +64,6 @@
         }
     %>
     <a href="nuevaCuenta"><h2>Añadir cuenta (Para Pruebas)</h2></a>
+    <a href="/cliente">Volver al menú principal del cliente.</a>
     </body>
 </html>

@@ -19,9 +19,10 @@
 
     <form:form action="operaciones" method="post" modelAttribute="filtro">
         <form:hidden path="idCuenta"></form:hidden>
-        Buscar por:</br>
+        Filtrar por:</br>
         Fecha Instruccion: <form:input type="date" path="fechaInstruccion"></form:input>
         Fecha Ejecucion: <form:input type="date" path="fechaEjecucion"></form:input>
+        IBAN Origen <form:input path="ibanOrigen"></form:input>
         IBAN Destino <form:input path="iban"></form:input></br>
         Ordenar por:</br>
         Columna: <form:select path="orden">
@@ -35,6 +36,10 @@
         </form:select>
         </br>
         <form:button>Filtrar y Ordenar</form:button>
+    </form:form>
+    <form:form action="borrarFiltro" method="post" modelAttribute="filtro">
+        <form:hidden path="idCuenta"></form:hidden>
+        <form:button>Eliminar Filtro y Orden</form:button>
     </form:form>
 
 <%
@@ -57,7 +62,18 @@
 %>
 
         <tr>
-            <td><%=pago.getTransaccionByTransaccion().getCuentaBancariaByCuentaOrigen().getIban().equals(iban)?"PAGO":"INGRESO"%></td>
+            <%
+                if(pago.getTransaccionByTransaccion().getCuentaBancariaByCuentaOrigen().getIban().equals(iban)){
+            %>
+                <td style="color: red; font-weight: bold">PAGO</td>
+            <%
+                }else{
+            %>
+                <td style="color: green; font-weight: bold">INGRESO</td>
+            <%
+                }
+            %>
+
             <td><%=pago.getTransaccionByTransaccion().getFechaInstruccion()%></td>
             <td><%=pago.getTransaccionByTransaccion().getFechaEjecucion()%></td>
             <td><%=pago.getTransaccionByTransaccion().getCuentaBancariaByCuentaOrigen().getIban()%></td>
