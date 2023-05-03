@@ -2,7 +2,6 @@ package es.taw.grupo25.entity;
 
 import es.taw.grupo25.dto.Cliente;
 import es.taw.grupo25.dto.Empresa;
-import es.taw.grupo25.service.ClienteService;
 import jakarta.persistence.*;
 
 import java.sql.Date;

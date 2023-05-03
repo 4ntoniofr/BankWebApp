@@ -1,3 +1,8 @@
+<%
+    /**
+     * @author Jose Fco Artacho
+     */
+%>
 <%@ page import="es.taw.grupo25.dto.Usuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -41,7 +46,8 @@
         }else{
     %>
 
-    <li><a href="/empresa/logout">Logout</a></li>
+    <li><a href="/empresa/logout">Logout y salir</a></li>
+    <li><a href="/cliente/cuentas">Realizar transferencias</a></li>
 
     <%
             if(usuario.getClientesById().getEmpresasById() == null){
@@ -49,9 +55,16 @@
     %>
 
     <li><a href="/empresa/updateAsociado">Modificar datos personales</a></li>
+    <li><a href="/empresa/transferencias">Mostrar transferencias con las cuentas empresariales</a></li>
+
+    <%
+                if(usuario.getClientesById().getRolClienteByRolClienteId().getRol().equals("SOCIO")){
+    %>
+
     <li><a href="/empresa/sociosEmpresa">Mostrar socios/autorizados de la empresa</a></li>
 
     <%
+                }
         if(usuario.getClientesById().getEstadoClienteByEstadoCliente().getEstado().equals("BLOQUEADO")){
     %>
 

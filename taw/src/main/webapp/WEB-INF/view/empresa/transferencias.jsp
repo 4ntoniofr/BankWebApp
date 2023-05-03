@@ -1,13 +1,15 @@
+<%
+    /**
+     * @author Jose Fco Artacho
+     */
+%>
 <%@ page import="es.taw.grupo25.dto.Transaccion" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.taw.grupo25.dto.Cliente" %>
 <%@ page import="es.taw.grupo25.dto.Persona" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
     List<Transaccion> transacciones = (List<Transaccion>) request.getAttribute("transacciones");
-    Cliente cliente = (Cliente) request.getAttribute("cliente");
-    Persona p = cliente.getPersonaByPersonaId();
 %>
 
 <html>
@@ -15,7 +17,7 @@
     <title>Transferencias</title>
 </head>
 <body>
-<h1>Transferencias realizadas por <%= p.getNombre() %> <%= p.getPrimerApellido() %></h1>
+<h1>Transferencias realizadas</h1>
 
 <table border="1">
     <tr>
@@ -25,10 +27,12 @@
         <th>MONEDA</th>
         <th>FECHA INSTRUCCIÓN</th>
         <th>FECHA EJECUCIÓN</th>
+        <th>SOCIO EJECUTOR</th>
     </tr>
 
     <%
         for(Transaccion t : transacciones) {
+            Persona p = t.getClienteByCliente().getPersonaByPersonaId();
     %>
 
         <tr>
@@ -38,11 +42,13 @@
             <td><%= t.getPagosById().getMoneda() %></td>
             <td><%= t.getFechaInstruccion() %></td>
             <td><%= t.getFechaEjecucion() %></td>
+            <td><%= p.getNombre() + " " + p.getPrimerApellido() %></td>
         </tr>
 
     <%
         }
     %>
-</table>
+</table><br>
+<a href="/empresa/">Volver al menú de empresas</a>
 </body>
 </html>
