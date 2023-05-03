@@ -7,7 +7,6 @@ import es.taw.grupo25.entity.EstadoClienteEntity;
 import es.taw.grupo25.repository.*;
 import es.taw.grupo25.ui.FormularioRegistroAsociado;
 import es.taw.grupo25.ui.FormularioRegistroEmpresa;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,10 +68,15 @@ public class EmpresaService {
         registrarAutorizado(registroEmpresa.getAsociadoEmpresa(), registroEmpresa.getEmpresa());
     }
 
-    public void registrarAutorizado(FormularioRegistroAsociado registroAsociado, Empresa empresa, HttpSession... session){
-        RolCliente rolCliente = this.rolClienteService.findByRol("AUTORIZADO");
+    public void registrarAutorizado(FormularioRegistroAsociado registroAsociado, Empresa empresa){
         EstadoCliente estadoAutorizado = this.estadoClienteService.findByEstado("ACTIVO");
 
+        RolCliente rolCliente;
+        if(registroAsociado.getRol().isEmpty()){
+            rolCliente = this.rolClienteService.findByRol("SOCIO");
+        }else{
+            rolCliente = this.rolClienteService.findByRol(registroAsociado.getRol());
+        }
         registroAsociado.getClienteAsociado().setRolClienteByRolClienteId(rolCliente);
         registroAsociado.getClienteAsociado().setEstadoClienteByEstadoCliente(estadoAutorizado);
         registroAsociado.getClienteAsociado().setEmpresaByEmpresaSocio(empresa);
@@ -82,8 +86,6 @@ public class EmpresaService {
         this.usuarioService.guardarUsuario(registroAsociado.getUsuarioAsociado());
         this.direccionService.saveDireccion(registroAsociado.getClienteAsociado().getDireccionByDireccion());
         this.clienteService.guardarCliente(registroAsociado.getClienteAsociado());
-
-        if(session.length > 0) session[0].setAttribute("usuario", registroAsociado.getUsuarioAsociado());
     }
 
     public List<Cliente> getListaSocios(Empresa empresa){

@@ -6,6 +6,7 @@ import es.taw.grupo25.dto.Empresa;
 import es.taw.grupo25.dto.Transaccion;
 import es.taw.grupo25.entity.*;
 import es.taw.grupo25.repository.*;
+import es.taw.grupo25.ui.FiltroSociosEmpresa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -100,6 +101,21 @@ public class ClienteService {
 
     public List<Cliente> buscarSociosConPersonaPorEmpresa(Empresa empresa) {
         return listaEntidadesADTO(this.clienteRepository.buscarSociosConPersonaPorEmpresa(empresa.getId()));
+    }
+
+    public List<Cliente> buscarSociosConPersonaPorEmpresaFiltro(Empresa empresa, FiltroSociosEmpresa filtro){
+        List<ClienteEntity> socios;
+        if(!filtro.getEstado().isEmpty() && !filtro.getRol().isEmpty()){
+            socios = this.clienteRepository.buscarSociosConPersonaPorEmpresaRolEstado(empresa.getId(), filtro.getRol(), filtro.getEstado());
+        }else if(!filtro.getRol().isEmpty()){
+            socios = this.clienteRepository.buscarSociosConPersonaPorEmpresaRol(empresa.getId(), filtro.getRol());
+        }else if(!filtro.getEstado().isEmpty()){
+            socios = this.clienteRepository.buscarSociosConPersonaPorEmpresaEstado(empresa.getId(), filtro.getEstado());
+        }else{
+            socios = this.clienteRepository.buscarSociosConPersonaPorEmpresa(empresa.getId());
+        }
+
+        return listaEntidadesADTO(socios);
     }
 
     public Cliente findById(Integer id) {

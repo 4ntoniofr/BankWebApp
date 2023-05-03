@@ -2,7 +2,6 @@ package es.taw.grupo25.repository;
 
 import es.taw.grupo25.entity.ClienteEntity;
 import es.taw.grupo25.entity.EmpleadoEntity;
-import es.taw.grupo25.entity.EmpresaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -42,6 +41,15 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity,Integer> 
 
     @Query("select c from ClienteEntity c  left join fetch c.personaByPersonaId where c.empresaByEmpresaSocio.id = :id")
     public List<ClienteEntity> buscarSociosConPersonaPorEmpresa(@Param("id") Integer id);
+
+    @Query("select c from ClienteEntity c  left join fetch c.personaByPersonaId where c.empresaByEmpresaSocio.id = :id and c.rolClienteByRolClienteId.rol = :rol")
+    public List<ClienteEntity> buscarSociosConPersonaPorEmpresaRol(@Param("id") Integer id, @Param("rol") String rol);
+
+    @Query("select c from ClienteEntity c  left join fetch c.personaByPersonaId where c.empresaByEmpresaSocio.id = :id and c.estadoClienteByEstadoCliente.estado = :estado")
+    public List<ClienteEntity> buscarSociosConPersonaPorEmpresaEstado(@Param("id") Integer id, @Param("estado") String estado);
+
+    @Query("select c from ClienteEntity c  left join fetch c.personaByPersonaId where c.empresaByEmpresaSocio.id = :id and c.rolClienteByRolClienteId.rol = :rol and c.estadoClienteByEstadoCliente.estado = :estado")
+    public List<ClienteEntity> buscarSociosConPersonaPorEmpresaRolEstado(@Param("id") Integer id, @Param("rol") String rol, @Param("estado") String estado);
 
     @Query("select c from ClienteEntity c where c.empresaByEmpresaSocio.id = :id")
     public List<ClienteEntity> buscarSociosPorEmpresa(@Param("id") Integer id);

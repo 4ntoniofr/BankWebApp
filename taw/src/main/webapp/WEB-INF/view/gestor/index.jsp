@@ -1,3 +1,6 @@
+/**
+* @author Antonio Fernandez Rodriguez
+*/
 <%@ page import="es.taw.grupo25.dto.Usuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 

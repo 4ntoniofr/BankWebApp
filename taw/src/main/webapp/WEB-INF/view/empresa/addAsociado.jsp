@@ -1,3 +1,10 @@
+<%@ page import="java.util.List" %>
+<%@ page import="es.taw.grupo25.dto.RolCliente" %><%
+    /**
+     * @author Jose Fco Artacho
+     */
+    List<RolCliente> roles = (List<RolCliente>) request.getAttribute("roles");
+%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -24,6 +31,9 @@
         <br>
         <div style="border: 1px solid black">
             <form:hidden path="clienteAsociado.id" />
+            Rol: <form:select path="rol">
+                    <form:options items="${roles}" itemLabel="rol" itemValue="rol" />
+                 </form:select>
             <h5>Direccion del asociado</h5>
             <form:hidden path="clienteAsociado.direccionByDireccion.id" />
             Calle: <form:input path="clienteAsociado.direccionByDireccion.calle" maxlength="100" /><br>
@@ -34,5 +44,6 @@
         </div>
         <br>
     </div>
-    <form:button>Enviar</form:button>
+    <form:button>Enviar</form:button><br>
+    <a href="/empresa/">Cancelar y volver al menú de empresas</a>
 </form:form>

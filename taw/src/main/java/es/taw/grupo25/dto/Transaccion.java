@@ -23,7 +23,7 @@ public class Transaccion implements Serializable {
     private CuentaBancaria cuentaBancariaByCuentaOrigen;
     @JsonIgnoreProperties({"transaccionsById_Entrantes", "transaccionsById_Salientes"})
     private CuentaBancaria cuentaBancariaByCuentaDestino;
-    private ClienteEntity clienteByCliente;
+    private Cliente clienteByCliente;
 
     private CambioDivisaEntity cambioDivisa;
 
@@ -75,11 +75,11 @@ public class Transaccion implements Serializable {
         this.cuentaBancariaByCuentaDestino = cuentaBancariaByCuentaDestino;
     }
 
-    public ClienteEntity getClienteByCliente() {
+    public Cliente getClienteByCliente() {
         return clienteByCliente;
     }
 
-    public void setClienteByCliente(ClienteEntity clienteByCliente) {
+    public void setClienteByCliente(Cliente clienteByCliente) {
         this.clienteByCliente = clienteByCliente;
     }
 

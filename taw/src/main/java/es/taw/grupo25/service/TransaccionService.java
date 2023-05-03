@@ -1,5 +1,6 @@
 package es.taw.grupo25.service;
 
+import es.taw.grupo25.dto.Cliente;
 import es.taw.grupo25.dto.CuentaInterna;
 import es.taw.grupo25.dto.Transaccion;
 import es.taw.grupo25.entity.ClienteEntity;
@@ -32,6 +33,9 @@ public class TransaccionService {
     @Autowired
     protected ClienteRepository clienteRepository;
 
+    @Autowired
+    protected CuentaInternaService cuentaInternaService;
+
     public void guardarTransaccion(Transaccion transaccion){
         TransaccionEntity transaccionEntity = new TransaccionEntity();
         transaccionEntity.setFechaInstruccion(transaccion.getFechaInstruccion());
@@ -53,10 +57,13 @@ public class TransaccionService {
         return listaEntidadesADTO(transaccionEntities);
     }
 
-    public List<Transaccion> findAllByIdCuentaAndCliente(Integer idCuenta, Integer idCliente){
-        ClienteEntity cliente = this.clienteRepository.findById(idCliente).orElse(null);
-        List<TransaccionEntity> transaccionEntities = this.transaccionRepository.findAllByIdCuentaAndCliente(idCuenta, cliente);
-        return listaEntidadesADTO(transaccionEntities);
+    public List<Transaccion> findAllByCliente(Cliente cliente){
+        List<CuentaInterna> cuentas = this.cuentaInternaService.findByClienteId(cliente.getId());
+        List<Transaccion> transaccions = new ArrayList<>();
+        for(CuentaInterna ci : cuentas){
+            transaccions.addAll(findAllByIdCuenta(ci.getId()));
+        }
+        return transaccions;
     }
 
     public static List<Transaccion> listaEntidadesADTO(List<TransaccionEntity> transacciones){
