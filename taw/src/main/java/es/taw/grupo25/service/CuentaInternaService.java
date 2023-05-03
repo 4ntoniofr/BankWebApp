@@ -93,4 +93,5 @@ public class CuentaInternaService {
     public List<CuentaInterna> getCuentaInternasByIdCliente(Integer idCliente) {
         return  listaEntidadesADTO(this.cuentaInternaRepository.findCuentasInternasForClient(idCliente));
     }
+
 }

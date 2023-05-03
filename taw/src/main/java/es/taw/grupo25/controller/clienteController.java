@@ -420,8 +420,13 @@ public class clienteController {
         } else {
             if (usuario.getClientesById().getAutorizador()) {
                 List<CuentaInterna> cuentas = cuentaInternaService.findByClienteId(usuario.getClientesById().getId());
+                List<CuentaInterna> cuentas_empresa = null;
+                if(usuario.getClientesById().getEmpresaByEmpresaSocio()!=null){
+                    cuentas_empresa = cuentaInternaService.findByClienteId(usuario.getClientesById().getEmpresaByEmpresaSocio().getId());
+                }
                 List<Moneda> monedas = monedaService.findAll();
                 model.addAttribute("cuentas", cuentas);
+                model.addAttribute("cuentas_empresa", cuentas_empresa);
                 model.addAttribute("monedas", monedas);
             } else {
                 urlto = "redirect:/cliente";

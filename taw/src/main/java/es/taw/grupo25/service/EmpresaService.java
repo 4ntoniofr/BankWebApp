@@ -62,6 +62,7 @@ public class EmpresaService {
 
         registroEmpresa.getClienteEmpresa().setEstadoClienteByEstadoCliente(estadoEmpresa.toDTO());
         registroEmpresa.getClienteEmpresa().setRolClienteByRolClienteId(rolCliente);
+        registroEmpresa.getClienteEmpresa().setUsuarioByUsuarioId(registroEmpresa.getUsuarioEmpresa());
 
         this.usuarioService.guardarUsuario(registroEmpresa.getUsuarioEmpresa());
         this.direccionService.saveDireccion(registroEmpresa.getClienteEmpresa().getDireccionByDireccion());
