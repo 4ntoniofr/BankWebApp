@@ -1,3 +1,6 @@
+/**
+ * @author Jose Fco Artacho
+ */
 package es.taw.grupo25.ui;
 
 import es.taw.grupo25.dto.Cliente;
@@ -11,11 +14,13 @@ public class FormularioRegistroAsociado {
     Cliente clienteAsociado;
     Usuario usuarioAsociado;
     Persona personaAsociado;
+    String rol;
 
     public FormularioRegistroAsociado(){
         clienteAsociado = new Cliente();
         usuarioAsociado = new Usuario();
         personaAsociado = new Persona();
+        rol = "";
 
         clienteAsociado.setUsuarioByUsuarioId(usuarioAsociado);
         clienteAsociado.setPersonaByPersonaId(personaAsociado);
@@ -46,5 +51,13 @@ public class FormularioRegistroAsociado {
 
     public void setPersonaAsociado(Persona personaAsociado) {
         this.personaAsociado = personaAsociado;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 }
