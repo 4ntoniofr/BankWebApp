@@ -27,4 +27,8 @@ public class UsuarioService {
         return (usuario == null ? null : usuario.toDTO());
     }
 
+    public Usuario findById(Integer id){
+        UsuarioEntity usuario = usuarioRepository.findById(id).orElse(null);
+        return (usuario == null ? null : usuario.toDTO());
+    }
 }
