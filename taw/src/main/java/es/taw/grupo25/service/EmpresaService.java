@@ -1,9 +1,6 @@
 package es.taw.grupo25.service;
 
-import es.taw.grupo25.dto.Cliente;
-import es.taw.grupo25.dto.Empresa;
-import es.taw.grupo25.dto.EstadoCliente;
-import es.taw.grupo25.dto.RolCliente;
+import es.taw.grupo25.dto.*;
 import es.taw.grupo25.entity.ClienteEntity;
 import es.taw.grupo25.entity.EmpresaEntity;
 import es.taw.grupo25.entity.EstadoClienteEntity;

@@ -50,7 +50,6 @@ public class EmpresaController {
     public String registerEmpresa(@ModelAttribute("registroEmpresa") FormularioRegistroEmpresa registroEmpresa,
                                   HttpSession session){
         this.empresaService.registrarEmpresa(registroEmpresa);
-        session.setAttribute("usuario", registroEmpresa.getUsuarioEmpresa());
 
         return "redirect:/empresa/";
     }
