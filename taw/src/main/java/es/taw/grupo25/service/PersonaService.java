@@ -6,6 +6,13 @@ import es.taw.grupo25.repository.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ *
+ * @author Jorge Camacho García - 50%
+ * @author Valentín García Rosas - 50%
+ *
+ */
+
 @Service
 public class PersonaService {
 

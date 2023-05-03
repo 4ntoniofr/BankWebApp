@@ -9,6 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ *
+ * @author Antonio Fernández Rodriguez - 50%
+ * @author Valentín García Rosas - 50%
+ *
+ */
+
 public class CuentaBancaria implements Serializable {
     private Integer id;
     private String iban;

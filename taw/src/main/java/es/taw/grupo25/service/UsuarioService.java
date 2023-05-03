@@ -6,6 +6,12 @@ import es.taw.grupo25.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ *
+ * @author José Francisco Artacho Martin - 50%
+ * @author Valentín García Rosas - 50%
+ *
+ */
 @Service
 public class UsuarioService {
     @Autowired

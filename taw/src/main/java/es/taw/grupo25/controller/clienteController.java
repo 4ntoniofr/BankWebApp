@@ -1,10 +1,6 @@
 package es.taw.grupo25.controller;
 
 import es.taw.grupo25.dto.*;
-import es.taw.grupo25.entity.ChatEntity;
-import es.taw.grupo25.entity.ClienteEntity;
-import es.taw.grupo25.entity.EmpleadoEntity;
-import es.taw.grupo25.entity.MensajeEntity;
 import es.taw.grupo25.service.*;
 import es.taw.grupo25.ui.FiltroChatsAsistente;
 import es.taw.grupo25.ui.FiltroOperaciones;
@@ -20,6 +16,12 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ *
+ * @author Valentín García Rosas - 80%
+ * @author Jorge Camacho García - 20% (Parte de Jorge indicada más adelante en el archivo)
+ *
+ */
 
 @Controller
 @RequestMapping("/cliente")
@@ -118,7 +120,8 @@ public class clienteController {
             if (usuario.getClientesById().getAutorizador()) {
                 CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
                 if (cuenta != null) {
-                    if (cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId()) {
+                    Empresa empresaAsociada = usuario.getClientesById().getEmpresaByEmpresaSocio();
+                    if (cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId() || (empresaAsociada!=null && cuenta.getClienteByPropietario().getId() == empresaAsociada.getClienteByClienteId().getId())) {
                         FiltroOperaciones filtro = new FiltroOperaciones(cuenta.getCuentaBancariaByCuentaBancaria().getId());
                         List<Pago> pagos = pagoService.findByCuentaId(cuenta.getCuentaBancariaByCuentaBancaria().getId());
                         model.addAttribute("filtro", filtro);
@@ -139,13 +142,13 @@ public class clienteController {
     public String aplicarFiltroOperaciones(@ModelAttribute("filtro") FiltroOperaciones filtro, Model model, HttpSession session) {
         String urlTo = "/login";
         List<Pago> pagos = pagoService.findByCuentaId(filtro.getIdCuenta());
-
+        CuentaBancaria cuenta = cuentaBancariaService.findById(filtro.getIdCuenta());
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         if (usuario == null) {
             urlTo = "redirect:/login";
         } else {
             urlTo = "cliente/operaciones";
-            if (filtro == null || filtro.getFechaEjecucion().isEmpty() && filtro.getFechaInstruccion().isEmpty() && filtro.getIban().isEmpty() && filtro.getIbanOrigen().isEmpty()) {
+            if (filtro == null || filtro.getFechaEjecucion().isEmpty() && filtro.getFechaInstruccion().isEmpty() && filtro.getIban().isEmpty() && filtro.getIbanOrigen().isEmpty() && filtro.getPagoingreso().isEmpty()) {
 
             } else {
                 if (!filtro.getIban().isEmpty()) {
@@ -153,6 +156,13 @@ public class clienteController {
                 }
                 if(!filtro.getIbanOrigen().isEmpty()){
                     pagos = pagos.stream().filter(pago -> pago.getTransaccionByTransaccion().getCuentaBancariaByCuentaOrigen().getIban().contains(filtro.getIbanOrigen())).collect(Collectors.toList());
+                }
+                if(!filtro.getPagoingreso().isEmpty()){
+                    if(filtro.getPagoingreso().equals("pago")){
+                        pagos = pagos.stream().filter(pago -> pago.getTransaccionByTransaccion().getCuentaBancariaByCuentaOrigen().getIban().equals(cuenta.getIban())).collect(Collectors.toList());
+                    }else if(filtro.getPagoingreso().equals("ingreso")){
+                        pagos = pagos.stream().filter(pago -> pago.getTransaccionByTransaccion().getCuentaBancariaByCuentaDestino().getIban().equals(cuenta.getIban())).collect(Collectors.toList());
+                    }
                 }
                 if (!filtro.getFechaInstruccion().isEmpty()) {
                     LocalDate fecha = LocalDate.parse(filtro.getFechaInstruccion());
@@ -164,7 +174,6 @@ public class clienteController {
                 }
             }
             ordenarTransacciones(pagos, filtro.getOrden(), filtro.getAscdesc());
-            CuentaBancaria cuenta = cuentaBancariaService.findById(filtro.getIdCuenta());
             model.addAttribute("iban", cuenta.getIban());
             model.addAttribute("pagos", pagos);
         }
@@ -200,7 +209,8 @@ public class clienteController {
             if (usuario.getClientesById().getAutorizador()) {
                 CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
                 if (cuenta != null) {
-                    if (cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId()) {
+                    Empresa empresaAsociada = usuario.getClientesById().getEmpresaByEmpresaSocio();
+                    if (cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId() || (empresaAsociada!=null && cuenta.getClienteByPropietario().getId() == empresaAsociada.getClienteByClienteId().getId())) {
                         if (cuenta.getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")) {
                             model.addAttribute("cuenta", cuenta);
                             model.addAttribute("monedas", monedaService.findAll());
@@ -227,23 +237,26 @@ public class clienteController {
         } else {
             CuentaInterna cuenta_cambio = cuentaInternaService.findById(cuenta.getId());
             if (cuenta_cambio != null) {
-                if (cuenta_cambio.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId() && cuenta_cambio.getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")) {
-                    Transaccion transaccion = new Transaccion();
-                    transaccion.setFechaInstruccion(Timestamp.valueOf(LocalDateTime.now()));
-                    transaccion.setFechaEjecucion(Timestamp.valueOf(LocalDateTime.now()));
-                    transaccion.setCuentaBancariaByCuentaOrigen(cuenta_cambio.getCuentaBancariaByCuentaBancaria());
-                    transaccion.setCuentaBancariaByCuentaDestino(cuenta_cambio.getCuentaBancariaByCuentaBancaria());
-                    CambioDivisa cambioDivisa = new CambioDivisa();
-                    Moneda moneda_compra = monedaService.findById(cuenta_cambio.getMonedaByMoneda());
-                    cambioDivisa.setMonedaByMonedaCompra(moneda_compra);
-                    Moneda moneda_venta = monedaService.findById(cuenta.getMonedaByMoneda());
-                    cambioDivisa.setMonedaByMonedaVenta(moneda_venta);
-                    cambioDivisa.setTransaccionByTransaccion(transaccion);
-                    cuenta_cambio.setMonedaByMoneda(cuenta.getMonedaByMoneda());
-                    cuenta_cambio.setCantidad(getCuentaCantidad(cuenta_cambio.getCantidad(), moneda_compra, moneda_venta));
-                    transaccionService.guardarTransaccion(transaccion);
-                    cambioDivisaService.guardarCambioDivisa(cambioDivisa);
-                    cuentaInternaService.guardarCuenta(cuenta_cambio);
+                Empresa empresaAsociada = usuario.getClientesById().getEmpresaByEmpresaSocio();
+                if(cuenta_cambio.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId() || (empresaAsociada!=null && cuenta.getClienteByPropietario().getId() == empresaAsociada.getClienteByClienteId().getId())){
+                    if (cuenta_cambio.getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")) {
+                        Transaccion transaccion = new Transaccion();
+                        transaccion.setFechaInstruccion(Timestamp.valueOf(LocalDateTime.now()));
+                        transaccion.setFechaEjecucion(Timestamp.valueOf(LocalDateTime.now()));
+                        transaccion.setCuentaBancariaByCuentaOrigen(cuenta_cambio.getCuentaBancariaByCuentaBancaria());
+                        transaccion.setCuentaBancariaByCuentaDestino(cuenta_cambio.getCuentaBancariaByCuentaBancaria());
+                        CambioDivisa cambioDivisa = new CambioDivisa();
+                        Moneda moneda_compra = monedaService.findById(cuenta_cambio.getMonedaByMoneda());
+                        cambioDivisa.setMonedaByMonedaCompra(moneda_compra);
+                        Moneda moneda_venta = monedaService.findById(cuenta.getMonedaByMoneda());
+                        cambioDivisa.setMonedaByMonedaVenta(moneda_venta);
+                        cambioDivisa.setTransaccionByTransaccion(transaccion);
+                        cuenta_cambio.setMonedaByMoneda(cuenta.getMonedaByMoneda());
+                        cuenta_cambio.setCantidad(getCuentaCantidad(cuenta_cambio.getCantidad(), moneda_compra, moneda_venta));
+                        transaccionService.guardarTransaccion(transaccion);
+                        cambioDivisaService.guardarCambioDivisa(cambioDivisa);
+                        cuentaInternaService.guardarCuenta(cuenta_cambio);
+                    }
                 }
             }
         }
@@ -265,7 +278,8 @@ public class clienteController {
             if (usuario.getClientesById().getAutorizador()) {
                 CuentaBancaria cuenta = cuentaBancariaService.findById(idCuenta);
                 if (cuenta != null) {
-                    if (cuenta.getCuentaInternasById().getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId()) {
+                    Empresa empresaAsociada = usuario.getClientesById().getEmpresaByEmpresaSocio();
+                    if (cuenta.getCuentaInternasById().getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId() || (empresaAsociada!=null && cuenta.getCuentaInternasById().getClienteByPropietario().getId() == empresaAsociada.getClienteByClienteId().getId())) {
                         if (cuenta.getCuentaInternasById().getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")) {
                             model.addAttribute("pago", new Pago());
                             model.addAttribute("monedas", monedaService.findAll());
@@ -350,7 +364,8 @@ public class clienteController {
             if (usuario.getClientesById().getAutorizador()) {
                 CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
                 if (cuenta != null) {
-                    if (cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId()) {
+                    Empresa empresaAsociada = usuario.getClientesById().getEmpresaByEmpresaSocio();
+                    if (cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId() || (empresaAsociada!=null && cuenta.getClienteByPropietario().getId() == empresaAsociada.getClienteByClienteId().getId())) {
                         model.addAttribute("cuenta", cuenta);
                         urlTo = "cliente/desbloqueo";
                     }
@@ -422,7 +437,7 @@ public class clienteController {
                 List<CuentaInterna> cuentas = cuentaInternaService.findByClienteId(usuario.getClientesById().getId());
                 List<CuentaInterna> cuentas_empresa = null;
                 if(usuario.getClientesById().getEmpresaByEmpresaSocio()!=null){
-                    cuentas_empresa = cuentaInternaService.findByClienteId(usuario.getClientesById().getEmpresaByEmpresaSocio().getId());
+                    cuentas_empresa = cuentaInternaService.findByClienteId(usuario.getClientesById().getEmpresaByEmpresaSocio().getClienteByClienteId().getId());
                 }
                 List<Moneda> monedas = monedaService.findAll();
                 model.addAttribute("cuentas", cuentas);

@@ -4,6 +4,13 @@
 <%@ page import="es.taw.grupo25.dto.Pago" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%--
+
+ Fichero hecho por:
+ Valentín García Rosas
+
+--%>
+
 <html>
     <head>
         <title>Mis Operaciones</title>
@@ -23,7 +30,13 @@
         Fecha Instruccion: <form:input type="date" path="fechaInstruccion"></form:input>
         Fecha Ejecucion: <form:input type="date" path="fechaEjecucion"></form:input>
         IBAN Origen <form:input path="ibanOrigen"></form:input>
-        IBAN Destino <form:input path="iban"></form:input></br>
+        IBAN Destino <form:input path="iban"></form:input>
+        Tipo: <form:select path="pagoingreso">
+                <form:option value="none" label="Ninguno"/>
+                <form:option value="pago" label="Pago"/>
+                <form:option value="ingreso" label="Ingreso"/>
+            </form:select>
+        </br>
         Ordenar por:</br>
         Columna: <form:select path="orden">
             <form:option value="instruccion" label="Fecha de instruccion"/>

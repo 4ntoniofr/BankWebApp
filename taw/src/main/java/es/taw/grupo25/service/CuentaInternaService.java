@@ -10,6 +10,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author Antonio Fernández Rodriguez - 50%
+ * @author Valentín García Rosas - 50%
+ *
+ */
+
 @Service
 public class CuentaInternaService {
 

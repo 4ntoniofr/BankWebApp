@@ -6,6 +6,12 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ *
+ * @author Valentín García Rosas
+ *
+ */
+
 public class CuentaInterna implements Serializable {
     private Integer id;
     private String pais;
@@ -14,7 +20,6 @@ public class CuentaInterna implements Serializable {
     private Cliente clienteByPropietario;
     private EstadoCuenta estadoCuentaByEstadoCuenta;
     private Integer monedaByMoneda;
-
 
     public Integer getId() {
         return id;
@@ -71,7 +76,6 @@ public class CuentaInterna implements Serializable {
     public void setMonedaByMoneda(Integer monedaByMoneda) {
         this.monedaByMoneda = monedaByMoneda;
     }
-
 
     @Override
     public boolean equals(Object o) {

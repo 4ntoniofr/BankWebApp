@@ -2,6 +2,12 @@ package es.taw.grupo25.dto;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ *
+ * @author Valentín García Rosas
+ *
+ */
+
 public class Moneda implements Serializable {
     private Integer id;
     private String moneda;

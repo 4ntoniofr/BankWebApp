@@ -3,6 +3,11 @@ package es.taw.grupo25.dto;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ *
+ * @author Valentín García Rosas
+ *
+ */
 public class EstadoCliente implements Serializable {
     private Integer id;
     private String estado;

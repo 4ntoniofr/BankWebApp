@@ -13,6 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author Valentín García Rosas
+ *
+ */
+
 @Service
 public class PagoService {
     @Autowired

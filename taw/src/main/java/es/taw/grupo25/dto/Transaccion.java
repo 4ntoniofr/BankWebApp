@@ -7,6 +7,12 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ *
+ * @author Valentín García Rosas - 50%
+ * @author Antonio Fernández Rodriguez - 50%
+ *
+ */
 public class Transaccion implements Serializable {
     private Integer id;
     private Timestamp fechaInstruccion;

@@ -6,6 +6,12 @@ import es.taw.grupo25.repository.DireccionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ *
+ * @author Valentín García Rosas
+ *
+ */
+
 @Service
 public class DireccionService {
 

@@ -7,6 +7,12 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.Objects;
 
+/**
+ *
+ * @author Valentín García Rosas
+ *
+ */
+
 public class Persona implements Serializable {
     private Integer id;
     private String dni;

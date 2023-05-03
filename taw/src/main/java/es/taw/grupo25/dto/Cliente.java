@@ -8,6 +8,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ *
+ * @author José Francisco Artacho Martin - 33%
+ * @author Antonio Fernández Rodriguez - 33%
+ * @author Valentín García Rosas - 33%
+ *
+ */
+
 public class Cliente implements Serializable {
     private Integer id;
     private Date fechaInicio;

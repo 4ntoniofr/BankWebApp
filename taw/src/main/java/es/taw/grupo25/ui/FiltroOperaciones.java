@@ -8,6 +8,7 @@ public class FiltroOperaciones {
     private String fechaEjecucion;
     private String ibanOrigen;
     private String iban;
+    private String pagoingreso;
     private String orden;
     private String ascdesc;
 
@@ -15,6 +16,7 @@ public class FiltroOperaciones {
         this.idCuenta = idCuenta;
         this.orden = "";
         this.ascdesc = "";
+        pagoingreso = "none";
     }
 
     public String getFechaInstruccion() {
@@ -71,5 +73,13 @@ public class FiltroOperaciones {
 
     public void setIbanOrigen(String ibanOrigen) {
         this.ibanOrigen = ibanOrigen;
+    }
+
+    public String getPagoingreso() {
+        return pagoingreso;
+    }
+
+    public void setPagoingreso(String pagoingreso) {
+        this.pagoingreso = pagoingreso;
     }
 }

@@ -1,5 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%--
+
+ Fichero hecho por:
+ Valentín García Rosas
+
+--%>
+
 <html>
     <head>
         <title>Autenticación</title>

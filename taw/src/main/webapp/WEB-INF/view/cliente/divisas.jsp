@@ -4,6 +4,13 @@
 <%@ page import="es.taw.grupo25.dto.CambioDivisa" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%--
+
+ Fichero hecho por:
+ Valentín García Rosas
+
+--%>
+
 <html>
     <head>
         <title>Cambio Divisas</title>

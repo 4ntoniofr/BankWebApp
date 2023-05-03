@@ -2,6 +2,13 @@
 <%@ page import="es.taw.grupo25.dto.CuentaInterna" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%--
+
+ Fichero hecho por:
+ Valentín García Rosas
+
+--%>
+
 <html>
     <head>
         <title>Desbloqueo de Cuenta</title>

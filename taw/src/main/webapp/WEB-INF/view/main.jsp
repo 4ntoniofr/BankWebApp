@@ -1,5 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%--
+
+ Fichero hecho por:
+ Todos
+
+--%>
+
 <html>
     <head>
         <title>Página Principal</title>

@@ -1,6 +1,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%--
+
+ Fichero hecho por:
+ Valentín García Rosas
+
+--%>
+
 <html>
 <head>
     <title>Registro de Cliente</title>
@@ -33,7 +40,7 @@
         <h2>Informacion de usuario</h2>
         <form:hidden path="usuarioByUsuarioId.id" />
         Nombre de usuario: <form:input path="usuarioByUsuarioId.usuario" minlength="4" maxlength="45" /><br>
-        Contraseña: <form:input type="password" path="usuarioByUsuarioId.password" minlength="8" maxlength="45" /><br>
+        Contraseña: <form:input type="password" path="usuarioByUsuarioId.password" minlength="4" maxlength="45" /><br>
     </div>
     <form:button>Registrar</form:button>
 </form:form>

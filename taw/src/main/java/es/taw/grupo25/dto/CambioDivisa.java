@@ -1,9 +1,10 @@
 package es.taw.grupo25.dto;
 
-import es.taw.grupo25.entity.MonedaEntity;
-import es.taw.grupo25.entity.PagoEntity;
-import es.taw.grupo25.entity.TransaccionEntity;
-import jakarta.persistence.*;
+/**
+ *
+ * @author Valentín García Rosas
+ *
+ */
 
 import java.io.Serializable;
 import java.util.Objects;

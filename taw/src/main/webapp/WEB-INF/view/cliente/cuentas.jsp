@@ -3,12 +3,21 @@
 <%@ page import="es.taw.grupo25.dto.Moneda" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%--
+
+ Fichero hecho por:
+ Valentín García Rosas
+
+--%>
+
 <html>
     <head>
         <title>Mis Cuentas</title>
     </head>
 
     <body>
+    <a href="nuevaCuenta"><h2>Añadir cuenta (Para Pruebas)</h2></a>
+    <a href="/cliente">Volver al menú principal del cliente.</a>
         <h2>Mis cuentas</h2>
 
     <%
@@ -66,7 +75,6 @@
         if(cuentas_empresa!=null){
     %>
 
-            <h2>Cuentas de empresa</h2>
             <table border="1">
                 <tr>
                     <th>IBAN</th>
@@ -110,7 +118,12 @@
     <%
          }}
     %>
-    <a href="nuevaCuenta"><h2>Añadir cuenta (Para Pruebas)</h2></a>
-    <a href="/cliente">Volver al menú principal del cliente.</a>
+                <%
+                    if(cuentas_empresa!=null){
+                %>
+                <h2>Cuentas de empresa</h2>
+                <%
+                    }
+                %>
     </body>
 </html>
