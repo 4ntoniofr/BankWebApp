@@ -117,22 +117,15 @@ public class clienteController {
         if (usuario == null) {
             urlto = "redirect:/login";
         } else {
-            if (usuario.getClientesById().getAutorizador()) {
-                CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
-                if (cuenta != null) {
-                    Empresa empresaAsociada = usuario.getClientesById().getEmpresaByEmpresaSocio();
-                    if (cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId() || (empresaAsociada!=null && cuenta.getClienteByPropietario().getId() == empresaAsociada.getClienteByClienteId().getId())) {
-                        FiltroOperaciones filtro = new FiltroOperaciones(cuenta.getCuentaBancariaByCuentaBancaria().getId());
-                        List<Pago> pagos = pagoService.findByCuentaId(cuenta.getCuentaBancariaByCuentaBancaria().getId());
-                        model.addAttribute("filtro", filtro);
-                        model.addAttribute("pagos", pagos);
-                        model.addAttribute("idCuenta", idCuenta);
-                        model.addAttribute("iban", cuenta.getCuentaBancariaByCuentaBancaria().getIban());
-                        urlto = "cliente/operaciones";
-                    }
-                }
-            } else {
-                urlto = "redirect:/cliente";
+            CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
+            if (comprobacionCuentas(usuario, cuenta)) {
+                FiltroOperaciones filtro = new FiltroOperaciones(cuenta.getCuentaBancariaByCuentaBancaria().getId());
+                List<Pago> pagos = pagoService.findByCuentaId(cuenta.getCuentaBancariaByCuentaBancaria().getId());
+                model.addAttribute("filtro", filtro);
+                model.addAttribute("pagos", pagos);
+                model.addAttribute("idCuenta", idCuenta);
+                model.addAttribute("iban", cuenta.getCuentaBancariaByCuentaBancaria().getIban());
+                urlto = "cliente/operaciones";
             }
         }
         return urlto;
@@ -206,24 +199,17 @@ public class clienteController {
         if (usuario == null) {
             urlTo = "redirect:/login";
         } else {
-            if (usuario.getClientesById().getAutorizador()) {
-                CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
-                if (cuenta != null) {
-                    Empresa empresaAsociada = usuario.getClientesById().getEmpresaByEmpresaSocio();
-                    if (cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId() || (empresaAsociada!=null && cuenta.getClienteByPropietario().getId() == empresaAsociada.getClienteByClienteId().getId())) {
-                        if (cuenta.getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")) {
-                            model.addAttribute("cuenta", cuenta);
-                            model.addAttribute("monedas", monedaService.findAll());
-                            model.addAttribute("cambioDivisas", cambioDivisaService.findByCuentaId(cuenta.getCuentaBancariaByCuentaBancaria().getId()));
-                            urlTo = "cliente/divisas";
-                        } else {
-                            model.addAttribute("error", "No se pueden hacer cambios de divisa en cuentas que no esten Activas.");
-                            urlTo = "/cliente/divisas";
-                        }
-                    }
+            CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
+            if (comprobacionCuentas(usuario, cuenta)) {
+                if (cuenta.getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")) {
+                    model.addAttribute("cuenta", cuenta);
+                    model.addAttribute("monedas", monedaService.findAll());
+                    model.addAttribute("cambioDivisas", cambioDivisaService.findByCuentaId(cuenta.getCuentaBancariaByCuentaBancaria().getId()));
+                    urlTo = "cliente/divisas";
+                } else {
+                    model.addAttribute("error", "No se pueden hacer cambios de divisa en cuentas que no esten Activas.");
+                    urlTo = "/cliente/divisas";
                 }
-            } else {
-                urlTo = "redirect:/cliente";
             }
         }
         return urlTo;
@@ -236,9 +222,7 @@ public class clienteController {
             return "redirect:/login";
         } else {
             CuentaInterna cuenta_cambio = cuentaInternaService.findById(cuenta.getId());
-            if (cuenta_cambio != null) {
-                Empresa empresaAsociada = usuario.getClientesById().getEmpresaByEmpresaSocio();
-                if(cuenta_cambio.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId() || (empresaAsociada!=null && cuenta.getClienteByPropietario().getId() == empresaAsociada.getClienteByClienteId().getId())){
+                if(comprobacionCuentas(usuario, cuenta_cambio)){
                     if (cuenta_cambio.getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")) {
                         Transaccion transaccion = new Transaccion();
                         transaccion.setFechaInstruccion(Timestamp.valueOf(LocalDateTime.now()));
@@ -256,13 +240,20 @@ public class clienteController {
                         transaccionService.guardarTransaccion(transaccion);
                         cambioDivisaService.guardarCambioDivisa(cambioDivisa);
                         cuentaInternaService.guardarCuenta(cuenta_cambio);
-                    }
                 }
             }
         }
         return "redirect:/cliente/cuentas";
     }
 
+    /**
+     * Función para obtener la nueva cantidad que se guarda en la cuenta cuando se hace un cambio de divisa
+     *
+     * @param cantidad
+     * @param moneda_anterior
+     * @param moneda_nueva
+     * @return double
+     */
     private Double getCuentaCantidad(Double cantidad, Moneda moneda_anterior, Moneda moneda_nueva) {
         double cantidadEnEuros = cantidad * moneda_anterior.getCambioEuro();
         return cantidadEnEuros / moneda_nueva.getCambioEuro();
@@ -275,23 +266,16 @@ public class clienteController {
         if (usuario == null) {
             urlTo = "redirect:/login";
         } else {
-            if (usuario.getClientesById().getAutorizador()) {
-                CuentaBancaria cuenta = cuentaBancariaService.findById(idCuenta);
-                if (cuenta != null) {
-                    Empresa empresaAsociada = usuario.getClientesById().getEmpresaByEmpresaSocio();
-                    if (cuenta.getCuentaInternasById().getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId() || (empresaAsociada!=null && cuenta.getCuentaInternasById().getClienteByPropietario().getId() == empresaAsociada.getClienteByClienteId().getId())) {
-                        if (cuenta.getCuentaInternasById().getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")) {
-                            model.addAttribute("pago", new Pago());
-                            model.addAttribute("monedas", monedaService.findAll());
-                            urlTo = "cliente/transferencia";
-                        } else {
-                            model.addAttribute("error", "No se pueden hacer transferencias en cuentas que no esten Activas.");
-                            urlTo = "/cliente/transferencia";
-                        }
-                    }
+            CuentaBancaria cuenta = cuentaBancariaService.findById(idCuenta);
+            if (comprobacionCuentas(usuario, cuenta.getCuentaInternasById().toDTO())) {
+                if (cuenta.getCuentaInternasById().getEstadoCuentaByEstadoCuenta().getEstado().equals("ACTIVA")) {
+                    model.addAttribute("pago", new Pago());
+                    model.addAttribute("monedas", monedaService.findAll());
+                    urlTo = "cliente/transferencia";
+                } else {
+                    model.addAttribute("error", "No se pueden hacer transferencias en cuentas que no esten Activas.");
+                    urlTo = "/cliente/transferencia";
                 }
-            } else {
-                urlTo = "redirect:/cliente";
             }
         }
         return urlTo;
@@ -327,8 +311,8 @@ public class clienteController {
         return urlTo;
     }
 
-    /*
-        Helper method for post transferencia
+    /**
+     *  Función auxiliar para hacer una transferencia
      */
     private boolean isCorrect(CuentaBancaria cuenta, CuentaBancaria cuenta_destino, Pago pago, Model model, HttpSession session, Integer idCuenta) {
         if (cuenta_destino != null) {
@@ -338,20 +322,17 @@ public class clienteController {
                         return true;
                     } else {
                         model.addAttribute("errorTransferencia", "ERROR: La cuenta no está activa.");
-                        return false;
                     }
                 } else {
                     model.addAttribute("errorTransferencia", "ERROR: Ambas cuentas deben usar la misma divisa.");
-                    return false;
                 }
             } else {
                 model.addAttribute("errorTransferencia", "ERROR: No tienes saldo suficiente");
-                return false;
             }
         } else {
             model.addAttribute("errorTransferencia", "ERROR: El iban introducido no existe.");
-            return false;
         }
+        return false;
     }
 
     @GetMapping("/desbloqueo")
@@ -361,17 +342,10 @@ public class clienteController {
         if (usuario == null) {
             urlTo = "redirect:/login";
         } else {
-            if (usuario.getClientesById().getAutorizador()) {
-                CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
-                if (cuenta != null) {
-                    Empresa empresaAsociada = usuario.getClientesById().getEmpresaByEmpresaSocio();
-                    if (cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId() || (empresaAsociada!=null && cuenta.getClienteByPropietario().getId() == empresaAsociada.getClienteByClienteId().getId())) {
-                        model.addAttribute("cuenta", cuenta);
-                        urlTo = "cliente/desbloqueo";
-                    }
-                }
-            } else {
-                urlTo = "redirect:/cliente";
+            CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
+            if (comprobacionCuentas(usuario, cuenta)) {
+                model.addAttribute("cuenta", cuenta);
+                urlTo = "cliente/desbloqueo";
             }
         }
         return urlTo;
@@ -385,13 +359,11 @@ public class clienteController {
             urlTo = "redirect:/login";
         } else {
             CuentaInterna cuenta_cambio = cuentaInternaService.findById(cuenta.getId());
-            if (cuenta_cambio != null) {
-                if (cuenta_cambio.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId()) {
+                if (comprobacionCuentas(usuario, cuenta_cambio)) {
                     EstadoCuenta estado = estadoCuentaService.findByEstado("SOLICITADO");
                     cuenta_cambio.setEstadoCuentaByEstadoCuenta(estado);
                     cuentaInternaService.guardarCuenta(cuenta_cambio);
                 }
-            }
         }
         return urlTo;
     }
@@ -483,6 +455,31 @@ public class clienteController {
         return "redirect:/cliente/cuentas";
     }
 
+    /**
+     * Función auxiliar para hacer comprobaciones de cuenta en varias funciones.
+     *
+     * @param usuario
+     * @param cuenta
+     * @return boolean
+     */
+    private boolean comprobacionCuentas(Usuario usuario, CuentaInterna cuenta){
+        // comprobamos que tenga autorizador, y por tanto la cuenta está habilitada para hacer cosas.
+        if(usuario.getClientesById().getAutorizador()){
+            // comprobamos que exista la cuenta con la que queremos hacer operaciones (en caso de que no se redireccionara a las cuentas)
+            if(cuenta!=null){
+                Empresa empresaAsociada = usuario.getClientesById().getEmpresaByEmpresaSocio();
+                // El id de la cuenta tiene que ser del cliente o de la empresa de la que es socio para poder mostrarse
+                if(cuenta.getClienteByPropietario().getUsuarioByUsuarioId().getId() == usuario.getId() || (empresaAsociada!=null && cuenta.getClienteByPropietario().getId() == empresaAsociada.getClienteByClienteId().getId())){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     *  Función auxiliar para obtener un IBAN
+     */
     private String getRandomIban(String country) {
         Random rand = new Random();
         StringBuilder sb = new StringBuilder();
@@ -493,6 +490,10 @@ public class clienteController {
         return sb.toString();
     }
 
+    /**
+     *  TODO (no es necesario hacerlo)
+     *  Función auxiliar para conseguir el codigo de un pais para el IBAN
+     */
     private String getCoutryCode(String country) {
         return "XX";
     }
