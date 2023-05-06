@@ -12,7 +12,7 @@
         <title>Autenticación</title>
     </head>
     <body>
-    <h1>Autenticación de cliente:</h1>
+    <h1>Autenticación de usuario:</h1>
 
     <%
         String error = (String) request.getAttribute("error");
@@ -37,6 +37,7 @@
             </table>
         </form>
 
-    <a href="cliente/register">Registrarse</a>
+    <a href="cliente/register">Registrarse como cliente</a><br>
+    <a href="empresa/registrar">Registrarse como empresa</a>
     </body>
 </html>
