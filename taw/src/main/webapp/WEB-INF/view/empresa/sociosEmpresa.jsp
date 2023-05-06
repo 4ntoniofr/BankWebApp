@@ -43,7 +43,6 @@
         <th>ROL</th>
         <th>ESTADO</th>
         <th></th>
-        <th></th>
     </tr>
     <%
         for (Cliente socio: socios) {
@@ -59,7 +58,6 @@
         <td><%= socio.getAutorizador() ? "SÍ" : "NO" %></td>
         <td><%= socio.getRolClienteByRolClienteId().getRol() %></td>
         <td><%= socio.getEstadoClienteByEstadoCliente().getEstado() %></td>
-        <td><a href="/empresa/operaciones?idCliente=<%= socio.getId() %>">Visualizar operaciones</a></td>
         <td><a href="/empresa/bloquearSocio?idCliente=<%= socio.getId() %>">Bloquear socio</a></td>
     </tr>
 

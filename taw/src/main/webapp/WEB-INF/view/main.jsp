@@ -25,9 +25,13 @@
         <a href="cliente"><h2>Ir a clientes</h2></a>
         <%
             }
+            if(usuario.isEmpresa() || usuario.isAsociado()){
         %>
         <a href="empresa/"><h2>Ir a empresas</h2></a>
-        <% if (usuario.soyGestor()){ %>
+        <%
+            }
+            if (usuario.soyGestor()){
+        %>
         <a href="gestor/"><h2>Ir a gestor</h2></a>
 
         <%

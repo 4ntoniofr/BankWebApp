@@ -36,17 +36,9 @@
 
 <ul>
     <%
-        if(usuario == null){
+        if(usuario != null){
     %>
 
-    <li><a href="/empresa/login">Login</a></li>
-    <li><a href="/empresa/registrar">Registrar empresa</a></li>
-
-    <%
-        }else{
-    %>
-
-    <li><a href="/empresa/logout">Logout y salir</a></li>
     <li><a href="/cliente/cuentas">Realizar transferencias</a></li>
 
     <%
@@ -87,5 +79,7 @@
     <%
         }
     %>
+    <br>
+    <a href="/">Volver a la página principal</a>
 </ul>
 </html>

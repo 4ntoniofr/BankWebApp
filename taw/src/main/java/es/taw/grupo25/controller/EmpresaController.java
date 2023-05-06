@@ -167,9 +167,8 @@ public class EmpresaController {
         String urlTo = "empresa/sociosEmpresa";
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        if(usuario == null || usuario.getClientesById() == null ||
-                usuario.getClientesById().getEmpresaByEmpresaSocio() == null ||
-                !usuario.getClientesById().getRolClienteByRolClienteId().getRol().equals("SOCIO")){
+        if(usuario == null || !usuario.isSocio() ||
+                usuario.getClientesById().getEmpresaByEmpresaSocio() == null ){
             urlTo = "empresa/index";
             model.addAttribute("error", "Accion no permitida");
         }else{
@@ -195,9 +194,8 @@ public class EmpresaController {
         String urlTo = "redirect:/empresa/sociosEmpresa";
         Usuario solicitante = (Usuario) session.getAttribute("usuario");
 
-        if(solicitante == null || solicitante.getClientesById() == null ||
-                solicitante.getClientesById().getEmpresasById() != null ||
-                !solicitante.getClientesById().getRolClienteByRolClienteId().getRol().equals("SOCIO")){
+        if(solicitante == null || !solicitante.isSocio() ||
+                solicitante.getClientesById().getEmpresasById() != null){
             urlTo = "empresa/index";
             model.addAttribute("error", "Accion no permitida");
         }else{

@@ -71,6 +71,18 @@ public class Usuario implements Serializable {
         return this.getEmpleadosById() != null && this.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR");
     }
 
+    public boolean isEmpresa(){
+        return this.getClientesById() != null && this.getClientesById().getEmpresasById() != null;
+    }
+
+    public boolean isAsociado(){
+        return this.getClientesById() != null && !this.getClientesById().getRolClienteByRolClienteId().getRol().equals("INDIVIDUAL");
+    }
+
+    public boolean isSocio(){
+        return this.getClientesById() != null && this.getClientesById().getRolClienteByRolClienteId().getRol().equals("SOCIO");
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
