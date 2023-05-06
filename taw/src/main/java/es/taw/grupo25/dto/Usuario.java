@@ -1,4 +1,5 @@
 package es.taw.grupo25.dto;
+
 import es.taw.grupo25.entity.EmpleadoEntity;
 
 import java.io.Serializable;
@@ -62,8 +63,12 @@ public class Usuario implements Serializable {
         this.empleadosById = empleadosById;
     }
 
-    public boolean soyCliente(){
-        return this.clientesById!=null;
+    public boolean soyCliente() {
+        return this.clientesById != null;
+    }
+
+    public boolean soyGestor() {
+        return this.getEmpleadosById() != null && this.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR");
     }
 
     @Override

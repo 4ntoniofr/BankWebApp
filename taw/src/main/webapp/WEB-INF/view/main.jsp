@@ -27,9 +27,11 @@
             }
         %>
         <a href="empresa/"><h2>Ir a empresas</h2></a>
+        <% if (usuario.soyGestor()){ %>
         <a href="gestor/"><h2>Ir a gestor</h2></a>
 
         <%
+            }
             if(asistente != null){
         %>
             <a href="asistente/"><h2>Ir a asistente</h2></a>
