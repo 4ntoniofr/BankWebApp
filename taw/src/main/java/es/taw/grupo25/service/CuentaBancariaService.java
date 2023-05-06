@@ -1,3 +1,8 @@
+/**
+ * @author Antonio Fernandez Rodriguez - 20%
+ * @author Valentin Garcia Rosas - 80%
+ */
+
 package es.taw.grupo25.service;
 
 import es.taw.grupo25.dto.CuentaBancaria;

@@ -1,3 +1,8 @@
+/**
+ * @author Antonio Fernandez Rodriguez - 50%
+ * @author Valentin Garcia Rosas - 50%
+ */
+
 package es.taw.grupo25.repository;
 
 import es.taw.grupo25.entity.CuentaInternaEntity;

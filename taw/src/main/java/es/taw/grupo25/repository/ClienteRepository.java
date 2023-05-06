@@ -1,3 +1,8 @@
+/**
+ * @author Antonio Fernandez Rodriguez - 50%
+ * @author Jose Fco Artacho - 50%
+ */
+
 package es.taw.grupo25.repository;
 
 import es.taw.grupo25.entity.ClienteEntity;

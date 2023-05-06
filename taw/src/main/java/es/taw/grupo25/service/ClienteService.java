@@ -1,3 +1,9 @@
+/**
+ * @author Antonio Fernandez Rodriguez - 33%
+ * @author Valentin Garcia Rosas - 33%
+ * @author Jose Francisco Artacho - 33%
+ */
+
 package es.taw.grupo25.service;
 
 import es.taw.grupo25.dto.Cliente;
