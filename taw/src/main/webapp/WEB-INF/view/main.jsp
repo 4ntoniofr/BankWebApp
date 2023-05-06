@@ -1,4 +1,5 @@
 <%@ page import="es.taw.grupo25.dto.Usuario" %>
+<%@ page import="es.taw.grupo25.dto.Empleado" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%--
@@ -9,6 +10,7 @@
 --%>
 <%
     Usuario usuario = (Usuario) session.getAttribute("usuario");
+    Empleado asistente = (Empleado) session.getAttribute("asistente");
 %>
 <html>
     <head>
@@ -26,7 +28,14 @@
         %>
         <a href="empresa/"><h2>Ir a empresas</h2></a>
         <a href="gestor/"><h2>Ir a gestor</h2></a>
-        <a href="asistente/"><h2>Ir a asistente</h2></a>
+
+        <%
+            if(asistente != null){
+        %>
+            <a href="asistente/"><h2>Ir a asistente</h2></a>
+        <%
+            }
+        %>
         <br>
         <a href="/logout">Logout</a>
     </body>

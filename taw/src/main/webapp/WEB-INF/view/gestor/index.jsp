@@ -24,7 +24,7 @@
     <li><a href="/gestor/sospechosos">Ver clientes/empresas que han realizado transferencias a cuentas sospechosas</a>
     </li>
     <li><a href="/gestor/solicitudes">Ver cuentas con solicitud de desbloqueo</a></li>
-    <li><a href="/gestor/logout">Logout y salir</a>
+    <li><a href="/">Volver a la pagina principal</a>
     </li>
     <%}%>
 </ul>
