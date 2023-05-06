@@ -62,6 +62,10 @@ public class Usuario implements Serializable {
         this.empleadosById = empleadosById;
     }
 
+    public boolean soyCliente(){
+        return this.clientesById!=null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

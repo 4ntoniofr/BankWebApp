@@ -76,7 +76,7 @@ public class clienteController {
     public String cliente(Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         String urlto = "cliente/cliente";
-        if (usuario == null) {
+        if (usuario == null || !usuario.soyCliente()) {
             urlto = "redirect:/login";
         } else {
             if (!usuario.getClientesById().getAutorizador()) {
@@ -90,7 +90,7 @@ public class clienteController {
     public String perfil(Model model, HttpSession session) {
         String urlto = "cliente/perfil";
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null || !usuario.soyCliente()) {
             urlto = "redirect:/login";
         } else {
             if (usuario.getClientesById().getAutorizador()) {
@@ -114,7 +114,7 @@ public class clienteController {
     public String listarOperaciones(Model model, HttpSession session, @RequestParam("idCuenta") int idCuenta) {
         String urlto = "redirect:/cliente/cuentas";
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null || !usuario.soyCliente()) {
             urlto = "redirect:/login";
         } else {
             CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
@@ -137,7 +137,7 @@ public class clienteController {
         List<Pago> pagos = pagoService.findByCuentaId(filtro.getIdCuenta());
         CuentaBancaria cuenta = cuentaBancariaService.findById(filtro.getIdCuenta());
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null || !usuario.soyCliente()) {
             urlTo = "redirect:/login";
         } else {
             urlTo = "cliente/operaciones";
@@ -196,7 +196,7 @@ public class clienteController {
     public String cambiarDivisas(Model model, HttpSession session, @RequestParam("idCuenta") int idCuenta) {
         String urlTo = "redirect:/cliente/cuentas";
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null || !usuario.soyCliente()) {
             urlTo = "redirect:/login";
         } else {
             CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
@@ -218,7 +218,7 @@ public class clienteController {
     @PostMapping("/divisas")
     public String guardarCambioDivisas(@ModelAttribute("cuenta") CuentaInterna cuenta, Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null || !usuario.soyCliente()) {
             return "redirect:/login";
         } else {
             CuentaInterna cuenta_cambio = cuentaInternaService.findById(cuenta.getId());
@@ -263,7 +263,7 @@ public class clienteController {
     public String hacerTransferencia(Model model, HttpSession session, @RequestParam("idCuenta") int idCuenta) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         String urlTo = "redirect:/cliente/cuentas";
-        if (usuario == null) {
+        if (usuario == null || !usuario.soyCliente()) {
             urlTo = "redirect:/login";
         } else {
             CuentaBancaria cuenta = cuentaBancariaService.findById(idCuenta);
@@ -287,7 +287,7 @@ public class clienteController {
         CuentaBancaria cuenta_destino = cuentaBancariaService.findByIban(pago.getTransaccionByTransaccion().getCuentaBancariaByCuentaDestino().getIban());
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         String urlTo = "redirect:/cliente/cuentas";
-        if (usuario == null) {
+        if (usuario == null || !usuario.soyCliente()) {
             urlTo = "redirect:/login";
         } else {
             if (isCorrect(cuenta, cuenta_destino, pago, model, session, idCuenta)) {
@@ -339,7 +339,7 @@ public class clienteController {
     public String intentarDesbloqueo(@RequestParam("idCuenta") int idCuenta, Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         String urlTo = "redirect:/cliente/cuentas";
-        if (usuario == null) {
+        if (usuario == null || !usuario.soyCliente()) {
             urlTo = "redirect:/login";
         } else {
             CuentaInterna cuenta = cuentaInternaService.findById(idCuenta);
@@ -355,7 +355,7 @@ public class clienteController {
     public String solicitarDesbloqueo(@ModelAttribute("cuenta") CuentaInterna cuenta, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         String urlTo = "redirect:/cliente/cuentas";
-        if (usuario == null) {
+        if (usuario == null || !usuario.soyCliente()) {
             urlTo = "redirect:/login";
         } else {
             CuentaInterna cuenta_cambio = cuentaInternaService.findById(cuenta.getId());
@@ -372,7 +372,7 @@ public class clienteController {
     public String registerCliente(Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         String urlTo = "redirect:/cliente/cuentas";
-        if (usuario == null) {
+        if (usuario == null || !usuario.soyCliente()) {
             model.addAttribute("cliente", new Cliente());
             return "cliente/register";
         } else {
@@ -402,7 +402,7 @@ public class clienteController {
     public String listarCuentas(HttpSession session, Model model) {
         String urlto = "cliente/cuentas";
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null || !usuario.soyCliente()) {
             urlto = "redirect:/login";
         } else {
             if (usuario.getClientesById().getAutorizador()) {
@@ -426,7 +426,7 @@ public class clienteController {
     public String nuevaCuenta(Model model, HttpSession session) {
         String urlto = "cliente/cuentas";
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null || !usuario.soyCliente()) {
             urlto = "redirect:/login";
         } else {
             if (usuario.getClientesById().getAutorizador()) {
