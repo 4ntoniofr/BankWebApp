@@ -1,8 +1,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.taw.grupo25.entity.ChatEntity" %>
 <%@ page import="es.taw.grupo25.dto.Empleado" %>
 <%@ page import="es.taw.grupo25.dto.Chat" %>
+<%
+    /**
+     * @author Jorge Camacho García
+     */
+%>
 <html>
 <head>
     <title>Chats disponibles</title>

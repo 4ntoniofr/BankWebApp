@@ -1,6 +1,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.taw.grupo25.dto.*" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%
+    /**
+     * @author Jorge Camacho García
+     */
+%>
 <html>
 <head>
     <title>Chat privado</title>
@@ -27,6 +33,8 @@
 
     Cliente cliente = (Cliente) request.getAttribute("cliente");
     clientePersona = cliente.getPersonaByPersonaId();
+
+    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
     int idPersonaEmisor = 0;
 
@@ -60,14 +68,14 @@
                     if(rol.equals("a")){
         %>
                         <p style="text-align: right; background-color: darkseagreen; padding: 5px; border: 1px solid black">
-                            <%=asistentePersona.getNombre()%> [<%=mensaje.getFecha()%>]: <br/> <%=mensaje.getTexto()%>
+                            <%=asistentePersona.getNombre()%> [<%= format.format(mensaje.getFecha())%>]: <br/> <%=mensaje.getTexto()%>
                         </p>
         <%
                     // ERES CLIENTE
                     } else {
         %>
                         <p style="text-align: left; background-color: lightgrey; padding: 5px; border: 1px solid black">
-                            <%=asistentePersona.getNombre()%> [<%=mensaje.getFecha()%>]: <br/> <%=mensaje.getTexto()%>
+                            <%=asistentePersona.getNombre()%> [<%=format.format(mensaje.getFecha())%>]: <br/> <%=mensaje.getTexto()%>
                         </p>
         <%
                      }
@@ -77,14 +85,14 @@
                     if(rol.equals("a")){
         %>
                         <p style="text-align: left; background-color: lightgrey; padding: 5px; border: 1px solid black">
-                            <%=clientePersona.getNombre()%> [<%=mensaje.getFecha()%>]: <br/> <%=mensaje.getTexto()%>
+                            <%=clientePersona.getNombre()%> [<%=format.format(mensaje.getFecha())%>]: <br/> <%=mensaje.getTexto()%>
                         </p>
         <%
                     // ERES CLIENTE
                     } else {
         %>
                         <p style="text-align: right; background-color: darkseagreen; padding: 5px; border: 1px solid black">
-                            <%=clientePersona.getNombre()%> [<%=mensaje.getFecha()%>]: <br/> <%=mensaje.getTexto()%>
+                            <%=clientePersona.getNombre()%> [<%=format.format(mensaje.getFecha())%>]: <br/> <%=mensaje.getTexto()%>
                         </p>
         <%
                         }

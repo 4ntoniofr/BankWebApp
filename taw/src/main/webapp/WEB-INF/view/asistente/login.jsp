@@ -1,4 +1,11 @@
-<h1>Autenticación de asistente:</h1>
+<%
+    /**
+     * @author Jorge Camacho García
+     */
+%>
+
+<h1>Autenticacion de asistente:</h1>
+
 
 <%
     String error = (String) request.getAttribute("error");
