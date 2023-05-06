@@ -89,12 +89,6 @@
     }
 %>
 
-<br/>
-<h4>
-    <a href="/asistente/">
-        Volver atras
-    </a>
-</h4>
 
 </body>
 </html>

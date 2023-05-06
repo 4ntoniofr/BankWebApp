@@ -143,9 +143,5 @@
         Volver a los chats
     </a>
 
-
-
-
-
 </body>
 </html>
