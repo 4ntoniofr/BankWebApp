@@ -33,6 +33,6 @@
     <%
         }
     %>
-        </br><a href="/cliente/logout">LogOut y salir</a>
+        </br><a href="/">Volver a la Sección Principal</a>
     </body>
 </html>
