@@ -3,7 +3,7 @@
 <%--
 
  Fichero hecho por:
- Valentín García Rosas
+ Todos
 
 --%>
 

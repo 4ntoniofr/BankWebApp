@@ -36,7 +36,7 @@ public class asistenteController {
 
     @GetMapping("/")
     public String doPaginaAsistente(Model model) {
-        return "/asistente/asistente";
+        return "redirect:/asistente/chats";
     }
 
     @GetMapping("/chats")
@@ -120,6 +120,12 @@ public class asistenteController {
         return "/asistente/chat";
     }
 
+    @PostMapping("/enviar-mensaje")
+    public String doEnviarMensaje(@ModelAttribute("siguienteMensaje") Mensaje mensaje) {
+        mensajeService.enviarMensaje(mensaje);
+        return "redirect:/asistente/chat?id=" + mensaje.getIdChatNuevoMensaje();
+    }
+
     /* SE PODRÍA IMPLEMENTAR ESTA FUNCIÓN PARA QUE EL ASISTENTE PUEDA CERRAR TAMBIÉN EL CHAT, PERO NO SE ESPECIFICA ESTO
     @PostMapping("/cerrar-chat")
     public String doCerrarChat(Model mode, @RequestParam("id") Integer chatId){
@@ -129,12 +135,7 @@ public class asistenteController {
         return "redirect:/asistente/chats";
     }*/
 
-    @PostMapping("/enviar-mensaje")
-    public String doEnviarMensaje(@ModelAttribute("siguienteMensaje") Mensaje mensaje) {
-        mensajeService.enviarMensaje(mensaje);
-        return "redirect:/asistente/chat?id=" + mensaje.getIdChatNuevoMensaje();
-    }
-
+    /*
     @GetMapping("/iniciar-sesion")
     public String getIniciarSesion() {
         return "/asistente/login";
@@ -166,5 +167,6 @@ public class asistenteController {
         session.invalidate();
         return "redirect:/asistente/";
     }
+    */
 
 }

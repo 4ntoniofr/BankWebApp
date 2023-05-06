@@ -24,6 +24,8 @@
 
 <h1> Bienvenido <%=nombreDelEmpleado%> </h1>
 
+<h3> <a href="/"> Volver a la seccion principal </a> </h3>
+
 <br/>
 
 <h2> Filtros de busqueda </h2>
