@@ -1,6 +1,10 @@
 <%@ page import="es.taw.grupo25.dto.Empleado" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%
+    /**
+     * @author Jorge Camacho García
+     */
+%>
 <html>
 <head>
     <title>Página del asistente</title>
