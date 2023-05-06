@@ -95,7 +95,7 @@ public class GestorController {
     @GetMapping("/pendientes")
     public String doMostrarPendientes(Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null || usuario.getEmpleadosById() == null || !usuario.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             return "redirect:/gestor/login";
         }
         List<Cliente> list = this.clienteService.clientesNoAutorizados();
@@ -106,7 +106,7 @@ public class GestorController {
     @GetMapping("/autorizar/{id}")
     public String doAutorizarCliente(@PathVariable("id") Integer idCliente, Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null  || usuario.getEmpleadosById() == null || !usuario.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             return "redirect:/gestor/login";
         }
 
@@ -129,7 +129,7 @@ public class GestorController {
     @PostMapping("/autorizar")
     public String doAutorizar(@ModelAttribute("cuenta") CuentaInterna cuentaInterna, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null  || usuario.getEmpleadosById() == null || !usuario.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             return "redirect:/gestor/login";
         }
 
@@ -153,7 +153,7 @@ public class GestorController {
     @GetMapping("/rechazar/{id}")
     public String doRechazar(@PathVariable("id") Integer idCliente, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null  || usuario.getEmpleadosById() == null || !usuario.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             return "redirect:/gestor/login";
         }
         clienteService.borrarCliente(idCliente);
@@ -163,7 +163,7 @@ public class GestorController {
     @GetMapping("/clientes")
     public String doListarClientes(Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null  || usuario.getEmpleadosById() == null || !usuario.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             return "redirect:/gestor/login";
         }
         List<Cliente> list = this.clienteService.clientesAutorizados();
@@ -215,7 +215,7 @@ public class GestorController {
     @GetMapping("/individual/{id}")
     public String doMostrarDetallesIndividual(@PathVariable("id") Integer idCliente, Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null  || usuario.getEmpleadosById() == null || !usuario.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             return "redirect:/gestor/login";
         }
         Cliente cliente = this.clienteService.findById(idCliente);
@@ -232,7 +232,7 @@ public class GestorController {
     @GetMapping("/empresa/{id}")
     public String doMostrarDetallesEmpresa(@PathVariable("id") Integer idCliente, Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null  || usuario.getEmpleadosById() == null || !usuario.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             return "redirect:/gestor/login";
         }
         Cliente cliente = this.clienteService.findById(idCliente);
@@ -249,7 +249,7 @@ public class GestorController {
     @GetMapping("/operaciones/{id}")
     public String doMostrarOperacionesCuenta(@PathVariable("id") Integer idCuenta, Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null  || usuario.getEmpleadosById() == null || !usuario.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             return "redirect:/gestor/login";
         }
         return getTransaccionesYOrdenar(model, idCuenta, "instruccion");
@@ -327,7 +327,7 @@ public class GestorController {
     @GetMapping("/inactivos")
     public String doMostrarInactivos(Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null  || usuario.getEmpleadosById() == null || !usuario.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             return "redirect:/gestor/login";
         }
         List<Cliente> inactivos = this.clienteService.buscarInactivos(new Date(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000));
@@ -338,7 +338,7 @@ public class GestorController {
     @GetMapping("/desactivar/{id}/{urlto}")
     public String doDesactivarCuentas(@PathVariable("id") Integer idCliente, @PathVariable("urlto") String urlTo, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null  || usuario.getEmpleadosById() == null || !usuario.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             return "redirect:/gestor/login";
         }
 
@@ -355,7 +355,7 @@ public class GestorController {
     @GetMapping("/sospechosos")
     public String doMostrarClientesSospechosos(Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null  || usuario.getEmpleadosById() == null || !usuario.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             return "redirect:/gestor/login";
         }
         List<Cliente> sospechosos = this.clienteService.buscarSospechosos();
@@ -366,7 +366,7 @@ public class GestorController {
     @GetMapping("/solicitudes")
     public String doMostrarSolicitudes(Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null  || usuario.getEmpleadosById() == null || !usuario.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             return "redirect:/gestor/login";
         }
         List<CuentaInterna> cuentasSolicitantes = this.cuentaInternaService.findCuentaInternasSolicitantes();
@@ -387,7 +387,7 @@ public class GestorController {
     @GetMapping("/desbloquear/{id}")
     public String doDesbloquearCuenta(@PathVariable("id") Integer idCuenta, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (usuario == null) {
+        if (usuario == null  || usuario.getEmpleadosById() == null || !usuario.getEmpleadosById().getRolEmpleadoByRolEmpleadoId().getRol().equals("GESTOR")) {
             return "redirect:/gestor/login";
         }
 

@@ -1,6 +1,6 @@
-/**
+<%/**
 * @author Antonio Fernandez Rodriguez
-*/
+*/%>
 <%@ page import="es.taw.grupo25.entity.CuentaInternaEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.taw.grupo25.dto.Cliente" %>
