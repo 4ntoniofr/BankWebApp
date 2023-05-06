@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Jorge Camacho García
+ */
 public class Chat {
 
     private Integer id;

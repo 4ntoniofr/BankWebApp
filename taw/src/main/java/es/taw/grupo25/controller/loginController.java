@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import es.taw.grupo25.service.UsuarioService;
 
-
+/**
+ * @author Todos
+ */
 @Controller
 public class loginController {
 

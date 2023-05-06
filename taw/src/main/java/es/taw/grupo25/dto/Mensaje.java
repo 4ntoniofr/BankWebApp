@@ -3,6 +3,9 @@ package es.taw.grupo25.dto;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ * @author Jorge Camacho García
+ */
 public class Mensaje {
 
     private Integer id;

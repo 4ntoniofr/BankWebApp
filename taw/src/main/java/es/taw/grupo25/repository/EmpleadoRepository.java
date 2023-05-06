@@ -7,7 +7,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/** @author Jorge Camacho García
+/**
+ * @author Jorge Camacho García
  */
 public interface EmpleadoRepository extends JpaRepository<EmpleadoEntity,Integer> {
 

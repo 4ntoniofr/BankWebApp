@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author José Francisco Artacho Martin
+ */
 @Controller
 @RequestMapping("/empresa")
 public class EmpresaController {

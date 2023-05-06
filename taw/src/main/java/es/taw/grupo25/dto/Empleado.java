@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Jorge Camacho        - 50%
+ * @author Antonio Fernández    - 50%
+ */
 public class Empleado implements Serializable {
     private Integer id;
     private List<Cliente> clientesById;
