@@ -74,7 +74,7 @@ public class cajeroController {
                 Cliente cliente = clienteService.findById(usuario.getClientesById().getId());
                 model.addAttribute("cliente", cliente);
             } else {
-                urlto = "redirect:/cajero";
+                urlto = "/cajero";
             }
         }
         return urlto;
