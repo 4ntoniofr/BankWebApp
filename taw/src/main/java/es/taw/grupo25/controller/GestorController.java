@@ -139,7 +139,7 @@ public class GestorController {
 
         Cliente cliente = this.clienteService.findById(cuentaInterna.getClienteByPropietario().getId());
         cuentaInterna.setClienteByPropietario(cliente);
-        cuentaInterna.setCantidad(0.0);
+        cuentaInterna.setCantidad(100.0);
 
         EstadoCuenta estadoCuenta = this.estadoCuentaService.findByEstado("ACTIVA");
         cuentaInterna.setEstadoCuentaByEstadoCuenta(estadoCuenta);
