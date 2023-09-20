@@ -1,1 +1,3 @@
-# TAW
+# Bank Web App
+
+The Bank App Simulation is a web application developed using Java/Mvaen/Spring Boot, and a MySQL database. It emulates the functionality of a bank application, allowing users to perform various banking operations such as account management, fund transfers, transaction history tracking, chat support for users, section for companies...
